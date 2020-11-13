@@ -168,8 +168,8 @@ def lambda_handler(event, context):
     printresponsetos3(doc)
 
     for page in doc.pages:
-        for field in page.form.fields
-            if field.key == "Phone"
+        for field in page.form.fields:
+            if field.key == "Phone":
                 print('the phone number is: ',field.value)
     #    print(page.form)
 """
