@@ -141,7 +141,7 @@ def printresponsetos3(doc):
             ACL='public-read',
             ContentType='application/json',
             Key=path,
-            Body=data,
+            Body= repr(data),
         )
     except Exception as e:
         print(e)
