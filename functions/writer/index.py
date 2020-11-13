@@ -145,7 +145,8 @@ def lambda_handler(event, context):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
 
-
+    print('printing document')
+    print(doc)
     all_values = []
 
     for page in doc.pages:
