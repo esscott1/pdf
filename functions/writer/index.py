@@ -167,6 +167,9 @@ def lambda_handler(event, context):
 
     printresponsetos3(doc)
 
+    for page in doc.pages:
+        for form1 in page.form:
+            print(form1)
 """
     all_values = []
 
