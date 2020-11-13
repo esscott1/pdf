@@ -20,7 +20,6 @@ def lambda_handler(event, context):
         },
         JobTag=key + '_Job',
         FeatureTypes=[
-            'TABLES',
             'FORMS'
         ],
         NotificationChannel={
