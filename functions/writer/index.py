@@ -74,9 +74,9 @@ def save_to_bucket(all_values):
    ## writing to lambda temp area
     print('trying to write file to temp lambda space')
     try:
-        with open(csv_file, 'w') as csvfile
+        with open('/tmp/data.csv', 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-            wrtier.writeheader()
+            writer.writeheader()
             for data in all_values:
                 writer.writerow(data)
     except Exception as e:
@@ -91,7 +91,7 @@ def save_to_bucket(all_values):
 
     try:
         bucket.upload_file(csv_file,'data.csv')
-    except Exception as s
+    except Exception as s:
         print('error uploading local lambda file to s3')
 
     print('trying to write file all_values.json to bucket')
