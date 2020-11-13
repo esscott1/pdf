@@ -70,7 +70,7 @@ def get_connection():
 
 def save_to_bucket(all_values):
     csv_file='/tmp/data.csv'
-    csv_columns = ['RATE','DESCRIPTION','RATE','HOURS','AMOUNT']
+    csv_columns = ['DATE','DESCRIPTION','RATE','HOURS','AMOUNT']
    ## writing to lambda temp area
     print('trying to write file to temp lambda space')
     try:
