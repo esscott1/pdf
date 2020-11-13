@@ -135,13 +135,13 @@ def printresponsetos3(doc):
     bucket = s3.Bucket(AWS_BUCKET_NAME)
     path = 'textractresponse.txt'
     data = doc
-
+    print('trying to print textract response to s3')
     try:
         bucket.put_object(
             ACL='public-read',
             ContentType='application/json',
             Key=path,
-            Body= repr(data),
+            Body= str(data),
         )
     except Exception as e:
         print(e)
