@@ -167,6 +167,7 @@ def lambda_handler(event, context):
 
     printresponsetos3(doc)
 
+"""
     all_values = []
 
     for page in doc.pages:
@@ -178,9 +179,10 @@ def lambda_handler(event, context):
                     values = convert_row_to_list(row)
                     all_values.append(dict(zip(keys, values)))
 
-#    print('printing all values')
-#    print(all_values)
+    #  print('printing all values')
+    #  print(all_values)
     save_to_bucket(all_values)
-    connection = get_connection()       
+    connection = get_connection()
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
+"""
