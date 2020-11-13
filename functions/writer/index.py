@@ -128,6 +128,26 @@ def write_dict_to_db(mydict, connection):
     connection.commit()
     cursor.close()
 
+def printresponsetos3(doc):
+     # upload file to s3 bucket
+    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(AWS_BUCKET_NAME)
+    path = 'textractresponse.txt'
+    data = doc
+
+     try:
+        bucket.put_object(
+            ACL='public-read',
+            ContentType='application/json',
+            Key=path,
+            Body=data,
+        )
+    except Exception as e:
+        print(e)
+        print('error trying to write doc to bucket')
+
+
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
@@ -145,8 +165,8 @@ def lambda_handler(event, context):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
 
-    print('printing document')
-    print(doc)
+    printresponsetos3(doc)
+
     all_values = []
 
     for page in doc.pages:
@@ -158,8 +178,8 @@ def lambda_handler(event, context):
                     values = convert_row_to_list(row)
                     all_values.append(dict(zip(keys, values)))
 
-    print('printing all values')
-    print(all_values)
+#    print('printing all values')
+#    print(all_values)
     save_to_bucket(all_values)
     connection = get_connection()       
     for dictionary in all_values:
