@@ -136,7 +136,7 @@ def printresponsetos3(doc):
     path = 'textractresponse.txt'
     data = doc
 
-     try:
+    try:
         bucket.put_object(
             ACL='public-read',
             ContentType='application/json',
