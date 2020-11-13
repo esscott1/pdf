@@ -179,6 +179,15 @@ Resources:
             Action:
             - textract:*
             Resource: '*'
+      # Necessary for writing to S3
+      - PolicyName: s3access-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - s3:*
+            Resource: '*'
       # Use Access Management (IAM) database authentication
       - PolicyName: rds-policy
         PolicyDocument:

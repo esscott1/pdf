@@ -2,6 +2,7 @@ import json
 import boto3
 import os
 import pg8000
+import csv
 from trp import Document
 
 def getJobResults(jobId):
@@ -46,9 +47,13 @@ def get_connection():
         DatabaseName = os.environ.get('DatabaseName')
         DBUserName = os.environ.get('DBUserName')
         # Generates an auth token used to connect to a db with IAM credentials.
+        print ('trying to get password with auth token for endpoint: ',DBEndPoint)
         password = client.generate_db_auth_token(
             DBHostname=DBEndPoint, Port=5432, DBUsername=DBUserName
         )
+        print ('connecting to: ', DatabaseName)
+        print ('connecting as: ', DBUserName)
+        print ('connecting with pw: ', password)
         # Establishes the connection with the server using the token generated as password
         conn = pg8000.connect(
             host=DBEndPoint,
@@ -63,6 +68,51 @@ def get_connection():
         print ("While connecting failed due to :{0}".format(str(e)))
         return None
 
+def save_to_bucket(all_values):
+    csv_file='/tmp/data.csv'
+    csv_columns = ['RATE','DESCRIPTION','RATE','HOURS','AMOUNT']
+   ## writing to lambda temp area
+    print('trying to write file to temp lambda space')
+    try:
+        with open(csv_file, 'w') as csvfile
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            wrtier.writeheader()
+            for data in all_values:
+                writer.writerow(data)
+    except Exception as e:
+       print('error writing csv to lambda local:', e)
+
+    # upload file to s3 bucket
+    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(AWS_BUCKET_NAME)
+    path = 'all_values.json'
+    data = b'some data'
+
+    try:
+        bucket.upload_file(csv_file,'data.csv')
+    except Exception as s
+        print('error uploading local lambda file to s3')
+
+    print('trying to write file all_values.json to bucket')
+    print(bucket)
+    try:
+        bucket.put_object(
+            ACL='public-read',
+            ContentType='application/json',
+            Key=path,
+            Body=data,
+        )
+    except Exception as e:
+        print(e)
+        print('error trying to write to bucket')
+
+    body = {
+        "uploaded": "true",
+        "bucket": AWS_BUCKET_NAME,
+        "path": path,
+    }
+
 def write_dict_to_db(mydict, connection):
     """
     Write dictionary to our invoices table.
@@ -73,6 +123,7 @@ def write_dict_to_db(mydict, connection):
     columns = ', '.join(mydict.keys())
     sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
     print(sql, mydict.values())
+    print(list(mydict.values()))
     cursor.execute(sql, list(mydict.values()))
     connection.commit()
     cursor.close()
@@ -94,6 +145,7 @@ def lambda_handler(event, context):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
 
+
     all_values = []
 
     for page in doc.pages:
@@ -105,6 +157,9 @@ def lambda_handler(event, context):
                     values = convert_row_to_list(row)
                     all_values.append(dict(zip(keys, values)))
 
+    print('printing all values')
+    print(all_values)
+    save_to_bucket(all_values)
     connection = get_connection()       
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
