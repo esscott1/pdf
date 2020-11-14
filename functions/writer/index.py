@@ -169,7 +169,7 @@ def lambda_handler(event, context):
 
     for page in doc.pages:
         for field in page.form.fields:
-            print(f'key found in form:{field.key}: with value :{field.value}: the key length is {len(field.key)}')
+            print(f'key found in form:{field.key}: with value :{field.value}:')
             if field.key == 'Phone':
                 print('the phone number is: ',field.value)
     #    print(page.form)
