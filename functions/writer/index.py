@@ -198,9 +198,12 @@ def lambda_handler(event, context):
             if str(field.key) == 'Phone':
                 print('the phone number is: ',field.value)
             if str(field.key) == 'First':
-                all_values.append({'FirstName': field.value})
+                first = field.value
             if str(field.key) == 'Roundup Product User Name':
-                all_values.append({'LastName': field.value})
+                last = field.value
+        all_values.append({'FirstName:': first,'LastName':,last})
+
+
     print('printing all values:')
     print(all_values)
     save_orc_to_bucket(all_values)
