@@ -202,7 +202,7 @@ def lambda_handler(event, context):
             if str(field.key) == 'Roundup Product User Name':
                 last = field.value
     
-    all_values.append({'FirstName:': first,'LastName':,last})
+    all_values.append({'FirstName:': first,'LastName':last})
 
 
     print('printing all values:')
