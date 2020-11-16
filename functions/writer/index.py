@@ -87,7 +87,7 @@ def save_orc_to_bucket(all_values):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(AWS_BUCKET_NAME)
     try:
-        bucket.upload_file(csv_file,'data_for_salesforce.csv')
+        bucket.upload_file('s3tosalesforce/'+csv_file,'data_for_salesforce.csv')
     except Exception as s:
         print('error uploading local lambda file to s3')
 
