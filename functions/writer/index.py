@@ -70,7 +70,7 @@ def get_connection():
 
 def save_orc_to_bucket(all_values):
     csv_file='/tmp/data.csv'
-    csv_columns = ['LastName','FirstName']
+    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip']
    ## writing to lambda temp area
     print('trying to write file to temp lambda space')
     try:
@@ -196,13 +196,31 @@ def lambda_handler(event, context):
         for field in page.form.fields:
             print(f'key found in form:{field.key}: with value :{field.value}:')
             if str(field.key) == 'Phone':
+                phone = field.value
                 print('the phone number is: ',field.value)
             if str(field.key) == 'First':
                 first = field.value
-            if str(field.key) == 'Roundup Product User Name':
+                print('the first name is: ',field.value)
+            if str(field.key) == 'Last':
                 last = field.value
-    
-    all_values.append({'FirstName': first,'LastName':last})
+                print('the last name is: ',field.value)
+            if str(field.key) == 'Social Security Number':
+                ssn = field.value
+                print('the ssn is: ',field.value)
+            if str(field.key) == 'Street/P.O. Box':
+                street = field.value
+                print('the street is: ',field.value)
+            if str(field.key) == 'City':
+                city = field.value
+                print('the city is: ',field.value)
+            if str(field.key) == 'State':
+                state = field.value
+                print('the state is: ',field.value)
+            if str(field.key) == 'Zip':
+                zip = field.value
+                print('the zip is: ',field.value)
+
+    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip})
 
 
     print('printing all values:')
