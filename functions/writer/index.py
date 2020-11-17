@@ -182,9 +182,11 @@ def lambda_handler(event, context):
     pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
     pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
     pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
-    
+    pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
+
     print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
-    
+    print('printing doc location')
+    print(pdfTextExtractionDocLoc)
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
