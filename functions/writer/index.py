@@ -187,6 +187,9 @@ def lambda_handler(event, context):
     print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
     print('printing doc location')
     print(pdfTextExtractionDocLoc)
+
+    docname = json.loads(pdfTextExtractionDocLoc)['S3ObjectName']
+    print('document name is: '+docname)
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
