@@ -70,7 +70,7 @@ def get_connection():
 
 def save_orc_to_bucket(all_values):
     csv_file='/tmp/data.csv'
-    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip']
+    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
    ## writing to lambda temp area
     print('trying to write file to temp lambda space')
     try:
@@ -224,8 +224,11 @@ def lambda_handler(event, context):
             if str(field.key) == 'Zip':
                 zip = field.value
                 print('the zip is: ',field.value)
+            if str(field.key) == 'SourceDocName':
+                zip = field.value
+                print('the SourceDocName is: ',field.value)
 
-    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip})
+    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
 
     print('printing all values:')
