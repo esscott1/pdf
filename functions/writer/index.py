@@ -185,8 +185,8 @@ def lambda_handler(event, context):
     pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
     print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
-    print('printing doc location')
-    print(pdfTextExtractionDocLoc)
+#     print('printing doc location')
+#     print(pdfTextExtractionDocLoc)
 
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     print('document name is: '+docname)
@@ -194,7 +194,7 @@ def lambda_handler(event, context):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
 
-    printresponsetos3(doc)
+#    printresponsetos3(doc)
     all_values = []
 
     for page in doc.pages:
@@ -224,9 +224,7 @@ def lambda_handler(event, context):
             if str(field.key) == 'Zip':
                 zip = field.value
                 print('the zip is: ',field.value)
-            if str(field.key) == 'SourceDocName':
-                zip = field.value
-                print('the SourceDocName is: ',field.value)
+
 
     all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
