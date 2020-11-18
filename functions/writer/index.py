@@ -68,13 +68,13 @@ def get_connection():
         print ("While connecting failed due to :{0}".format(str(e)))
         return None
 
-def save_orc_to_bucket(all_values):
-    csv_file='/tmp/data.csv'
+def save_orc_to_bucket(all_values, docname):
+    csv_file='/tmp/'+docname+'_data.csv'
     csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
    ## writing to lambda temp area
-    print('trying to write file to temp lambda space')
+    print('trying to write file to temp lambda space named: '+csv_file)
     try:
-        with open('/tmp/data.csv', 'w') as csvfile:
+        with open('/tmp/'+docname+'_data.csv', 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
             writer.writeheader()
             for data in all_values:
@@ -87,11 +87,11 @@ def save_orc_to_bucket(all_values):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(AWS_BUCKET_NAME)
     try:
-        bucket.upload_file(csv_file,'s3tosalesforce/data_for_salesforce.csv')
+        bucket.upload_file(csv_file,'s3tosalesforce/'+docname+'.csv')
     except Exception as s:
         print('error uploading local lambda file to s3')
 
-
+'''
 def save_to_bucket(all_values):
     csv_file='/tmp/data.csv'
     csv_columns = ['DATE','DESCRIPTION','RATE','HOURS','AMOUNT']
@@ -136,7 +136,7 @@ def save_to_bucket(all_values):
         "bucket": AWS_BUCKET_NAME,
         "path": path,
     }
-
+'''
 def write_dict_to_db(mydict, connection):
     """
     Write dictionary to our invoices table.
@@ -152,6 +152,7 @@ def write_dict_to_db(mydict, connection):
     connection.commit()
     cursor.close()
 
+'''
 def printresponsetos3(doc):
      # upload file to s3 bucket
     AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
@@ -170,7 +171,7 @@ def printresponsetos3(doc):
     except Exception as e:
         print(e)
         print('error trying to write doc to bucket')
-
+'''
 
 def lambda_handler(event, context):
     """
@@ -231,7 +232,7 @@ def lambda_handler(event, context):
 
     print('printing all values:')
     print(all_values)
-    save_orc_to_bucket(all_values)
+    save_orc_to_bucket(all_values, docname)
     #    print(page.form)
 """
 
