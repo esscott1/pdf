@@ -213,7 +213,7 @@ def lambda_handler(event, context):
             if str(field.key) == 'Social Security Number':
                 ssn = field.value
                 print('the ssn is: ',field.value)
-            if str(field.key) == 'Street/P.O. Box':
+            if str(field.key).startswith('Street'):
                 street = field.value
                 print('the street is: ',field.value)
             if str(field.key) == 'City':
