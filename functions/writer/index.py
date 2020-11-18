@@ -219,7 +219,7 @@ def lambda_handler(event, context):
             if str(field.key) == 'City':
                 city = field.value
                 print('the city is: ',field.value)
-            if str(field.key) == 'State':
+            if str(field.key).startswith('State'):
                 state = field.value
                 print('the state is: ',field.value)
             if str(field.key) == 'Zip':
