@@ -256,7 +256,8 @@ def lambda_handler(event, context):
         write_dict_to_db(dictionary, connection)
 """
 def printSections(doc):
+    print('trying to print out SelectionElement:')
     for page in doc.pages:
         for field in page.form.fields:
             if str(field.value) == 'SELECTED':
-                print('checkbox: '+field.key+'is: '+field.value)
+                print('checkbox: '+str(field.key)+'is: '+str(field.value))
