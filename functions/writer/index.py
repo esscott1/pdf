@@ -261,5 +261,5 @@ def printSections(doc):
         for field in page.form.fields:
             if str(field.value) == 'SELECTED':
                 print('checkbox: '+str(field.key)+' is: '+str(field.value))
-                print(' with confidence: 'str(field.key.confidence))
+                print(' with confidence: '+str(field.key.confidence))
                 print ('block: '+str(field.key.block))
