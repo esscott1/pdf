@@ -212,7 +212,7 @@ def lambda_handler(event, context):
                 last = field.value
                 print('the last name is: ',field.value)
             if str(field.key) == 'Social Security Number':
-                ssn = field.value.replace(" ","")
+                ssn = str(field.value).replace(" ","")
                 print('the ssn is: ',field.value)
             if str(field.key).startswith('Street'):
                 street = field.value
