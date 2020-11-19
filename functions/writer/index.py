@@ -196,6 +196,7 @@ def lambda_handler(event, context):
         doc = Document(response)
 
 #    printresponsetos3(doc)
+
     all_values = []
 
     for page in doc.pages:
@@ -233,6 +234,7 @@ def lambda_handler(event, context):
     print('printing all values:')
     print(all_values)
     save_orc_to_bucket(all_values, docname)
+    printSections(doc)
     #    print(page.form)
 """
 
@@ -253,3 +255,8 @@ def lambda_handler(event, context):
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
 """
+def printSections(doc):
+    for page in doc.pages:
+        for field in page.form.fields:
+            if str(field.value) == 'SELECTED':
+                print('checkbox: '+field.key+'is: '+field.value)
