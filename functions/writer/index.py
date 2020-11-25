@@ -229,7 +229,7 @@ def lambda_handler(event, context):
                 print('the zip is: ',field.value)
 
 
-    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
+#    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
     print('all keys:')
     print(all_keys)
