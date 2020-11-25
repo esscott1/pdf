@@ -196,12 +196,13 @@ def lambda_handler(event, context):
         doc = Document(response)
 
 #    printresponsetos3(doc)
-
+    all_keys = []
     all_values = []
-
+#   building the array of KVP
     for page in doc.pages:
         for field in page.form.fields:
             print(f'key found in form:{field.key}: with value :{field.value}:')
+            all_keys.append(field.key)
             if str(field.key) == 'Phone':
                 phone = field.value
                 print('the phone number is: ',field.value)
@@ -230,11 +231,12 @@ def lambda_handler(event, context):
 
     all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
-
-    print('printing all values:')
-    print(all_values)
-    save_orc_to_bucket(all_values, docname)
-    printSections(doc)
+    print('all keys:')
+    print(all_keys)
+#    print('printing all values:')
+#    print(all_values)
+#    save_orc_to_bucket(all_values, docname)
+#    printSections(doc)
     #    print(page.form)
 """
 
