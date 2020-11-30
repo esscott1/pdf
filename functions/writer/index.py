@@ -200,6 +200,7 @@ def lambda_handler(event, context):
     all_values = []
 #   building the array of KVP
     for page in doc.pages:
+        print('---- page ----')
         for field in page.form.fields:
             print(f'key found in form:{field.key}: with value :{field.value}:')
 """            all_keys.append(str(field.key))
