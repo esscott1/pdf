@@ -202,7 +202,7 @@ def lambda_handler(event, context):
     for page in doc.pages:
         for field in page.form.fields:
             print(f'key found in form:{field.key}: with value :{field.value}:')
-            all_keys.append(str(field.key))
+"""            all_keys.append(str(field.key))
             if str(field.key) == 'Phone':
                 phone = field.value
                 print('the phone number is: ',field.value)
@@ -227,12 +227,12 @@ def lambda_handler(event, context):
             if str(field.key) == 'Zip':
                 zip = field.value
                 print('the zip is: ',field.value)
-
+"""
 
 #    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
-    print('all keys:')
-    print(all_keys)
+#    print('all keys:')
+#    print(all_keys)
 #    print('printing all values:')
 #    print(all_values)
 #    save_orc_to_bucket(all_values, docname)
