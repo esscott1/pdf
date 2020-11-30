@@ -202,7 +202,7 @@ def lambda_handler(event, context):
     for page in doc.pages:
         print('---- page ----')
         for field in page.form.fields:
-            print(f'key found in form:{field.key}: with value :{field.value}:')
+            print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
 """            all_keys.append(str(field.key))
             if str(field.key) == 'Phone':
                 phone = field.value
