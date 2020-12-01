@@ -249,9 +249,11 @@ def lambda_handler(event, context):
 #    printresponsetos3(doc)
     all_keys = []
     all_values = []
+    pageno = 0
 #   building the array of KVP
     for page in doc.pages:
-        print('---- page ----')
+        pageno = pageno + 1
+        print('---- page ',str(pageno),' ----',)
         for field in page.form.fields:
             if str(field.key) == 'Last':
                 print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
