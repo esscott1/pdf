@@ -5,6 +5,12 @@ import pg8000
 import csv
 from trp import Document
 
+
+csv_2_ocr_map = {
+'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1, 'geometry':{'top':0.995}}, 
+'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1, 'geometry':{'top':0.995}}
+}
+
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
@@ -224,6 +230,22 @@ def get_first_field(fields):
         print(field.key.geometry.top)
     retunn fields[0]
 """
+
+def GetFromTheTop(fieldlist, pos):
+    print('--- unsorted ---')
+    for field in fieldlist:
+        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
+
+    sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+
+    print('--- sorted ---')
+    for field in sorted_field:
+        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
+    
+    print('first one is',sorted_field[pos].value)
+    return sorted_field[pos].value
+
+
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
@@ -254,12 +276,20 @@ def lambda_handler(event, context):
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
-        for field in page.form.fields:
+        for csv_key in csv_2_ocr_map:
+            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_orc_map[csv_key]['orc_key'],' | at TopPos: ',csv_2_orc_map[csv_key]['TopPos'] )
+            fields = filter(lamdba x: str(x.key) == str(csv_2_orc_map[csv_key]['ocr_key']), page.form.fields)
+            lFields = list(fields)
+            correctField = GetFromTheTop(lFields,0)
+            print(f'write a cell to column: {csv_key} with value: {correctField.value}')
+
+"""         for field in page.form.fields:
+            GetKvp
             if str(field.key) == 'Last':
                 print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
             if str(field.key) == 'First':
                 print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
-"""            all_keys.append(str(field.key))
+           all_keys.append(str(field.key))
             if str(field.key) == 'Phone':
                 phone = field.value
                 print('the phone number is: ',field.value)
