@@ -173,6 +173,57 @@ def printresponsetos3(doc):
         print('error trying to write doc to bucket')
 '''
 
+def write_csv(mydict, docname):
+    csv_columns = mydict.keys()
+    csv_file='/tmp/'+docname+'_data.csv'
+#    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
+   ## writing to lambda temp area
+    print('trying to write file to temp lambda space named: '+csv_file)
+    try:
+        with open('/tmp/'+docname+'_data.csv', 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            writer.writeheader()
+            for data in mydict:
+                writer.writerow(data)
+    except Exception as e:
+       print('error writing csv to lambda local:', e)
+
+    # upload file to s3 bucket
+    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(AWS_BUCKET_NAME)
+    try:
+        bucket.upload_file(csv_file,'s3tosalesforce/'+docname+'.csv')
+    except Exception as s:
+        print('error uploading local lambda file to s3')
+
+
+csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
+
+
+}
+def get_enrollment_dict(doc)
+    mydict = {}
+    for page in doc.pages:
+        print('---- page ----')
+        
+        for csv_key in csv_2_ocr_map
+            x = filter(lambda x: x.key == csv_2_ocr_map[csv_key] page.form.fields)  # finding the field in ocr form that matches the csv column
+            l = list(x)
+            for ocritem in l:
+                mydict[csv_key] = str(ocritem.value) # adding the 
+            mydict.update()
+            if(list(x)>1):
+                print('figure which one')
+
+
+            mydict.append()
+
+def get_first_field(fields)
+    for field in fields:
+        print(field.key.geometry.top)
+    retunn fields[0]
+
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
@@ -202,7 +253,10 @@ def lambda_handler(event, context):
     for page in doc.pages:
         print('---- page ----')
         for field in page.form.fields:
-            print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
+            if str(field.key) == 'Last':
+                print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
+            if str(field.key) == 'First':
+                print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
 """            all_keys.append(str(field.key))
             if str(field.key) == 'Phone':
                 phone = field.value
