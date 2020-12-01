@@ -201,7 +201,7 @@ def write_csv(mydict, docname):
 csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
 
 
-
+"""
 def get_enrollment_dict(doc):
     mydict = {}
     for page in doc.pages:
@@ -223,7 +223,7 @@ def get_first_field(fields):
     for field in fields:
         print(field.key.geometry.top)
     retunn fields[0]
-
+"""
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
