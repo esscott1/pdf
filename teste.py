@@ -84,14 +84,17 @@ f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.995))),'Magic'))
 #[y for y in f1.fields if y.key == 'Last']
 
 for field in f1.fields:
-    print(field)
+    print(f"orc key: {field.key} | map key: {csv_2_ocr_map['Claimant First Name']['ocr_key']} ")
+#    print(csv_2_ocr_map['Claimant First Name']['ocr_key'])
+    if(str(field.key) == str(csv_2_ocr_map['Claimant First Name']['ocr_key'])):
+        print('match')
 
 for csv_key in csv_2_ocr_map:
     print('csv_key is: '+csv_key+' | ocr key is: '+csv_2_ocr_map[csv_key]['ocr_key']+' | located at: '+
 	str(csv_2_ocr_map[csv_key]['geometry']['top']))
 #    print(csv_2_ocr_map.values())
 #    print('looking for: '+csv_2_ocr_map[csv_key]['ocr_key'])
-    x = filter(lambda x: x.key == csv_2_ocr_map[csv_key]['ocr_key'], f1.fields)
+    x = filter(lambda x: str(x.key) == str(csv_2_ocr_map[csv_key]['ocr_key']), f1.fields)
     l = list(x)
     if(len(l)>1):
         print('figure which one')
