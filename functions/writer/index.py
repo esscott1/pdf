@@ -202,7 +202,7 @@ csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
 
 
 }
-def get_enrollment_dict(doc)
+def get_enrollment_dict(doc):
     mydict = {}
     for page in doc.pages:
         print('---- page ----')
@@ -219,7 +219,7 @@ def get_enrollment_dict(doc)
 
             mydict.append()
 
-def get_first_field(fields)
+def get_first_field(fields):
     for field in fields:
         print(field.key.geometry.top)
     retunn fields[0]
