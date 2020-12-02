@@ -108,20 +108,22 @@ for field in f1.fields:
 for csv_key in csv_2_ocr_map:
     print('csv_key is: '+csv_key+' | ocr key is: '+csv_2_ocr_map[csv_key]['ocr_key']+' | located at: '+
 	str(csv_2_ocr_map[csv_key]['geometry']['top']))
+    print('csv_key is: '+csv_key+' | ocr key is: '+csv_key['ocr_key']+' | located at: '+
+	str(csv_2_ocr_map[csv_key]['geometry']['top']))
 #    print(csv_2_ocr_map.values())
 #    print('looking for: '+csv_2_ocr_map[csv_key]['ocr_key'])
     x = filter(lambda x: str(x.key) == str(csv_2_ocr_map[csv_key]['ocr_key']), f1.fields)
     l = list(x)
     if(len(l)>1):
         print('figure which one')
-        GetFromTheTop(l,0)
+     #S   GetFromTheTop(l,0)
 
 
     print(len(l))
 #    print(len(list(x)))
 
-    for ocritem in l:
-        print('the csv column is: '+ csv_key + ' and values is: ' + ocritem.value)
+#    for ocritem in l:
+#S        print('the csv column is: '+ csv_key + ' and values is: ' + ocritem.value)
         #mydict[emap[key]] = str(eitem.value)
 
 

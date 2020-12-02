@@ -277,7 +277,7 @@ def lambda_handler(event, context):
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
         for csv_key in csv_2_ocr_map:
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_orc_map[csv_key]['orc_key'],' | at TopPos: ',str(csv_2_orc_map[csv_key]['TopPos']) )
+            print('Looking for csv_key is: ',csv_key,' | ocr key: ')#, csv_2_ocr_map[csv_key]['orc_key'],' | at TopPos: ',str(csv_2_orc_map[csv_key]['TopPos']) )
 #            fields = filter(lamdba x: str(x.key) == str(csv_2_orc_map[csv_key]['ocr_key']), page.form.fields)
 #            lFields = list(fields)
  #           correctField = GetFromTheTop(lFields,0)
