@@ -282,7 +282,9 @@ def lambda_handler(event, context):
             es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']),page.form.fields) 
 
             lFields = list(es)
-            correctField = GetFromTheTop(lFields,0)
+            print(f"i found {str(len(lFields))} field objects")
+            if(len(lFields>0)):
+                correctField = GetFromTheTop(lFields,0)
             print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 
 """         for field in page.form.fields:
