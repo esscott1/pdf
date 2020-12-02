@@ -281,9 +281,9 @@ def lambda_handler(event, context):
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
             es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']),page.form.fields) 
 
-#            lFields = list(fields)
- #           correctField = GetFromTheTop(lFields,0)
- #           print(f'write a cell to column: {csv_key} with value: {correctField.value}')
+            lFields = list(es)
+            correctField = GetFromTheTop(lFields,0)
+            print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 
 """         for field in page.form.fields:
             GetKvp
