@@ -283,7 +283,7 @@ def lambda_handler(event, context):
 
             lFields = list(es)
             print(f"i found {str(len(lFields))} field objects")
-            if(len(lFields>0)):
+            if(len(lFields)>0):
                 correctField = GetFromTheTop(lFields,0)
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 
