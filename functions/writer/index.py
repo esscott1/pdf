@@ -285,7 +285,7 @@ def lambda_handler(event, context):
             print(f"i found {str(len(lFields))} field objects")
             if(len(lFields>0)):
                 correctField = GetFromTheTop(lFields,0)
-            print(f'write a cell to column: {csv_key} with value: {correctField.value}')
+            #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 
 """         for field in page.form.fields:
             GetKvp
