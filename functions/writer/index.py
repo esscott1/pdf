@@ -278,10 +278,10 @@ def lambda_handler(event, context):
         print('---- page ',str(pageno),' ----',)
         for csv_key in csv_2_ocr_map:
             print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_orc_map[csv_key]['orc_key'],' | at TopPos: ',csv_2_orc_map[csv_key]['TopPos'] )
-            fields = filter(lamdba x: str(x.key) == str(csv_2_orc_map[csv_key]['ocr_key']), page.form.fields)
-            lFields = list(fields)
-            correctField = GetFromTheTop(lFields,0)
-            print(f'write a cell to column: {csv_key} with value: {correctField.value}')
+#            fields = filter(lamdba x: str(x.key) == str(csv_2_orc_map[csv_key]['ocr_key']), page.form.fields)
+#            lFields = list(fields)
+ #           correctField = GetFromTheTop(lFields,0)
+ #           print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 
 """         for field in page.form.fields:
             GetKvp
