@@ -250,11 +250,12 @@ def lambda_handler(event, context):
     all_keys = []
     all_values = []
     pageno = 0
+    dictrow = {}
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
-        dictrow = {}
+
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos'])) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
