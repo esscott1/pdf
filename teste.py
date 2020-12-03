@@ -1,3 +1,5 @@
+import csv
+
 class Geometry:
     def __init__(self, boundingBox):
         self._boundingBox = boundingBox
@@ -68,34 +70,53 @@ class Field:
     def value(self):
         return self._value
 
-def GetFromTheTop(fieldlist, pos):
-    print('--- unsorted ---')
-    for field in fieldlist:
-        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
-
-    sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-
-    print('--- sorted ---')
-    for field in sorted_field:
-        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
-    
-    print('first one is',sorted_field[pos].value)
-
-mydict = {}
-
-#csv_2_ocr_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
-csv_2_ocr_map = {
-'Claimant First Name': {'ocr_key':'First', 'PageNo': 1, 'TopPos': 1, 'geometry':{'top':0.995}}, 
-'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 1, 'TopPos': 1, 'geometry':{'top':0.995}}
-}
-
 f1 = Form()
 f1.addField(Field(FieldKey('state',Geometry(BoundingBox(0.995))),'ny'))
 f1.addField(Field(FieldKey('city',Geometry(BoundingBox(0.995))),'buffalo'))
-f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.756))),'Abbe'))
-f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.756))),'Toby'))
-f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.463))),'Grant'))
-f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.463))),'Davis'))
+f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.463))),'Abbe'))
+f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.463))),'Toby'))
+f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.756))),'Grant'))
+f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.756))),'Davis'))
+
+
+def GetFromTheTop(fieldlist, pos):
+#    print('--- unsorted ---')
+#    for field in fieldlist:
+#        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
+
+    sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+
+#    print('--- sorted ---')
+#    for field in sorted_field:
+#        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
+    
+    print('first one is',sorted_field[pos].value)
+    return sorted_field[pos]
+
+def writeToDisk(dictList):
+    print(' ----------------------  ')
+    print('trying to write file')
+    csv_columns = ['Claimant First Name','Claimant Last Name']
+    try:
+        with open('c:/src/egit/pdf/testme.csv','w') as csvfile:
+            writer = csv.DictWriter(csvfile,fieldnames=csv_columns)
+            writer.writeheader()
+            for data in dictList:
+                print(data)
+                writer.writerow(data)
+            print('SUCCESS: wrote testme.csv')
+    except Exception as e:
+        print('error writing csv local: '+ e)
+
+
+all_kvp = []
+
+#csv_2_ocr_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
+csv_2_ocr_map = {
+'Claimant First Name': {'ocr_key':'First', 'PageNo': 1, 'TopPos': 1},
+'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 1, 'TopPos': 1}
+}
+
 #x = any(y for y in f1.fields if y.key == 'Last')
 #[y for y in f1.fields if y.key == 'Last']
 """
@@ -105,21 +126,26 @@ for field in f1.fields:
     if(str(field.key) == str(csv_2_ocr_map['Claimant First Name']['ocr_key'])):
         print('match')
 """
+dictrow = {}
 for csv_key in csv_2_ocr_map:
     print('csv_key is: '+csv_key+' | ocr key is: '+csv_2_ocr_map[csv_key]['ocr_key']+' | located at: '+
-	str(csv_2_ocr_map[csv_key]['geometry']['top']))
-    print('csv_key is: '+csv_key+' | ocr key is: '+csv_key['ocr_key']+' | located at: '+
-	str(csv_2_ocr_map[csv_key]['geometry']['top']))
+	str(csv_2_ocr_map[csv_key]['TopPos']))
+#    print('csv_key is: '+csv_key+' | ocr key is: '+csv_key['ocr_key']+' | located at: '+ str(csv_2_ocr_map[csv_key]['geometry']['boundingBox']['top']))
 #    print(csv_2_ocr_map.values())
 #    print('looking for: '+csv_2_ocr_map[csv_key]['ocr_key'])
     x = filter(lambda x: str(x.key) == str(csv_2_ocr_map[csv_key]['ocr_key']), f1.fields)
     l = list(x)
     if(len(l)>1):
-        print('figure which one')
-     #S   GetFromTheTop(l,0)
+        correctField = GetFromTheTop(l,0)
+        print('adding: '+correctField.value+ ' to dictrow')
+        dictrow[csv_key] = correctField.value
+
+print(dictrow)
+all_kvp.append(dictrow)
+
+writeToDisk(all_kvp)
 
 
-    print(len(l))
 #    print(len(list(x)))
 
 #    for ocritem in l:

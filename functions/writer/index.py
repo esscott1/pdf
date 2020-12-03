@@ -76,7 +76,8 @@ def get_connection():
 
 def save_orc_to_bucket(all_values, docname):
     csv_file='/tmp/'+docname+'_data.csv'
-    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
+#    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
+    csv_columns = ['Claimant First Name', 'Claimant Last Name']
    ## writing to lambda temp area
     print('trying to write file to temp lambda space named: '+csv_file)
     try:
@@ -276,7 +277,8 @@ def lambda_handler(event, context):
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
-        for csv_key in csv_2_ocr_map:
+        dictrow = {}
+        for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos'])) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
             es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']),page.form.fields) 
@@ -285,11 +287,12 @@ def lambda_handler(event, context):
             print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTop(lFields,0)
+                dictrow[csv_key] = correctField.value
                 print(f'--- the correctField is {correctField.value}')
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
-
+        all_values.append(dictrow)
 """         for field in page.form.fields:
             GetKvp
             if str(field.key) == 'Last':
@@ -322,6 +325,7 @@ def lambda_handler(event, context):
                 zip = field.value
                 print('the zip is: ',field.value)
 """
+    save_orc_to_bucket(all_values, 'testeric.csv')
 
 #    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
