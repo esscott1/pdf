@@ -243,7 +243,7 @@ def GetFromTheTop(fieldlist, pos):
         print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
     
     print('first one is',sorted_field[pos].value)
-    return sorted_field[pos].value
+    return sorted_field[pos]
 
 
 def lambda_handler(event, context):
@@ -285,6 +285,10 @@ def lambda_handler(event, context):
             print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTop(lFields,0)
+            else 
+                correctField = lFields[0]
+
+            print(f'--- ther correctField is {correctField.value}')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 
 """         for field in page.form.fields:
