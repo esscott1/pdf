@@ -208,29 +208,6 @@ def write_csv(mydict, docname):
 csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
 
 
-"""
-def get_enrollment_dict(doc):
-    mydict = {}
-    for page in doc.pages:
-        print('---- page ----')
-        
-        for csv_key in csv_2_ocr_map
-            x = filter(lambda x: x.key == csv_2_ocr_map[csv_key] page.form.fields)  # finding the field in ocr form that matches the csv column
-            l = list(x)
-            for ocritem in l:
-                mydict[csv_key] = str(ocritem.value) # adding the 
-            mydict.update()
-            if(list(x)>1):
-                print('figure which one')
-
-
-            mydict.append()
-
-def get_first_field(fields):
-    for field in fields:
-        print(field.key.geometry.top)
-    retunn fields[0]
-"""
 
 def GetFromTheTop(fieldlist, pos):
     print('--- unsorted ---')
@@ -292,9 +269,9 @@ def lambda_handler(event, context):
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
-        all_values.append(dictrow)
+    all_values.append(dictrow)
 
-        save_orc_to_bucket(all_values, 'testeric')
+    save_orc_to_bucket(all_values, 'testeric')
 """         for field in page.form.fields:
             GetKvp
             if str(field.key) == 'Last':

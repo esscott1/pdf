@@ -79,7 +79,7 @@ f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.756))),'Grant'))
 f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.756))),'Davis'))
 
 
-def GetFromTheTop(fieldlist, pos):
+def GetFromTheTop(fieldlist, pos, page):
 #    print('--- unsorted ---')
 #    for field in fieldlist:
 #        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
@@ -127,21 +127,29 @@ for field in f1.fields:
         print('match')
 """
 dictrow = {}
-for csv_key in csv_2_ocr_map:
-    print('csv_key is: '+csv_key+' | ocr key is: '+csv_2_ocr_map[csv_key]['ocr_key']+' | located at: '+
-	str(csv_2_ocr_map[csv_key]['TopPos']))
-#    print('csv_key is: '+csv_key+' | ocr key is: '+csv_key['ocr_key']+' | located at: '+ str(csv_2_ocr_map[csv_key]['geometry']['boundingBox']['top']))
-#    print(csv_2_ocr_map.values())
-#    print('looking for: '+csv_2_ocr_map[csv_key]['ocr_key'])
-    x = filter(lambda x: str(x.key) == str(csv_2_ocr_map[csv_key]['ocr_key']), f1.fields)
-    l = list(x)
-    if(len(l)>1):
-        correctField = GetFromTheTop(l,0)
-        print('adding: '+correctField.value+ ' to dictrow')
-        dictrow[csv_key] = correctField.value
+pages = [1,2,3,4]
 
-print(dictrow)
-all_kvp.append(dictrow)
+for page in pages:
+    print('------')
+    print('Page: '+str(page))
+    print('------')
+    for csv_key in csv_2_ocr_map:
+        print('csv_key is: '+csv_key+' | ocr key is: '+csv_2_ocr_map[csv_key]['ocr_key']+' | located at: '+
+        str(csv_2_ocr_map[csv_key]['TopPos']))
+    #    print('csv_key is: '+csv_key+' | ocr key is: '+csv_key['ocr_key']+' | located at: '+ str(csv_2_ocr_map[csv_key]['geometry']['boundingBox']['top']))
+    #    print(csv_2_ocr_map.values())
+    #    print('looking for: '+csv_2_ocr_map[csv_key]['ocr_key'])
+        x = filter(lambda x: str(x.key) == str(csv_2_ocr_map[csv_key]['ocr_key']), f1.fields)
+        l = list(x)
+        if(len(l)>1):
+            correctField = GetFromTheTop(l,0, page)
+            print('adding: '+correctField.value+ ' to dictrow')
+            dictrow[csv_key] = correctField.value
+    print('------')
+    print('printing dict')
+    print('------')
+    print(dictrow)
+    all_kvp.append(dictrow)
 
 writeToDisk(all_kvp)
 
