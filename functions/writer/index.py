@@ -179,7 +179,7 @@ def printresponsetos3(doc):
         print(e)
         print('error trying to write doc to bucket')
 '''
-
+"""
 def write_csv(mydict, docname):
     csv_columns = mydict.keys()
     csv_file='/tmp/'+docname+'_data.csv'
@@ -204,12 +204,12 @@ def write_csv(mydict, docname):
     except Exception as s:
         print('error uploading local lambda file to s3')
 
-
+"""
 csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
 
 
 
-def GetFromTheTop(fieldlist, pos):
+def GetFromTheTopofPage(fieldlist, pos, page):
     print('--- unsorted ---')
 #    for field in fieldlist:
 #        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
@@ -259,18 +259,18 @@ def lambda_handler(event, context):
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos'])) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
-            es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']),page.form.fields) 
+            es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']) and pageno == csv_2_ocr_map['ocr_key']['PageNo'],page.form.fields) 
 
             lFields = list(es)
             print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
-                correctField = GetFromTheTop(lFields,0)
+                correctField = GetFromTheTopofPage(lFields,0,2)
                 dictrow[csv_key] = correctField.value
                 print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
-        print(f'---------------- print dictrow afterpage {page} is processed ----------')
+        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
     all_values.append(dictrow)
 
