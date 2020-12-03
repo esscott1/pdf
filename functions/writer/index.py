@@ -211,16 +211,16 @@ csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
 
 def GetFromTheTop(fieldlist, pos):
     print('--- unsorted ---')
-    for field in fieldlist:
-        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
+#    for field in fieldlist:
+#        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
 
     sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
 
-    print('--- sorted ---')
-    for field in sorted_field:
-        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
+#    print('--- sorted ---')
+#    for field in sorted_field:
+#        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
     
-    print('first one is',sorted_field[pos].value)
+#    print('first one is',sorted_field[pos].value)
     return sorted_field[pos]
 
 
@@ -266,10 +266,12 @@ def lambda_handler(event, context):
             if(len(lFields)>0):
                 correctField = GetFromTheTop(lFields,0)
                 dictrow[csv_key] = correctField.value
-                print(f'--- the correctField is {correctField.value}')
+                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
+        print(f'---------------- print dictrow afterpage {page} is processed ----------')
+        print(dictrow)
     all_values.append(dictrow)
 
     save_orc_to_bucket(all_values, 'testeric')
