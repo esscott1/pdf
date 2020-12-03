@@ -293,6 +293,8 @@ def lambda_handler(event, context):
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
         all_values.append(dictrow)
+
+        save_orc_to_bucket(all_values, 'testeric')
 """         for field in page.form.fields:
             GetKvp
             if str(field.key) == 'Last':
@@ -325,7 +327,7 @@ def lambda_handler(event, context):
                 zip = field.value
                 print('the zip is: ',field.value)
 """
-    save_orc_to_bucket(all_values, 'testeric.csv')
+
 
 #    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
