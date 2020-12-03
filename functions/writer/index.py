@@ -285,7 +285,7 @@ def lambda_handler(event, context):
             print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTop(lFields,0)
-            else 
+            else:
                 correctField = lFields[0]
 
             print(f'--- ther correctField is {correctField.value}')
