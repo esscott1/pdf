@@ -271,7 +271,7 @@ def lambda_handler(event, context):
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
         print(f'---------------- print dictrow afterpage {page} is processed ----------')
-        print(dictrow)
+#        print(dictrow)
     all_values.append(dictrow)
 
     save_orc_to_bucket(all_values, 'testeric')
