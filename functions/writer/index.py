@@ -257,9 +257,9 @@ def lambda_handler(event, context):
         print('---- page ',str(pageno),' ----',)
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos'])) 
+            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
-            es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']) and pageno == csv_2_ocr_map['ocr_key']['PageNo'],page.form.fields) 
+            es = filter(lambda x: str(x.key)== str(csv_2_ocr_map[csv_key]['ocr_key']) and  csv_2_ocr_map['ocr_key']['PageNo'] == pageno ,page.form.fields) 
 
             lFields = list(es)
             print(f"i found {str(len(lFields))} field objects")
