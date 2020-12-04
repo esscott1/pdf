@@ -148,7 +148,7 @@ csv_2_ocr_map_relfull = {
 'City':{'ocr_key':'City', 'PageNo': 3, 'TopPos': 1}
 }
 
-csv_2_ocr_map = csv_2_ocr_map_enroll
+#csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def getJobResults(jobId):
     """
@@ -356,7 +356,13 @@ def lambda_handler(event, context):
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
+# logic for getting the correct map based on file name
+    if(str(docname).find('ENROLL') > -1):
+        csv_2_ocr_map = csv_2_ocr_map_enroll
+    if(str(docname).find('RELFULL') > -1):
+        csv_2_ocr_map = csv_2_ocr_map_relfull
 
+# End logic for getting the correct map based on file name
 #    printresponsetos3(doc)
     all_keys = []
     all_values = []
