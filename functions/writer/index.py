@@ -8,7 +8,8 @@ from trp import Document
 
 csv_2_ocr_map = {
 'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
-'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1}
+'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1},
+'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1}
 }
 
 def getJobResults(jobId):
@@ -77,7 +78,7 @@ def get_connection():
 def save_orc_to_bucket(all_values, docname):
     csv_file='/tmp/'+docname+'_data.csv'
 #    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
-    csv_columns = ['Claimant First Name', 'Claimant Last Name']
+    csv_columns = ['Claimant First Name', 'Claimant Last Name', 'City']
    ## writing to lambda temp area
     print('trying to write file to temp lambda space named: '+csv_file)
     try:

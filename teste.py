@@ -90,7 +90,8 @@ def GetFromTheTop(fieldlist, pos, page):
 def writeToDisk(dictList):
     print(' ----------------------  ')
     print('trying to write file')
-    csv_columns = ['Claimant First Name','Claimant Last Name']
+#    csv_columns = ['Claimant First Name','Claimant Last Name']
+    csv_columns = dictList[0].keys()
     try:
         with open('c:/src/egit/pdf/testme.csv','w') as csvfile:
             writer = csv.DictWriter(csvfile,fieldnames=csv_columns)
