@@ -135,11 +135,20 @@ csv_headers = ['Primary Attorney',
 'Estate Documents[Probate Documents]',
 'Additional Notes and Comments'
 ] 
-csv_2_ocr_map = {
+
+csv_2_ocr_map_enroll = {
+'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
+'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1},
+'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1}
+}
+
+csv_2_ocr_map_relfull = {
 'Claimant First Name': {'ocr_key':'First', 'PageNo': 3, 'TopPos': 1}, 
 'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 3, 'TopPos': 1},
 'City':{'ocr_key':'City', 'PageNo': 3, 'TopPos': 1}
 }
+
+csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def getJobResults(jobId):
     """
