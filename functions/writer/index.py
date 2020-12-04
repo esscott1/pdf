@@ -7,8 +7,8 @@ from trp import Document
 
 
 csv_2_ocr_map = {
-'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1, 'geometry':{'top':0.995}}, 
-'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1, 'geometry':{'top':0.995}}
+'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
+'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1}
 }
 
 def getJobResults(jobId):
