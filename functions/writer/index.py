@@ -136,9 +136,9 @@ csv_headers = ['Primary Attorney',
 'Additional Notes and Comments'
 ] 
 csv_2_ocr_map = {
-'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
-'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1},
-'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1}
+'Claimant First Name': {'ocr_key':'First', 'PageNo': 3, 'TopPos': 1}, 
+'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 3, 'TopPos': 1},
+'City':{'ocr_key':'City', 'PageNo': 3, 'TopPos': 1}
 }
 
 def getJobResults(jobId):
@@ -206,7 +206,6 @@ def get_connection():
 
 def save_orc_to_bucket(all_values, docname):
     csv_file='/tmp/'+docname+'_data.csv'
-#    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
     csv_columns = ['Claimant First Name', 'Claimant Last Name', 'City']
    ## writing to lambda temp area
     print('trying to write file to temp lambda space named: '+csv_file)
@@ -309,33 +308,6 @@ def printresponsetos3(doc):
         print(e)
         print('error trying to write doc to bucket')
 '''
-"""
-def write_csv(mydict, docname):
-    csv_columns = mydict.keys()
-    csv_file='/tmp/'+docname+'_data.csv'
-#    csv_columns = ['LastName','FirstName','Phone','SSN','Street','City','State','Zip','SourceDocName']
-   ## writing to lambda temp area
-    print('trying to write file to temp lambda space named: '+csv_file)
-    try:
-        with open('/tmp/'+docname+'_data.csv', 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-            writer.writeheader()
-            for data in mydict:
-                writer.writerow(data)
-    except Exception as e:
-       print('error writing csv to lambda local:', e)
-
-    # upload file to s3 bucket
-    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket(AWS_BUCKET_NAME)
-    try:
-        bucket.upload_file(csv_file,'s3tosalesforce/'+docname+'.csv')
-    except Exception as s:
-        print('error uploading local lambda file to s3')
-
-"""
-csv_2_orc_map = {'Claimant First Name': 'First', 'Claimant Last Name': 'Last'}
 
 
 
