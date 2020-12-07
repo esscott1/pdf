@@ -378,7 +378,7 @@ def lambda_handler(event, context):
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
-#        print(f'Line count on {str(pageno)}: is: {len(page.Line)} ')
+        print(f'Line count on {str(pageno)}: is: {len(page.Line)} ')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
 #            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
