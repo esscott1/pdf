@@ -378,22 +378,22 @@ def lambda_handler(event, context):
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
-
+        print(f'Line count on {str(pageno)}: is: {len(page.Line)} ')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
+#            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
             es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 
             lFields = list(es)
-            print(f"i found {str(len(lFields))} field objects")
+#            print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 dictrow[csv_key] = correctField.value
-                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
+#                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
-                print(' --- no correctField found --- ')
+#                print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
-        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
+#        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
     all_values.append(dictrow)
 
