@@ -379,6 +379,8 @@ def lambda_handler(event, context):
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
         pagelines = page.lines
+        print(type(pagelines))
+        print(len(pagelines))
         print('--- printing page lines ---')
         print(pagelines)
         print('--- did it print a page line number?')
