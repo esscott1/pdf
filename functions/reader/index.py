@@ -20,7 +20,7 @@ def lambda_handler(event, context):
         },
         JobTag=key + '_Job',
         FeatureTypes=[
-            'FORMS'
+            'FORMS','TABLES'
         ],
         NotificationChannel={
             'RoleArn': os.environ['SNSROLEARN'],
