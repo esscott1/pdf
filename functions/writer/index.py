@@ -154,7 +154,7 @@ csv_2_ocr_map_relfull = {
 'State':{'ocr_key':'State', 'PageNo': 3, 'TopPos': 1},
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 3, 'TopPos': 1},
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 3, 'TopPos': 1},
-'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1}
+'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1},
 'YES':{'ocr_key':'Current Citizenship Status','PageNo': 3, 'TopPos': 1}
 }
 
