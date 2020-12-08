@@ -182,11 +182,11 @@ def CollapeYESNO(dict):
     if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'SELECTED'):
         dict["Citizenship Status at time of Exposure"] = 'NO'
 
-    Were you married_YES = dict.pop('Were you married_YES', None)
-    Were you married_NO = dict.pop('Were you married_NO', None)
-    if(str(Were you married_YES) == 'SELECTED'):
+    Were_you_married_YES = dict.pop('Were you married_YES', None)
+    Were_you_married_NO = dict.pop('Were you married_NO', None)
+    if(str(Were_you_married_YES) == 'SELECTED'):
         dict["Were you married"] = 'YES'
-    if(str(Were you married_NO) == 'SELECTED'):
+    if(str(Were_you_married_NO) == 'SELECTED'):
         dict["Were you married"] = 'NO'
 
 
