@@ -142,7 +142,8 @@ csv_2_ocr_map_enroll = {
 'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1},
 'State':{'ocr_key':'State', 'PageNo': 2, 'TopPos': 1},
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
-'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1}
+'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
+'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1}
 }
 
 csv_2_ocr_map_relfull = {
@@ -151,7 +152,8 @@ csv_2_ocr_map_relfull = {
 'City':{'ocr_key':'City', 'PageNo': 3, 'TopPos': 1},
 'State':{'ocr_key':'State', 'PageNo': 3, 'TopPos': 1},
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 3, 'TopPos': 1},
-'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 3, 'TopPos': 1}
+'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 3, 'TopPos': 1},
+'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1}
 }
 
 #csv_2_ocr_map = csv_2_ocr_map_enroll
@@ -377,32 +379,36 @@ def lambda_handler(event, context):
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1
-        print('---- page ',str(pageno),' ----',)
+#        print('---- page ',str(pageno),' ----',)
         pagelines = page.lines
-        print(type(pagelines))
-        print(len(pagelines))
-        print('--- printing page lines ---')
-        print(pagelines)
-        print('--- did it print a page line number?')
+        for line in page.lines:
+
+#        print(type(pagelines))
+#        print(len(pagelines))
+#        print('--- printing page lines ---')
+#        print(pagelines)
+#        print('--- did it print a page line number?')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
+3            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
             #),str(csv_2_orc_map[csv_key]['TopPos']) )
             es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
+#            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 
             lFields = list(es)
-            print(f"i found {str(len(lFields))} field objects")
+#            print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 dictrow[csv_key] = correctField.value
-                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
+#                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
-                print(' --- no correctField found --- ')
+#                print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
-        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
+#        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
     all_values.append(dictrow)
 
     save_orc_to_bucket(all_values, 'testeric')
+    printSections(doc)
 """         for field in page.form.fields:
             GetKvp
             if str(field.key) == 'Last':
@@ -435,7 +441,14 @@ def lambda_handler(event, context):
                 zip = field.value
                 print('the zip is: ',field.value)
 """
-
+def printSections(doc):
+    print('trying to print out SelectionElement:')
+    for page in doc.pages:
+        for field in page.form.fields:
+            if str(field.value) == 'SELECTED':
+                print('checkbox: '+str(field.key)+' is: '+str(field.value))
+                print(' with confidence: '+str(field.key.confidence))
+                print ('block: '+str(field.key.block))
 
 #    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
@@ -465,13 +478,6 @@ def lambda_handler(event, context):
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
 """
-def printSections(doc):
-    print('trying to print out SelectionElement:')
-    for page in doc.pages:
-        for field in page.form.fields:
-            if str(field.value) == 'SELECTED':
-                print('checkbox: '+str(field.key)+' is: '+str(field.value))
-                print(' with confidence: '+str(field.key.confidence))
-                print ('block: '+str(field.key.block))
+
 
 
