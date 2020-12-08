@@ -164,9 +164,9 @@ csv_2_ocr_map_relfull = {
 #csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def CollapeYESNO(dict):
-    Current_Citizenship_Status-Yes = dict.pop('Current Citizenship Status-YES', None)
-    Current_Citizenship_Status-No = dict.pop('Current Citizenship Status-NO', None)
-    if(Current_Citizenship_Status-Yes == 'SELECTED'):
+    Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status-YES', None)
+    Current_Citizenship_Status_No = dict.pop('Current Citizenship Status-NO', None)
+    if(Current_Citizenship_Status_Yes == 'SELECTED'):
         dict["Current_Citizenship_Status"] = 'YES'
 
 

@@ -211,7 +211,8 @@ f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.756))),'Davis'))
 
 def collapeYESNO(dict):
     dict['newcolumn'] = 'yes'
-    dict.pop('Claimant Last Name', None)
+    Current_Citizenship_Status_Yes = dict.pop('Claimant Last Name', None)
+    print(Current_Citizenship_Status_Yes)
 
 def GetFromTheTop(fieldlist, pos, page):
 
