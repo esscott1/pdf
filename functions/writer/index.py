@@ -148,8 +148,8 @@ csv_2_ocr_map_enroll = {
 'Current Citizenship Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1},
 'Citizenship Status at time of Exposure_YES':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
 'Citizenship Status at time of Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2},
-'Were you married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1}
-'Were you married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1
+'Were you married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1},
+'Were you married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1}
 
 }
 
