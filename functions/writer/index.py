@@ -144,7 +144,9 @@ csv_2_ocr_map_enroll = {
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
 'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
-'Current Citizenship Status':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1}
+'Current Citizenship Status-YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
+'Citizenship Status at time of Exposure':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
+'Current Citizenship Status-NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1}
 }
 
 csv_2_ocr_map_relfull = {
@@ -155,10 +157,19 @@ csv_2_ocr_map_relfull = {
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 3, 'TopPos': 1},
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 3, 'TopPos': 1},
 'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1},
-'Current Citizenship Status':{'ocr_key':'YES','PageNo': 3, 'TopPos': 1}
+'Current Citizenship Status':{'ocr_key':'YES','PageNo': 3, 'TopPos': 1},
+'Citizenship Status at time of Exposure':{'ocr_key':'YES','PageNo':3, 'TopPos': 2}
 }
 
 #csv_2_ocr_map = csv_2_ocr_map_enroll
+
+def CollapeYESNO(dict):
+    Current_Citizenship_Status-Yes = dict.pop('Current Citizenship Status-YES', None)
+    Current_Citizenship_Status-No = dict.pop('Current Citizenship Status-NO', None)
+    if(Current_Citizenship_Status-Yes == 'SELECTED')
+        dict["Current_Citizenship_Status"] = 'YES'
+    return dict
+
 
 def getJobResults(jobId):
     """
@@ -408,6 +419,7 @@ def lambda_handler(event, context):
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 #        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
+    CollapeYESNO(dictrow)
     all_values.append(dictrow)
 
     save_orc_to_bucket(all_values, 'testeric')

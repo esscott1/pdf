@@ -209,6 +209,9 @@ f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.463))),'Toby'))
 f1.addField(Field(FieldKey('First',Geometry(BoundingBox(0.756))),'Grant'))
 f1.addField(Field(FieldKey('Last',Geometry(BoundingBox(0.756))),'Davis'))
 
+def collapeYESNO(dict):
+    dict['newcolumn'] = 'yes'
+    dict.pop('Claimant Last Name', None)
 
 def GetFromTheTop(fieldlist, pos, page):
 
@@ -275,9 +278,14 @@ for page in pages:
     print('printing dict')
     print('------')
     print(dictrow)
+   
     all_kvp.append(dictrow)
 
-writeToDisk(all_kvp)
+print('printing dict after method to add')
+collapeYESNO(dictrow)
+print(dictrow)
+#writeToDisk(all_kvp)
+
 
 
 #    print(len(list(x)))
