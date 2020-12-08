@@ -185,9 +185,9 @@ def CollapeYESNO(dict):
     Were_you_married_YES = dict.pop('Were you married_YES', None)
     Were_you_married_NO = dict.pop('Were you married_NO', None)
     if(str(Were_you_married_YES) == 'SELECTED'):
-        dict["Were you married"] = 'YES'
+        dict["Were you married at any time from the date of your initial NHL Diagnosis to the Present? (Yes of No)"] = 'YES'
     if(str(Were_you_married_NO) == 'SELECTED'):
-        dict["Were you married"] = 'NO'
+        dict["Were you married at any time from the date of your initial NHL Diagnosis to the Present? (Yes of No)"] = 'NO'
 
 
 
