@@ -165,9 +165,14 @@ csv_2_ocr_map_relfull = {
 
 def CollapeYESNO(dict):
     Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status_YES', None)
+    print('Current_Citizenship_Status_Yes is: ',Current_Citizenship_Status_Yes)
     Current_Citizenship_Status_No = dict.pop('Current Citizenship Status_NO', None)
-    if(Current_Citizenship_Status_Yes == 'SELECTED'):
+    print('Current_Citizenship_Status_No is: ',Current_Citizenship_Status_No)
+    if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
         dict["Current_Citizenship_Status"] = 'YES'
+        print('-- tried to add kvp to dict')
+    else:
+        print('******** logic test failed **********')
 
 
 
