@@ -144,9 +144,9 @@ csv_2_ocr_map_enroll = {
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
 'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
-'Current Citizenship Status-YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
+'Current Citizenship Status_YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
 'Citizenship Status at time of Exposure':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
-'Current Citizenship Status-NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1}
+'Current Citizenship Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1}
 }
 
 csv_2_ocr_map_relfull = {
@@ -164,8 +164,8 @@ csv_2_ocr_map_relfull = {
 #csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def CollapeYESNO(dict):
-    Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status-YES', None)
-    Current_Citizenship_Status_No = dict.pop('Current Citizenship Status-NO', None)
+    Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status_YES', None)
+    Current_Citizenship_Status_No = dict.pop('Current Citizenship Status_NO', None)
     if(Current_Citizenship_Status_Yes == 'SELECTED'):
         dict["Current_Citizenship_Status"] = 'YES'
 
@@ -412,8 +412,8 @@ def lambda_handler(event, context):
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 dictrow[csv_key] = correctField.value
-                print('--- KVP pair block: '+str(correctField.key.block))
-#                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
+#                print('--- KVP pair block: '+str(correctField.key.block))
+                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
