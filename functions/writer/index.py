@@ -391,8 +391,8 @@ def lambda_handler(event, context):
 #        print(pagelines)
 #        print('--- did it print a page line number?')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-           print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno)) 
-            ),str(csv_2_orc_map[csv_key]['TopPos']) )
+           print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
+
             es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 #            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 
