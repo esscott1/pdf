@@ -169,7 +169,7 @@ def CollapeYESNO(dict):
     Current_Citizenship_Status_No = dict.pop('Current Citizenship Status_NO', None)
     print('Current_Citizenship_Status_No is: ',Current_Citizenship_Status_No)
     if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
-        dict["Current_Citizenship_Status"] = 'YES'
+        dict["Current Citizenship Status"] = 'YES'
         print('-- tried to add kvp to dict')
     else:
         print('******** logic test failed **********')
