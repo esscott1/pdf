@@ -401,7 +401,7 @@ def lambda_handler(event, context):
                 dictrow[csv_key] = correctField.value
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
-#                print(' --- no correctField found --- ')
+                print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 #        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
