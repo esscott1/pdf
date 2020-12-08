@@ -423,7 +423,8 @@ def lambda_handler(event, context):
     all_values.append(dictrow)
 
     save_orc_to_bucket(all_values, 'testeric')
-    printSections(doc)
+    print(dictrow)
+#    printSections(doc)
 """         for field in page.form.fields:
             GetKvp
             if str(field.key) == 'Last':
