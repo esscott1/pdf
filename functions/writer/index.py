@@ -147,7 +147,9 @@ csv_2_ocr_map_enroll = {
 'Current Citizenship Status_YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
 'Current Citizenship Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1},
 'Citizenship Status at time of Exposure_YES':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
-'Citizenship Status at time of Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2}
+'Citizenship Status at time of Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2},
+'Were you married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1}
+'Were you married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1
 
 }
 
@@ -179,6 +181,13 @@ def CollapeYESNO(dict):
         dict["Citizenship Status at time of Exposure"] = 'YES'
     if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'SELECTED'):
         dict["Citizenship Status at time of Exposure"] = 'NO'
+
+    Were you married_YES = dict.pop('Were you married_YES', None)
+    Were you married_NO = dict.pop('Were you married_NO', None)
+    if(str(Were you married_YES) == 'SELECTED'):
+        dict["Were you married"] = 'YES'
+    if(str(Were you married_NO) == 'SELECTED'):
+        dict["Were you married"] = 'NO'
 
 
 
@@ -419,7 +428,7 @@ def lambda_handler(event, context):
 #            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 
             lFields = list(es)
-            print(f"i found {str(len(lFields))} field objects")
+#            print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 dictrow[csv_key] = correctField.value
