@@ -144,7 +144,7 @@ csv_2_ocr_map_enroll = {
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
 'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
-'YES':{'ocr_key':'Current Citizenship Status','PageNo': 2, 'TopPos': 1}
+'Current Citizenship Status':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1}
 }
 
 csv_2_ocr_map_relfull = {
@@ -155,7 +155,7 @@ csv_2_ocr_map_relfull = {
 'Zip Code':{'ocr_key':'Zip', 'PageNo': 3, 'TopPos': 1},
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 3, 'TopPos': 1},
 'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1},
-'YES':{'ocr_key':'Current Citizenship Status','PageNo': 3, 'TopPos': 1}
+'Current Citizenship Status':{'ocr_key':'YES','PageNo': 3, 'TopPos': 1}
 }
 
 #csv_2_ocr_map = csv_2_ocr_map_enroll
