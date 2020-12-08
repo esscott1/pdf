@@ -145,8 +145,10 @@ csv_2_ocr_map_enroll = {
 'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
 'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
 'Current Citizenship Status_YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
-'Citizenship Status at time of Exposure':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
-'Current Citizenship Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1}
+'Current Citizenship Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1},
+'Citizenship Status at time of Exposure_YES':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
+'Citizenship Status at time of Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2}
+
 }
 
 csv_2_ocr_map_relfull = {
@@ -165,14 +167,18 @@ csv_2_ocr_map_relfull = {
 
 def CollapeYESNO(dict):
     Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status_YES', None)
-    print('Current_Citizenship_Status_Yes is: ',Current_Citizenship_Status_Yes)
     Current_Citizenship_Status_No = dict.pop('Current Citizenship Status_NO', None)
-    print('Current_Citizenship_Status_No is: ',Current_Citizenship_Status_No)
     if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
         dict["Current Citizenship Status"] = 'YES'
-        print('-- tried to add kvp to dict')
-    else:
-        print('******** logic test failed **********')
+    if(str(Current_Citizenship_Status_No) == 'SELECTED'):
+        dict["Current Citizenship Status"] = 'NO'
+
+    Citizenship_Status_at_time_of_Exposure_YES = dict.pop('Citizenship Status at time of Exposure_YES', None)
+    Citizenship_Status_at_time_of_Exposure_NO = dict.pop('Citizenship Status at time of Exposure_NO', None)
+    if(str(Citizenship_Status_at_time_of_Exposure_YES) == 'SELECTED'):
+        dict["Citizenship Status at time of Exposure"] = 'YES'
+    if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'SELECTED'):
+        dict["Citizenship Status at time of Exposure"] = 'NO'
 
 
 
