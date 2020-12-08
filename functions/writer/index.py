@@ -166,9 +166,9 @@ csv_2_ocr_map_relfull = {
 def CollapeYESNO(dict):
     Current_Citizenship_Status-Yes = dict.pop('Current Citizenship Status-YES', None)
     Current_Citizenship_Status-No = dict.pop('Current Citizenship Status-NO', None)
-    if(Current_Citizenship_Status-Yes == 'SELECTED')
+    if(Current_Citizenship_Status-Yes == 'SELECTED'):
         dict["Current_Citizenship_Status"] = 'YES'
-    return dict
+
 
 
 def getJobResults(jobId):
