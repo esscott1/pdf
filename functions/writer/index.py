@@ -409,7 +409,7 @@ def save_orc_to_bucket(all_values, docname):
     print('trying to write file to temp lambda space named: '+csv_file)
     try:
         with open('/tmp/'+docname+'_data.csv', 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=csv_headers)
+            writer = csv.DictWriter(csvfile, fieldnames=db_csv_headers)
             writer.writeheader()
             for data in all_values:
                 writer.writerow(data)
