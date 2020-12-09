@@ -469,7 +469,7 @@ def printresponsetos3(doc):
         print('error trying to write doc to bucket')
 '''
 def CleanDate(datestring):
-    cleanDateResult = None
+    cleanDateResult = 'Trouble Reading, see PDF'
     print(f'--- trying to clean: {datestring}----')
     try:
         parsed_date = parse(datestring)

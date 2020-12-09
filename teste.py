@@ -288,7 +288,7 @@ collapeYESNO(dictrow)
 print(dictrow)
 
 print('---- testing date of birth ----')
-dob = '3/19/1951 / /'
+dob = '01 12611952'
 parsed_date = parse(dob)
 print(parsed_date)
 print(type(parsed_date))
