@@ -531,7 +531,7 @@ def lambda_handler(event, context):
 #        print(pagelines)
 #        print('--- did it print a page line number?')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
+#            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
 
             es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 #            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
@@ -542,7 +542,7 @@ def lambda_handler(event, context):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 dictrow[csv_key] = correctField.value
 #                print('--- KVP pair block: '+str(correctField.key.block))
-                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
+#                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
@@ -551,12 +551,12 @@ def lambda_handler(event, context):
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
 
-    save_orc_to_bucket(all_values, 'testeric')
+#    save_orc_to_bucket(all_values, 'testeric')
     connection = get_connection()
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
 
-    print(dictrow)
+#    print(dictrow)
 #    printSections(doc)
 """         for field in page.form.fields:
             GetKvp
