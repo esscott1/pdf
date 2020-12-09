@@ -4,6 +4,7 @@ import os
 import pg8000
 import csv
 from trp import Document
+from dateutil.parser import parse
 
 db_csv_headers =['Primary_Attorney',
 'HTX_ARCHER_ID',
@@ -467,7 +468,16 @@ def printresponsetos3(doc):
         print(e)
         print('error trying to write doc to bucket')
 '''
-
+def CleanDate(datestring):
+    cleanDateResult = 'Trouble Reading, see PDF'
+    print(f'--- trying to clean: {datestring}----')
+    try:
+        parsed_date = parse(datestring)
+        cleanDateResult = parsed_date.strftime('%m/%d/%Y')
+        print(f'----Cleaned date to: {cleanDateResult}')
+    except Exception as e:
+        print(f'error cleaning date string provided {datestring}:  error: {e}')
+    return cleanDateResult
 
 
 def GetFromTheTopofPage(fieldlist, pos, page):
@@ -518,6 +528,7 @@ def lambda_handler(event, context):
     all_values = []
     pageno = 0
     dictrow = {}
+    dictrow['SourceFileName'] = docname
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1
@@ -531,7 +542,7 @@ def lambda_handler(event, context):
 #        print(pagelines)
 #        print('--- did it print a page line number?')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
+#            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
 
             es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 #            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
@@ -540,9 +551,14 @@ def lambda_handler(event, context):
 #            print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
-                dictrow[csv_key] = correctField.value
+                if(csv_key) == 'Claimant_Date_of_Birth':
+                    print('trying to clean date')
+                    cleanDOB = CleanDate(str(correctField.value))
+                    dictrow[csv_key] = cleanDOB
+                else:
+                    dictrow[csv_key] = correctField.value
 #                print('--- KVP pair block: '+str(correctField.key.block))
-                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
+#                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
             else:
                 print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
@@ -551,12 +567,13 @@ def lambda_handler(event, context):
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
 
-    save_orc_to_bucket(all_values, 'testeric')
+#    save_orc_to_bucket(all_values, 'testeric')
     connection = get_connection()
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
 
-    print(dictrow)
+
+#    print(dictrow)
 #    printSections(doc)
 """         for field in page.form.fields:
             GetKvp
