@@ -572,6 +572,7 @@ def lambda_handler(event, context):
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
 
+
 #    print(dictrow)
 #    printSections(doc)
 """         for field in page.form.fields:
