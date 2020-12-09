@@ -532,9 +532,16 @@ def lambda_handler(event, context):
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1
-#        print('---- page ',str(pageno),' ----',)
-#        pagelines = page.lines
-#        for line in page.lines:
+        print('---- page ',str(pageno),' ----',)
+        pagelines = page.lines
+        lineNo += 1
+        for line in page.lines:
+            lineNo =+
+            for words in line:
+                for word in words:
+                    if 'Social' in word:
+                        print(f'---  SSN line number is: {lineno}')
+                        print(line)
 
 #        print(type(pagelines))
 #        print(len(pagelines))
@@ -559,8 +566,8 @@ def lambda_handler(event, context):
                     dictrow[csv_key] = correctField.value
 #                print('--- KVP pair block: '+str(correctField.key.block))
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
-            else:
-                print(' --- no correctField found --- ')
+#            else:
+#                print(' --- no correctField found --- ')
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 #        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
@@ -575,38 +582,7 @@ def lambda_handler(event, context):
 
 #    print(dictrow)
 #    printSections(doc)
-"""         for field in page.form.fields:
-            GetKvp
-            if str(field.key) == 'Last':
-                print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
-            if str(field.key) == 'First':
-                print(f'key found in form:{field.key}: with value :{field.value}: at top: {field.key.geometry.boundingBox.top}')
-           all_keys.append(str(field.key))
-            if str(field.key) == 'Phone':
-                phone = field.value
-                print('the phone number is: ',field.value)
-            if str(field.key) == 'First':
-                first = field.value
-                print('the first name is: ',field.value)
-            if str(field.key) == 'Last':
-                last = field.value
-                print('the last name is: ',field.value)
-            if str(field.key) == 'Social Security Number':
-                ssn = str(field.value).replace(" ","")
-                print('the ssn is: ',field.value)
-            if str(field.key).startswith('Street'):
-                street = field.value
-                print('the street is: ',field.value)
-            if str(field.key) == 'City':
-                city = field.value
-                print('the city is: ',field.value)
-            if str(field.key).startswith('State'):
-                state = field.value
-                print('the state is: ',field.value)
-            if str(field.key) == 'Zip':
-                zip = field.value
-                print('the zip is: ',field.value)
-"""
+
 def printSections(doc):
     print('trying to print out SelectionElement:')
     for page in doc.pages:
