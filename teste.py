@@ -1,4 +1,5 @@
 import csv
+from dateutil.parser import parse
 
 csv_headers = ['Primary Attorney',
 'HTX ARCHER ID',
@@ -285,6 +286,13 @@ for page in pages:
 print('printing dict after method to add')
 collapeYESNO(dictrow)
 print(dictrow)
+
+print('---- testing date of birth ----')
+dob = '3/19/1951 / /'
+parsed_date = parse(dob)
+print(parsed_date)
+print(type(parsed_date))
+print(parsed_date.strftime('%m/%d/%Y'))
 #writeToDisk(all_kvp)
 
 
