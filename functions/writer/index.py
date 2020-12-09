@@ -438,8 +438,8 @@ def write_dict_to_db(mydict, connection):
     fieldtextlist = []
     fieldvaluelist =  list(mydict.values())
     for fieldvalue in fieldvaluelist:
-        fieldtextlist.append(feildvalue.text)
-        
+        fieldtextlist.append(fieldvalue.text)
+
     print(sql, fieldvaluelist)
     print(fieldtextlist)
     cursor.execute(sql, fieldtextlist)
