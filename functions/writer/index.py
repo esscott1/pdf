@@ -286,6 +286,23 @@ csv_2_ocr_map_enroll = {
 
 }
 
+db_csv_2_ocr_map_enroll = {
+'Claimant_First_Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
+'Claimant_Last_Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1},
+'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1},
+'State':{'ocr_key':'State', 'PageNo': 2, 'TopPos': 1},
+'Zip_Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
+'Address_1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
+'Claimant_Date_of_Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
+'Current_Citizenship_Status_YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
+'Current_Citizenship_Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1},
+'Citizenship_Status_at_time_of_Exposure_YES':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
+'Citizenship_Status_at_time_of_Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2},
+'Were_you_married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1},
+'Were_you_married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1}
+
+}
+
 csv_2_ocr_map_relfull = {
 'Claimant First Name': {'ocr_key':'First', 'PageNo': 3, 'TopPos': 1}, 
 'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 3, 'TopPos': 1},
@@ -304,23 +321,23 @@ def CollapeYESNO(dict):
     Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status_YES', None)
     Current_Citizenship_Status_No = dict.pop('Current Citizenship Status_NO', None)
     if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
-        dict["Current Citizenship Status"] = 'YES'
+        dict["Current_Citizenship_Status"] = 'YES'
     if(str(Current_Citizenship_Status_No) == 'SELECTED'):
-        dict["Current Citizenship Status"] = 'NO'
+        dict["Current_Citizenship_Status"] = 'NO'
 
-    Citizenship_Status_at_time_of_Exposure_YES = dict.pop('Citizenship Status at time of Exposure_YES', None)
-    Citizenship_Status_at_time_of_Exposure_NO = dict.pop('Citizenship Status at time of Exposure_NO', None)
+    Citizenship_Status_at_time_of_Exposure_YES = dict.pop('Citizenship_Status_at_time_of_Exposure_YES', None)
+    Citizenship_Status_at_time_of_Exposure_NO = dict.pop('Citizenship_Status_at_time_of_Exposure_NO', None)
     if(str(Citizenship_Status_at_time_of_Exposure_YES) == 'SELECTED'):
-        dict["Citizenship Status at time of Exposure"] = 'YES'
+        dict["Citizenship_Status_at_time_of_Exposure"] = 'YES'
     if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'SELECTED'):
-        dict["Citizenship Status at time of Exposure"] = 'NO'
+        dict["Citizenship_Status_at_time_of_Exposure"] = 'NO'
 
-    Were_you_married_YES = dict.pop('Were you married_YES', None)
-    Were_you_married_NO = dict.pop('Were you married_NO', None)
+    Were_you_married_YES = dict.pop('Were_you_married_YES', None)
+    Were_you_married_NO = dict.pop('Were_you_married_NO', None)
     if(str(Were_you_married_YES) == 'SELECTED'):
-        dict["Were you married at any time from the date of your initial NHL Diagnosis to the Present? (Yes of No)"] = 'YES'
+        dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'YES'
     if(str(Were_you_married_NO) == 'SELECTED'):
-        dict["Were you married at any time from the date of your initial NHL Diagnosis to the Present? (Yes of No)"] = 'NO'
+        dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'NO'
 
 
 
@@ -533,7 +550,7 @@ def lambda_handler(event, context):
     connection = get_connection()
     for dictionary in all_values:
         write_dict_to_db(dictionary, connection)
-        
+
     print(dictrow)
 #    printSections(doc)
 """         for field in page.form.fields:
