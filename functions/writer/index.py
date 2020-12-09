@@ -539,8 +539,8 @@ def lambda_handler(event, context):
             lineNo += 1
             for word in line.words:
                 if word.text.find('Social') != -1:
-                    print(f'---  SSN line number is: {lineNo}')
-                    print(*line.words)
+                    print(f'---  Social label line number is: {lineNo}')
+                    print(f'SSN is: {page.lines[lineNo+1]}')
 
 #        print(type(pagelines))
 #        print(len(pagelines))
