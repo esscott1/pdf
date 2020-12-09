@@ -23,3 +23,5 @@ $ sam deploy --template-file .aws-sam/build/template.yaml --parameter-overrides 
 ```
 
 More details can be found [here](https://medium.com/@lvthillo/write-pdf-data-to-a-relational-database-using-amazon-textract-3b0e6bc3a390?sk=25c02c34e16f401f608d0e6ebb2b9673).
+
+## read DB data - notsupersecret
