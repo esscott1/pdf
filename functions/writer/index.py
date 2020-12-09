@@ -537,11 +537,10 @@ def lambda_handler(event, context):
         lineNo = 0
         for line in page.lines:
             lineNo += 1
-            for words in line:
-                for word in words:
-                    if 'Social' in word:
-                        print(f'---  SSN line number is: {lineno}')
-                        print(line)
+            for word in line.words:
+                if 'Social' in word:
+                print(f'---  SSN line number is: {lineno}')
+                print(line)
 
 #        print(type(pagelines))
 #        print(len(pagelines))
