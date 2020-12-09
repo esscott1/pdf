@@ -316,8 +316,8 @@ csv_2_ocr_map_relfull = {
 #csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def CollapeYESNO(dict):
-    Current_Citizenship_Status_Yes = dict.pop('Current Citizenship Status_YES', None)
-    Current_Citizenship_Status_No = dict.pop('Current Citizenship Status_NO', None)
+    Current_Citizenship_Status_Yes = dict.pop('Current_Citizenship_Status_YES', None)
+    Current_Citizenship_Status_No = dict.pop('Current_Citizenship_Status_NO', None)
     if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
         dict["Current_Citizenship_Status"] = 'YES'
     if(str(Current_Citizenship_Status_No) == 'SELECTED'):
@@ -434,9 +434,19 @@ def write_dict_to_db(mydict, connection):
     placeholders = ', '.join(['%s'] * len(mydict))
     columns = ', '.join(mydict.keys())
     sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
+    
+    fieldtextlist = []
+    fieldvaluelist =  list(mydict.values())
+    for fieldvalue in fieldvaluelist:
+        fieldtextlist.append(feildvalue.text)
+    print(sql, fieldvaluelist)
+    print(fieldtextlist)
+    cursor.execute(sql, fieldtextlist)
+'''
     print(sql, mydict.values())
     print(list(mydict.values()))
     cursor.execute(sql, list(mydict.values()))
+'''
     connection.commit()
     cursor.close()
 
