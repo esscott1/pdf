@@ -438,7 +438,7 @@ def write_dict_to_db(mydict, connection):
     fieldtextlist = []
     fieldvaluelist =  list(mydict.values())
     for fieldvalue in fieldvaluelist:
-        fieldtextlist.append(fieldvalue)
+        fieldtextlist.append(str(fieldvalue))
 
     print(sql, fieldvaluelist)
     print(fieldtextlist)
