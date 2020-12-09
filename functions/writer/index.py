@@ -534,9 +534,9 @@ def lambda_handler(event, context):
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
         pagelines = page.lines
-        lineNo += 1
+        lineNo = 0
         for line in page.lines:
-            lineNo =+
+            lineNo += 1
             for words in line:
                 for word in words:
                     if 'Social' in word:

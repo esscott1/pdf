@@ -264,7 +264,9 @@ for page in pages:
     print('------')
     print('Page: '+str(page))
     print('------')
+    lineNo = 1
     for csv_key in csv_2_ocr_map:
+        lineNo += 1
 #        print('csv_key is: '+csv_key+' | ocr key is: '+csv_2_ocr_map[csv_key]['ocr_key']+' | located at: '+
 #        str(csv_2_ocr_map[csv_key]['TopPos']))
     #    print('csv_key is: '+csv_key+' | ocr key is: '+csv_key['ocr_key']+' | located at: '+ str(csv_2_ocr_map[csv_key]['geometry']['boundingBox']['top']))
@@ -280,8 +282,8 @@ for page in pages:
     print('printing dict')
     print('------')
     print(dictrow)
-   
     all_kvp.append(dictrow)
+    print(lineNo)
 
 print('printing dict after method to add')
 collapeYESNO(dictrow)
