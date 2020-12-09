@@ -540,10 +540,10 @@ def lambda_handler(event, context):
             for word in line.words:
                 if word.text.find('Social') != -1:
                     print(f'---  Social label line number is: {lineNo}')
-                    print(f'SSN is: {page.lines[lineNo]}')
-                if word.text.find('479') != -1:
+                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
+                if word.text.find('-??-') != -1:
                     print(f'--- found 479 SSN label line number is: {lineNo}')
-                    print(f'SSN is: {page.lines[lineNo]}')
+                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
 
 #        print(type(pagelines))
 #        print(len(pagelines))
