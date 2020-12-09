@@ -5,9 +5,7 @@ import pg8000
 import csv
 from trp import Document
 
-db_csv_headers = 
-[
-'Primary_Attorney',
+db_csv_headers =['Primary_Attorney',
 'HTX_ARCHER_ID',
 'ATX_ARCHER_ID',
 'Referring_Firm',
@@ -136,8 +134,8 @@ db_csv_headers =
 'Estate_Documents_Trust_Documents_',
 'Estate_Documents_Probate_Documents_',
 'Additional_Notes_and_Comments'
-
 ]
+
 csv_headers = ['Primary Attorney',
 'HTX ARCHER ID',
 'ATX ARCHER ID',
