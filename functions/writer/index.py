@@ -553,7 +553,7 @@ def lambda_handler(event, context):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 if(csv_key) == 'Claimant_Date_of_Birth':
                     print('trying to clean date')
-                    cleanDOB = CleanDate(correctField.value)
+                    cleanDOB = CleanDate(str(correctField.value))
                     dictrow[csv_key] = cleanDOB
                 else:
                     dictrow[csv_key] = correctField.value
