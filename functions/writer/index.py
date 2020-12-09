@@ -518,6 +518,7 @@ def lambda_handler(event, context):
     all_values = []
     pageno = 0
     dictrow = {}
+    dictrow['SourceFileName'] = docname
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1

@@ -1,6 +1,7 @@
 CREATE USER  demouser WITH LOGIN; 
 GRANT rds_iam TO demouser;
 CREATE TABLE ca_packet (
+SourceFileName varchar(255),
 Primary_Attorney varchar(255),
 HTX_ARCHER_ID varchar(255),
 ATX_ARCHER_ID varchar(255),
