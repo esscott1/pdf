@@ -539,7 +539,7 @@ def lambda_handler(event, context):
             lineNo += 1
             for word in line.words:
                 if word.text.find('Social') != -1:
-                    print(f'---  SSN line number is: {lineno}')
+                    print(f'---  SSN line number is: {lineNo}')
                     print(line)
 
 #        print(type(pagelines))
