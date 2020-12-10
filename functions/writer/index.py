@@ -568,6 +568,7 @@ def lambda_handler(event, context):
                     dictrow[csv_key] = cleanDOB
                 else:
                     dictrow[csv_key] = correctField.value
+                    print(' with confidence: '+str(correctField.key.confidence))
 #                print('--- KVP pair block: '+str(correctField.key.block))
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
 #            else:
@@ -597,15 +598,7 @@ def printSections(doc):
                 print(' with confidence: '+str(field.key.confidence))
                 print ('block: '+str(field.key.block))
 
-#    all_values.append({'FirstName': first,'LastName':last,'Phone':phone,'SSN':ssn,'Street':street,'City':city,'State':state,'Zip':zip,'SourceDocName':docname})
 
-#    print('all keys:')
-#    print(all_keys)
-#    print('printing all values:')
-#    print(all_values)
-#    save_orc_to_bucket(all_values, docname)
-#    printSections(doc)
-    #    print(page.form)
 """
 
 
