@@ -487,14 +487,17 @@ def printresponsetos3(doc):
 def CleanDate(dateFieldValue):
     datestring = str(dateFieldValue)
     cleanDateResult = 'Trouble Reading, see PDF'
+    ca_cleanDateResult = '0'
     print(f'--- trying to clean: {datestring}----')
     try:
         parsed_date = parse(datestring)
         cleanDateResult = parsed_date.strftime('%m/%d/%Y')
         print(f'----Cleaned date to: {cleanDateResult}')
+        ca_cleanDateResult = dateFieldValue.content[0].confidence
     except Exception as e:
         print(f'error cleaning date string provided {datestring}:  error: {e}')
-    listCleanDateResult = [cleanDateResult, dateFieldValue.content[0].confidence]
+
+    listCleanDateResult = [cleanDateResult, ca_cleanDateResult]
     return listCleanDateResult
 
 
