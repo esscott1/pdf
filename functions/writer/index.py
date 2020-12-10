@@ -484,7 +484,8 @@ def printresponsetos3(doc):
         print(e)
         print('error trying to write doc to bucket')
 '''
-def CleanDate(datestring):
+def CleanDate(dateFieldValue):
+    datestring = str(dateFieldValue)
     cleanDateResult = 'Trouble Reading, see PDF'
     print(f'--- trying to clean: {datestring}----')
     try:
@@ -493,7 +494,8 @@ def CleanDate(datestring):
         print(f'----Cleaned date to: {cleanDateResult}')
     except Exception as e:
         print(f'error cleaning date string provided {datestring}:  error: {e}')
-    return cleanDateResult
+    listCleanDateResult = [cleanDateResult, dateFieldValue.content[0].confidence]
+    return listCleanDateResult
 
 
 def GetFromTheTopofPage(fieldlist, pos, page):
@@ -577,13 +579,16 @@ def lambda_handler(event, context):
 #            print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
+                ca_csv_key = 'ca_'+csv_key
                 if(csv_key) == 'Claimant_Date_of_Birth':
                     print('trying to clean date')
-                    cleanDOB = CleanDate(str(correctField.value))
+                    ListcleanDOB = CleanDate(correctField.value)
+                    cleanDOB = ListcleanDOB[0]
                     dictrow[csv_key] = cleanDOB
+                    dictrow[ca_csv_key] = ListcleanDOB[1]
                 else:
                     dictrow[csv_key] = correctField.value
-                    ca_csv_key = 'ca_'+csv_key
+#                    ca_csv_key = 'ca_'+csv_key
                     try:
                         dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
                     except Exception as e:
