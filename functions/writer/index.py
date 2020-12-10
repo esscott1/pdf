@@ -24,14 +24,19 @@ db_csv_headers =['Primary_Attorney',
 'Claim_Package_Logged_Date',
 'Analyst_Name',
 'Claimant_First_Name',
+'ca_Claimant_First_Name',
 'Claimant_Last_Name',
+'ca_Claimant_Last_Name',
 'Estate_Representative_First_Name',
 'Estate_Representative_Last_Name',
 'Address_1',
 'Address_2',
 'City',
+'ca_City',
 'State',
+'ca_State',
 'Zip_Code',
+'ca_Zip_Code',
 'Email_Address',
 'Phone_Number_1',
 'Phone_Number_2',
@@ -42,7 +47,9 @@ db_csv_headers =['Primary_Attorney',
 'Claimant_Last_Name2',
 'Claimant_First_Name3',
 'Claimant_Social_Security_Number',
+'ca_Claimant_Social_Security_Number',
 'Claimant_Date_of_Birth',
+'ca_Claimant_Date_of_Birth',
 'Address_14',
 'Address_25',
 'City6',
@@ -319,6 +326,9 @@ csv_2_ocr_map_relfull = {
 #csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def CollapeYESNO(dict):
+    ca_Current_Citizenship_Status_Yes = dict.pop('ca_Current_Citizenship_Status_YES', None)
+    ca_Current_Citizenship_Status_No = dict.pop('ca_Current_Citizenship_Status_NO', None)
+
     Current_Citizenship_Status_Yes = dict.pop('Current_Citizenship_Status_YES', None)
     Current_Citizenship_Status_No = dict.pop('Current_Citizenship_Status_NO', None)
     if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
@@ -326,6 +336,8 @@ def CollapeYESNO(dict):
     if(str(Current_Citizenship_Status_No) == 'SELECTED'):
         dict["Current_Citizenship_Status"] = 'NO'
 
+    ca_Citizenship_Status_at_time_of_Exposure_YES = dict.pop('ca_Citizenship_Status_at_time_of_Exposure_YES', None)
+    ca_Citizenship_Status_at_time_of_Exposure_NO = dict.pop('ca_Citizenship_Status_at_time_of_Exposure_NO', None)
     Citizenship_Status_at_time_of_Exposure_YES = dict.pop('Citizenship_Status_at_time_of_Exposure_YES', None)
     Citizenship_Status_at_time_of_Exposure_NO = dict.pop('Citizenship_Status_at_time_of_Exposure_NO', None)
     if(str(Citizenship_Status_at_time_of_Exposure_YES) == 'SELECTED'):
@@ -333,6 +345,8 @@ def CollapeYESNO(dict):
     if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'SELECTED'):
         dict["Citizenship_Status_at_time_of_Exposure"] = 'NO'
 
+    ca_Were_you_married_YES = dict.pop('ca_Were_you_married_YES', None)
+    ca_Were_you_married_NO = dict.pop('ca_Were_you_married_NO', None)
     Were_you_married_YES = dict.pop('Were_you_married_YES', None)
     Were_you_married_NO = dict.pop('Were_you_married_NO', None)
     if(str(Were_you_married_YES) == 'SELECTED'):
@@ -568,7 +582,9 @@ def lambda_handler(event, context):
                     dictrow[csv_key] = cleanDOB
                 else:
                     dictrow[csv_key] = correctField.value
-                    print(' with confidence: '+str(correctField.key.confidence))
+                    ca_csv_key = 'ca_'+csv_key
+                    dictrow['ca_csv_key'] = str(correctField.key.confidence)
+                   # print(' with confidence: '+str(correctField.key.confidence))
 #                print('--- KVP pair block: '+str(correctField.key.block))
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
 #            else:
