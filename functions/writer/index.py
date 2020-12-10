@@ -545,7 +545,7 @@ def lambda_handler(event, context):
                     print(f'---  Social label line number is: {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
                     print(f'the next line is no: {lineNo+1} and contains: {page.lines[lineNo+1]')
-                if re.search('-..-',str(word))
+                if re.search('-..-',str(word)):
                     print(f'--- found -??- in word: {word} on line {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
 
