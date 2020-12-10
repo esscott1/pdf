@@ -600,7 +600,8 @@ def lambda_handler(event, context):
 #        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
     dictrow['Claimant_Social_Security_Number'] = ssn
-    print(f'SSN Confidence is: {str(ca_ssn)}')
+    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
+
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
 
