@@ -583,7 +583,7 @@ def lambda_handler(event, context):
                 else:
                     dictrow[csv_key] = correctField.value
                     ca_csv_key = 'ca_'+csv_key
-                    dictrow['ca_csv_key'] = str(correctField.key.confidence)
+                    dictrow[ca_csv_key] = str(correctField.key.confidence)
                    # print(' with confidence: '+str(correctField.key.confidence))
 #                print('--- KVP pair block: '+str(correctField.key.block))
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
