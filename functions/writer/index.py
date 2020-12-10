@@ -541,7 +541,7 @@ def lambda_handler(event, context):
         lineNo = -1
         for line in page.lines:
             lineNo += 1
-            for word in line.words:
+            for word in line.words:  # update to read CSV and pull page number to avoid dups.
                 if re.search('-..-',str(word)):
                     print(f'--- found -??- in word: {word} on line {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
@@ -566,9 +566,6 @@ def lambda_handler(event, context):
                     print('trying to clean date')
                     cleanDOB = CleanDate(str(correctField.value))
                     dictrow[csv_key] = cleanDOB
-                elif(csv_key) == 'Claimant_Social_Security_Number':
-                    print(f'-- filling in SSN with {ssn}')
-                    dictrow[csv_key] = ssn
                 else:
                     dictrow[csv_key] = correctField.value
 #                print('--- KVP pair block: '+str(correctField.key.block))
@@ -578,6 +575,7 @@ def lambda_handler(event, context):
             #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
 #        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
+    dictrow['Claimant_Social_Security_Number'] = ssn
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
 
