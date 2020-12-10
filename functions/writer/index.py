@@ -560,6 +560,7 @@ def lambda_handler(event, context):
                     print(f'--- found -??- in word: {word} on line {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
                     ssn = str(word)
+                    ca_ssn = word.confidence
 
 #        print(type(pagelines))
 #        print(len(pagelines))
@@ -587,7 +588,7 @@ def lambda_handler(event, context):
                         dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
                     except Exception as e:
                         dictrow[ca_csv_key] = 'error getting confidence, see PDF'
-                        print(f'error getting confidence for {ca_csv_key} error: {e}')
+#                        print(f'error getting confidence for {ca_csv_key} error: {e}')
 
 #                    print(f' {csv_key} with value: {correctField.value} with confidence: {str(correctField.value.confidence)} at top: {str(correctField.value.geometry.boundingBox.top)}')
 #                    print(f'content confidence is: {str(correctField.value.content[0].confidence)}')
@@ -599,6 +600,7 @@ def lambda_handler(event, context):
 #        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
 #        print(dictrow)
     dictrow['Claimant_Social_Security_Number'] = ssn
+    print(f'SSN Confidence is: {str(ca_ssn)}')
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
 
