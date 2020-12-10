@@ -565,7 +565,7 @@ def lambda_handler(event, context):
                     print('trying to clean date')
                     cleanDOB = CleanDate(str(correctField.value))
                     dictrow[csv_key] = cleanDOB
-                elif(csv_key) == 'Claimant_Social_Security_Number'
+                elif(csv_key) == 'Claimant_Social_Security_Number':
                     print(f'-- filling in SSN with {ssn}')
                     dictrow[csv_key] = ssn
                 else:
