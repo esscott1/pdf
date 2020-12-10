@@ -541,13 +541,10 @@ def lambda_handler(event, context):
         for line in page.lines:
             lineNo += 1
             for word in line.words:
-                if word.text.find('Social') != -1:
-                    print(f'---  Social label line number is: {lineNo}')
-                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
-                    print(f'the next line is no: {lineNo+1} and contains: {page.lines[lineNo+1]}')
                 if re.search('-..-',str(word)):
                     print(f'--- found -??- in word: {word} on line {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
+                    ssn = str(word)
 
 #        print(type(pagelines))
 #        print(len(pagelines))
@@ -568,6 +565,9 @@ def lambda_handler(event, context):
                     print('trying to clean date')
                     cleanDOB = CleanDate(str(correctField.value))
                     dictrow[csv_key] = cleanDOB
+                elif(csv_key) == 'Claimant_Social_Security_Number'
+                    print(f'-- filling in SSN with {ssn}')
+                    dictrow[csv_key] = ssn
                 else:
                     dictrow[csv_key] = correctField.value
 #                print('--- KVP pair block: '+str(correctField.key.block))
