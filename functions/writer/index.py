@@ -5,6 +5,7 @@ import pg8000
 import csv
 from trp import Document
 from dateutil.parser import parse
+import re
 
 db_csv_headers =['Primary_Attorney',
 'HTX_ARCHER_ID',
@@ -529,20 +530,23 @@ def lambda_handler(event, context):
     pageno = 0
     dictrow = {}
     dictrow['SourceFileName'] = docname
+    ssn = ''
+    regex = re.compile('-..-')
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
         pagelines = page.lines
-        lineNo = 0
+        lineNo = -1
         for line in page.lines:
             lineNo += 1
             for word in line.words:
                 if word.text.find('Social') != -1:
                     print(f'---  Social label line number is: {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
-                if word.text.find('-??-') != -1:
-                    print(f'--- found 479 SSN label line number is: {lineNo}')
+                    print(f'the next line is no: {lineNo+1} and contains: {page.lines[lineNo+1]')
+                if re.search('-..-',str(word))
+                    print(f'--- found -??- in word: {word} on line {lineNo}')
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
 
 #        print(type(pagelines))
