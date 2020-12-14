@@ -73,7 +73,7 @@ def csv_to_dict():
             archer_id = row[0]
             print('archerid is: '+archer_id+'and the type is: '+str(type(archer_id)))
 
-            dict['archer_id']=archer_id
+            dict['archer_id']=archer_id.replace(u'\xef\xbb\xbf',u'')
             dict['address']=row[1]
             dict['city']=row[2]
             dict['state']=row[3]
