@@ -590,7 +590,7 @@ def lambda_handler(event, context):
 #        print(pagelines)
 #        print('--- did it print a page line number?')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-#            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
+            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
 
             es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 #            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
@@ -615,7 +615,7 @@ def lambda_handler(event, context):
                         dictrow[ca_csv_key] = 'error getting confidence, see PDF'
 #                        print(f'error getting confidence for {ca_csv_key} error: {e}')
 
-#                    print(f' {csv_key} with value: {correctField.value} with confidence: {str(correctField.value.confidence)} at top: {str(correctField.value.geometry.boundingBox.top)}')
+                    print(f' {csv_key} with value: {correctField.value} with confidence: {str(correctField.value.confidence)} at top: {str(correctField.value.geometry.boundingBox.top)}')
 #                    print(f'content confidence is: {str(correctField.value.content[0].confidence)}')
 #                print('--- KVP pair block: '+str(correctField.key.block))
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
