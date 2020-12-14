@@ -39,4 +39,46 @@ def get_connection():
         print ("While connecting failed due to :{0}".format(str(e)))
         return None
 
-get_connection()
+def write_dict_to_db(mydict, connection):
+    """
+    Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
+    """
+#    DBTable = os.environ.get('TableName')
+    DBTable = 'ca_existing'
+    cursor = connection.cursor()
+    placeholders = ', '.join(['%s'] * len(mydict))
+    columns = ', '.join(mydict.keys())
+    sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
+    
+    fieldtextlist = []
+    fieldvaluelist =  list(mydict.values())
+    for fieldvalue in fieldvaluelist:
+        fieldtextlist.append(str(fieldvalue))
+
+    print(sql, fieldvaluelist)
+    print(fieldtextlist)
+    cursor.execute(sql, fieldtextlist)
+
+    connection.commit()
+    cursor.close()
+
+def csv_to_dict():
+    allvalues = []
+#    dict={}
+    with open('testaddress.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            dict={}
+            dict['archer_id']=row[0]
+            dict['address']=row[1]
+            dict['city']=row[2]
+            dict['state']=row[3]
+            dict['zip']=row[4]
+            allvalues.append(dict)
+#        print(allvalues)
+    return allvalues
+#    print(dict)
+
+connect = get_connection()
+data = csv_to_dict()
+write_dict_to_db(data,connect)
