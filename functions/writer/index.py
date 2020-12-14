@@ -572,18 +572,18 @@ def lambda_handler(event, context):
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
-'''
+
         pagelines = page.lines
         lineNo = -1
         for line in page.lines:
             lineNo += 1
-            for word in line.words:  # update to read CSV and pull page number to avoid dups.
-                if re.search('-..-',str(word)):
-                    print(f'--- found -??- in word: {word} on line {lineNo}')
-                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
-                    ssn = str(word)
-                    ca_ssn = word.confidence
-'''
+#            for word in line.words:  # update to read CSV and pull page number to avoid dups.
+#                if re.search('-..-',str(word)):
+#                    print(f'--- found -??- in word: {word} on line {lineNo}')
+#                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
+#                    ssn = str(word)
+#                    ca_ssn = word.confidence
+
 #        print(type(pagelines))
 #        print(len(pagelines))
 #        print('--- printing page lines ---')
