@@ -144,7 +144,9 @@ db_csv_headers =['Primary_Attorney',
 'Estate_Documents_Probate_Documents_',
 'Additional_Notes_and_Comments',
 'afft_city_state_zip',
-'afft_Address',
+'ca_afft_city_state_zip',
+'afft_address',
+'ca_afft_address',
 'archer_id'
 
 
@@ -615,7 +617,6 @@ def lambda_handler(event, context):
                         dictrow[ca_csv_key] = 'error getting confidence, see PDF'
 #                        print(f'error getting confidence for {ca_csv_key} error: {e}')
 
-                    print(f' {csv_key} with value: {correctField.value} with confidence: {str(correctField.value.confidence)} at top: {str(correctField.value.geometry.boundingBox.top)}')
 #                    print(f'content confidence is: {str(correctField.value.content[0].confidence)}')
 #                print('--- KVP pair block: '+str(correctField.key.block))
 #                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
