@@ -602,6 +602,7 @@ def lambda_handler(event, context):
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 ca_csv_key = 'ca_'+csv_key
+                print(f'value of correctField is: {correctField.value}')
                 if(csv_key) == 'Claimant_Date_of_Birth':
                     print('trying to clean date')
                     ListcleanDOB = CleanDate(correctField.value)
