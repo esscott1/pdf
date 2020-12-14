@@ -598,7 +598,7 @@ def lambda_handler(event, context):
 #            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 
             lFields = list(es)
-#            print(f"i found {str(len(lFields))} field objects")
+            print(f"i found {str(len(lFields))} field objects")
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,0,2)
                 ca_csv_key = 'ca_'+csv_key
