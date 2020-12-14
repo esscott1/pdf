@@ -142,7 +142,11 @@ db_csv_headers =['Primary_Attorney',
 'Estate_Documents_Last_Will_and_Testament_',
 'Estate_Documents_Trust_Documents_',
 'Estate_Documents_Probate_Documents_',
-'Additional_Notes_and_Comments'
+'Additional_Notes_and_Comments',
+'afft_city_state_zip',
+'afft_Address'
+
+
 ]
 
 csv_headers = ['Primary Attorney',
@@ -308,6 +312,12 @@ db_csv_2_ocr_map_enroll = {
 'Were_you_married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1},
 'Were_you_married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1},
 'Claimant_Social_Security_Number':{'ocr_key': 'ssn', 'PageNo': 2, 'TopPos':1}
+
+}
+
+db_csv_2_ocr_map_afft = {
+'afft_Address': {'ocr_key':'Address', 'PageNo': 1, 'TopPos': 1},
+'afft_City_state_zip': {'ocr_key':'City', 'PageNo': 1, 'TopPos': 1}
 
 }
 
@@ -542,6 +552,8 @@ def lambda_handler(event, context):
         csv_2_ocr_map = db_csv_2_ocr_map_enroll
     if(str(docname).find('RELFULL') > -1):
         csv_2_ocr_map = csv_2_ocr_map_relfull
+    if(str(docname).find('AFFT') > -1):
+        csv_2_ocr_map = db_csv_2_ocr_map_afft
 
 # End logic for getting the correct map based on file name
 #    printresponsetos3(doc)
@@ -551,6 +563,7 @@ def lambda_handler(event, context):
     dictrow = {}
     dictrow['SourceFileName'] = docname
     ssn = ''
+    ca_ssn = ''
     regex = re.compile('-..-')
 #   building the array of KVP
     for page in doc.pages:
