@@ -291,10 +291,13 @@ print(dictrow)
 
 print('---- testing date of birth ----')
 dob = '01 12611952'
-parsed_date = parse(dob)
-print(parsed_date)
-print(type(parsed_date))
-print(parsed_date.strftime('%m/%d/%Y'))
+print(type(dob))
+parsedob = dob[0:3]
+print(parsedob)
+#parsed_date = parse(dob)
+#print(parsed_date)
+#print(type(parsed_date))
+#print(parsed_date.strftime('%m/%d/%Y'))
 #writeToDisk(all_kvp)
 
 

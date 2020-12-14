@@ -564,7 +564,7 @@ def lambda_handler(event, context):
     dictrow = {}
     dictrow['SourceFileName'] = docname
     print(f'docname type is: {type(docname)}')
-#    dictrow['archer_id'] = docname[0,11]
+    dictrow['archer_id'] = docname[0:11]
     ssn = ''
     ca_ssn = ''
     regex = re.compile('-..-')
