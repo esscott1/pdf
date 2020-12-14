@@ -144,7 +144,8 @@ db_csv_headers =['Primary_Attorney',
 'Estate_Documents_Probate_Documents_',
 'Additional_Notes_and_Comments',
 'afft_city_state_zip',
-'afft_Address'
+'afft_Address',
+'archer_id'
 
 
 ]
@@ -562,6 +563,7 @@ def lambda_handler(event, context):
     pageno = 0
     dictrow = {}
     dictrow['SourceFileName'] = docname
+    dictrow['archer_id'] = docname[0,11]
     ssn = ''
     ca_ssn = ''
     regex = re.compile('-..-')
