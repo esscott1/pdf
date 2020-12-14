@@ -616,6 +616,7 @@ def lambda_handler(event, context):
                         dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
                     except Exception as e:
                         dictrow[ca_csv_key] = 'error getting confidence, see PDF'
+                        print(f'error getting confidence: {e}')
 #                        print(f'error getting confidence for {ca_csv_key} error: {e}')
 
 #                    print(f'content confidence is: {str(correctField.value.content[0].confidence)}')
