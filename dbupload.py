@@ -75,7 +75,7 @@ def csv_to_dict():
             dict['city']=row[2]
             dict['state']=row[3]
             dict['zip']=row[4]
-            print(f', '.join(dict.keys()))
+#            print(f', '.join(dict.keys()))
             allvalues.append(dict)
 #        print(allvalues)
     return allvalues
