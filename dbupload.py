@@ -45,11 +45,11 @@ def write_dict_to_db(mydict, connection):
     """
 #    DBTable = os.environ.get('TableName')
     DBTable = 'ca_existing'
-    cursor = connection.cursor()
+
     placeholders = ', '.join(['%s'] * len(mydict))
     columns = ', '.join(mydict.keys())
     sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
-    
+
     fieldtextlist = []
     fieldvaluelist =  list(mydict.values())
     for fieldvalue in fieldvaluelist:
@@ -57,6 +57,7 @@ def write_dict_to_db(mydict, connection):
 
     print(sql, fieldvaluelist)
     print(fieldtextlist)
+    cursor = connection.cursor()
     cursor.execute(sql, fieldtextlist)
 
     connection.commit()
@@ -74,6 +75,7 @@ def csv_to_dict():
             dict['city']=row[2]
             dict['state']=row[3]
             dict['zip']=row[4]
+            print(f', '.join(dict.keys()))
             allvalues.append(dict)
 #        print(allvalues)
     return allvalues
