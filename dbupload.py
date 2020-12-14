@@ -81,4 +81,5 @@ def csv_to_dict():
 
 connect = get_connection()
 data = csv_to_dict()
-write_dict_to_db(data,connect)
+for rowdata in data:
+    write_dict_to_db(rowdata,connect)
