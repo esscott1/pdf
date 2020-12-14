@@ -71,7 +71,7 @@ def csv_to_dict():
         for row in reader:
             dict={}
             archer_id = row[0]
-            print('archerid is: '+archer_id+'and the type is: '+type(archer_id))
+            print('archerid is: '+archer_id+'and the type is: '+str(type(archer_id)))
 
             dict['archer_id']=archer_id
             dict['address']=row[1]
