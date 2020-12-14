@@ -563,7 +563,8 @@ def lambda_handler(event, context):
     pageno = 0
     dictrow = {}
     dictrow['SourceFileName'] = docname
-    dictrow['archer_id'] = docname[0,11]
+    print(f'docname type is: {type(docname)}')
+#    dictrow['archer_id'] = docname[0,11]
     ssn = ''
     ca_ssn = ''
     regex = re.compile('-..-')
