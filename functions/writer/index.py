@@ -572,6 +572,7 @@ def lambda_handler(event, context):
     for page in doc.pages:
         pageno = pageno + 1
         print('---- page ',str(pageno),' ----',)
+'''
         pagelines = page.lines
         lineNo = -1
         for line in page.lines:
@@ -582,7 +583,7 @@ def lambda_handler(event, context):
                     print(f'the line {lineNo} is: {page.lines[lineNo]}')
                     ssn = str(word)
                     ca_ssn = word.confidence
-
+'''
 #        print(type(pagelines))
 #        print(len(pagelines))
 #        print('--- printing page lines ---')
