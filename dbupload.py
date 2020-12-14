@@ -70,7 +70,7 @@ def csv_to_dict():
         reader = csv.reader(csvfile)
         for row in reader:
             dict={}
-            dict['archer_id']=row[0]
+            dict['archer_id']=row[0].replace(u'\xef\xbb\xbf',u'')
             dict['address']=row[1]
             dict['city']=row[2]
             dict['state']=row[3]
