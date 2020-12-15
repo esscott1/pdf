@@ -81,6 +81,8 @@ def csv_to_dict():
             dict['city']=row[2]
             dict['state']=row[3]
             dict['zip']=row[4]
+            dict['ssn']=row[5]
+            dict['dob']=row[6]
 #            print(f', '.join(dict.keys()))
             allvalues.append(dict)
 #        print(allvalues)
