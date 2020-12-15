@@ -16,12 +16,14 @@ def get_connection():
         #DatabaseName = os.environ.get('DatabaseName')
         DatabaseName = 'InvoiceDB'
         #DBUserName = os.environ.get('DBUserName')
-        DBUserName = 'demouser'
+        #DBUserName = 'demouser'
+        DBUserName = 'lvthillo'
+        password='notsupersecret'
         # Generates an auth token used to connect to a db with IAM credentials.
         print ('trying to get password with auth token for endpoint: ',DBEndPoint)
-        password = client.generate_db_auth_token(
-            DBHostname=DBEndPoint, Port=5432, DBUsername=DBUserName
-        )
+#        password = client.generate_db_auth_token(
+#            DBHostname=DBEndPoint, Port=5432, DBUsername=DBUserName
+#        )
         print ('connecting to: ', DatabaseName)
         print ('connecting as: ', DBUserName)
         print ('connecting with pw: ', password)
