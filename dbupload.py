@@ -25,13 +25,14 @@ def get_connection():
         print ('connecting to: ', DatabaseName)
         print ('connecting as: ', DBUserName)
         print ('connecting with pw: ', password)
+        ssl_ca= 'rds-ca-2015-root.pem'
         # Establishes the connection with the server using the token generated as password
         conn = pg8000.connect(
             host=DBEndPoint,
             user=DBUserName,
             database=DatabaseName,
             password=password,
-            ssl={'sslmode': 'verify-full', 'sslrootcert': 'rds-ca-2015-root.pem'},
+            ssl={'sslmode': 'verify-full', 'sslrootcert': 'rds-ca-2015-root.pem'}
         )
         print ("Succesful connection!")
         return conn
@@ -50,7 +51,7 @@ def write_dict_to_db(mydict, connection):
     columns = ', '.join(mydict.keys())
     sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
 
-    fieldtextlist = []
+    fieldtextlist = []#
     fieldvaluelist =  list(mydict.values())
     for fieldvalue in fieldvaluelist:
         fieldtextlist.append(str(fieldvalue))
@@ -71,7 +72,7 @@ def csv_to_dict():
         for row in reader:
             dict={}
             archer_id = row[0]
-            print('archerid is: '+archer_id+'and the type is: '+str(type(archer_id)))
+#            print('archerid is: '+archer_id+'and the type is: '+str(type(archer_id)))
 
             dict['archer_id']=archer_id.replace(u'\xef\xbb\xbf',u'')
             dict['address']=row[1]
@@ -85,6 +86,6 @@ def csv_to_dict():
 #    print(dict)
 
 connect = get_connection()
-data = csv_to_dict()
-for rowdata in data:
-    write_dict_to_db(rowdata,connect)
+#data = csv_to_dict()
+#for rowdata in data:
+#    write_dict_to_db(rowdata,connect)
