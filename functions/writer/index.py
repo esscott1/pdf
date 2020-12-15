@@ -321,6 +321,8 @@ db_csv_2_ocr_map_enroll = {
 db_csv_2_ocr_map_afft = {
 'afft_Address': {'ocr_key':'Address', 'PageNo': 1, 'TopPos': 1},
 'afft_City_state_zip': {'ocr_key':'City', 'PageNo': 1, 'TopPos': 1}
+'afft_ssn':{'ocr_key':'My Social Security', 'PageNo': 1, 'TopPos': 1}
+'afft_dob':{'ocr_key':'My Date of Birth', 'PageNo': 1, 'TopPos': 1}
 
 }
 
