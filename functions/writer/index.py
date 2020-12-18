@@ -535,7 +535,7 @@ def writetosnstopic(claimantname):
     
     response = sns.publish(
         TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
-        Message='test from lambda, i have a new claimant named BOB - sent from writer lambda',)
+        Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
     print(response)
 
 
@@ -643,7 +643,7 @@ def lambda_handler(event, context):
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
     try:
-        writetosnstopic('bobs your uncle')
+        writetosnstopic(dictrow['Claimant_First_Name']+' '+dictrow['Claimant_Last_Name'])
     except Exception as e:
         print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
 
