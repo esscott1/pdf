@@ -23,6 +23,13 @@ Resources:
     Properties: 
       DisplayName: LambdaSNSTopic
       TopicName: LambdaSNSTopic
+  # ARCHER Custom topic for claimant data push distribution
+  ARCHERClaimantSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties: 
+      DisplayName: ARCHERClaimantSNSTopic
+      TopicName: ARCHERClaimantSNSTopicSNSTopic
+  # End ARCHER Custom topic for claimant data push distribution
   # Read function triggered by S3 upload
   # It will publish to SNS
   ReadFunction:
