@@ -643,7 +643,7 @@ def lambda_handler(event, context):
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
     try:
-        writetosnstopic(dictrow['Claimant_First_Name']+' '+dictrow['Claimant_Last_Name'])
+        writetosnstopic(str(dictrow['Claimant_First_Name'])+' '+str(dictrow['Claimant_Last_Name']))
     except Exception as e:
         print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
         print('error: '+e)
