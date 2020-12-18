@@ -531,14 +531,13 @@ def GetFromTheTopofPage(fieldlist, pos, page):
     return sorted_field[pos]
 
 def writetosnstopic(claimantname):
-    {
     sns = boto3.client('sns')
     
     response = sns.publish(
         TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
         Message='test from lambda, i have a new claimant named BOB - sent from writer lambda',)
     print(response)
-    }
+
 
 def lambda_handler(event, context):
     """
