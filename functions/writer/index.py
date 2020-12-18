@@ -644,7 +644,7 @@ def lambda_handler(event, context):
     all_values.append(dictrow)
     try:
         writetosnstopic('bobs your uncle')
-     except Exception as e:
+    except Exception as e:
         print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
 
 #    save_orc_to_bucket(all_values, 'testeric')
