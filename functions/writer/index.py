@@ -530,6 +530,15 @@ def GetFromTheTopofPage(fieldlist, pos, page):
 #    print('first one is',sorted_field[pos].value)
     return sorted_field[pos]
 
+def writetosnstopic(claimantname):
+    {
+    sns = boto3.client('sns')
+    
+    response = sns.publish(
+        TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
+        Message='test from lambda, i have a new claimant named BOB - sent from writer lambda',)
+    print(response)
+    }
 
 def lambda_handler(event, context):
     """
@@ -634,6 +643,10 @@ def lambda_handler(event, context):
 
     CollapeYESNO(dictrow)
     all_values.append(dictrow)
+    try:
+        writetosnstopic('bobs your uncle')
+     except Exception as e:
+         print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
 
 #    save_orc_to_bucket(all_values, 'testeric')
     connection = get_connection()
