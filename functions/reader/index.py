@@ -2,7 +2,6 @@ import json
 import os
 import boto3
 import csv
-import pandas as pd
 from openpyxl import load_workbook
 
 def lambda_handler(event, context):
