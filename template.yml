@@ -37,8 +37,6 @@ Resources:
     Properties:
       Runtime: python3.7
       Handler: index.lambda_handler
-      Layers:
-        - !Ref ReadFunctionDepLayer
       CodeUri: ./functions/reader
       Role: !GetAtt ReadLambdaExecutionRole.Arn
       Events:
