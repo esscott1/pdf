@@ -37,6 +37,8 @@ Resources:
     Properties:
       Runtime: python3.7
       Handler: index.lambda_handler
+      Layers:
+        - !Ref ReadFunctionDepLayer
       CodeUri: ./functions/reader
       Role: !GetAtt ReadLambdaExecutionRole.Arn
       Events:
@@ -49,6 +51,16 @@ Resources:
         Variables:
           SNSROLEARN: !GetAtt SNSRole.Arn
           SNSTOPIC: !Ref SNSTopic
+  ReadFunctionDepLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+        LayerName: read-function-app-dependencies
+        Description: Dependencies for sam app 
+        ContentUri: ./functions/reader/dependencies/
+        CompatibleRuntimes:
+          - python3.7
+        LicenseInfo: 'MIT'
+        RetentionPolicy: Retain
   # Write function
   WriteFunction:
     Type: AWS::Serverless::Function
