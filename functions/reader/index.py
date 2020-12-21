@@ -1,6 +1,9 @@
 import json
 import os
 import boto3
+import csv
+import pandas as pd
+from openpyxl import load_workbook
 
 def lambda_handler(event, context):
     print("Triggered getTextFromS3PDF event: " + json.dumps(event, indent=2))
@@ -8,7 +11,11 @@ def lambda_handler(event, context):
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
-
+    if 'pdf' in str(key):
+        print('---- found a pdf file ---')
+    else
+        print('--- did not find file ---')
+        
     try:
         textract = boto3.client('textract')
         textract.start_document_analysis(
