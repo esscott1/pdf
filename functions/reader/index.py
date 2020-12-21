@@ -13,9 +13,9 @@ def lambda_handler(event, context):
     key = event['Records'][0]['s3']['object']['key']
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
-    else
+    else:
         print('--- did not find file ---')
-        
+
     try:
         textract = boto3.client('textract')
         textract.start_document_analysis(
