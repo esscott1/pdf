@@ -2,7 +2,6 @@ import json
 import os
 import boto3
 import csv
-from openpyxl import load_workbook
 
 def lambda_handler(event, context):
     print("Triggered getTextFromS3PDF event: " + json.dumps(event, indent=2))
