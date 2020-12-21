@@ -49,16 +49,6 @@ Resources:
         Variables:
           SNSROLEARN: !GetAtt SNSRole.Arn
           SNSTOPIC: !Ref SNSTopic
-  ReadFunctionDepLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-        LayerName: read-function-app-dependencies
-        Description: Dependencies for sam app 
-        ContentUri: ./functions/reader/dependencies/
-        CompatibleRuntimes:
-          - python3.7
-        LicenseInfo: 'MIT'
-        RetentionPolicy: Retain
   # Write function
   WriteFunction:
     Type: AWS::Serverless::Function
