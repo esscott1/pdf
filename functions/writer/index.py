@@ -6,6 +6,7 @@ import csv
 from trp import Document
 from dateutil.parser import parse
 import re
+from openpyxl import load_workbook
 
 db_csv_headers =['Primary_Attorney',
 'HTX_ARCHER_ID',
