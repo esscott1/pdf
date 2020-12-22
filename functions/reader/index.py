@@ -42,7 +42,7 @@ def lambda_handler(event, context):
         print('---- found an Excel file ---')
         s3 = boto3.client('s3')
         s3.download_file(bucket,key,'/tmp/test.xlsx')
-        wb = load_workbook.readxl(fn='/tmp/test.xlsx')
+        wb = xl.readxl(fn='/tmp/test.xlsx')
         print(wb.ws_names)
     else:
         print('--- did not find an Excel file ---')
