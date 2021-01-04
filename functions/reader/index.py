@@ -65,7 +65,7 @@ def lambda_handler(event, context):
         columns = wb.ws('Sheet1').row(1)
         print("--- trying excel to json ----")
         try:
-        print(f"length of columns is {len(columns}")
+            print(f"length of columns is {len(columns}")
             for i in range(len(columns)):
             dict[columns[i]] = wb.ws('Sheet1').row(2)[i]
         except expression as identifier:
