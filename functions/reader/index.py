@@ -4,6 +4,7 @@ import boto3
 import csv
 import pylightxl as xl
 import io
+import pandas as pxl
 
 def publishSNS(workbook):
     snsclient = boto3.client('sns')
@@ -60,5 +61,12 @@ def lambda_handler(event, context):
         wb = xl.readxl(fn='/tmp/test.xlsx')
         print(wb.ws_names)
         publishSNS(wb)
+        print(f"---- Trying pandas ----")
+        try:
+            excel_data_df = pxl.read_excel('/tmp/test.xlsx', sheet_name='Sheet1')
+            json_str = excel_data_df.to_json()
+            print('Excel Sheet to JSON:\n', json_str)
+        except Exception as e1:
+            print(f"error trying pandas read {e}")
     else:
         print('--- did not find an Excel file ---')
