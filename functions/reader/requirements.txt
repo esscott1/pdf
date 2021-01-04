@@ -2,3 +2,6 @@ boto3==1.9.67
 wheel==0.36.2
 xlrd==2.0.1
 pylightxl==1.51
+pandas
+pytz
+numpy
