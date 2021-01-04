@@ -4,29 +4,6 @@ import boto3
 import csv
 import pylightxl as xl
 import io
-from pyexcel_xlsx import get_data
-
-def testexcel():
-    print("---- trying to get JSON from Excel with pyexcel_xlsx ---")
-    try:
-        data = get_data("/tmp/test.xlsx")
-        sheetName = "Sheet1"
-
-        data_list = []
-        # Iterate through each row and append in above list
-        for i in range(0, len(data[sheetName])):
-            data_list.append({
-                'pattern' : data[sheetName][i][0],
-                'response' : data[sheetName][i][1]
-            })
-        data_list = {'intents': data_list} # Converting to required object
-        j = json.dumps(data_list)
-        print(j)
-    except Exception as e:
-        print(f"----  error in test excel: error: {e}")
-    # Write to file
-    #with open('data1.json', 'w') as f:
-    #    f.write(j)
 
 
 def publishSNS(workbook):
@@ -35,7 +12,7 @@ def publishSNS(workbook):
     try:
         response= snsclient.publish(
             TopicArn='arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
-            Message='message from Reader Lambda',
+            Message=str(workbook),
             Subject='SNS message from Lambda')
         print(f'--- published sns message ---')
         print(response)
@@ -83,13 +60,14 @@ def lambda_handler(event, context):
         s3.download_file(bucket,key,'/tmp/test.xlsx')
         wb = xl.readxl(fn='/tmp/test.xlsx')
         print(wb.ws_names)
-        publishSNS(wb)
-        print(f"---- Trying pandas ----")
-        try:
-            excel_data_df = pxl.read_excel('/tmp/test.xlsx', sheet_name='Sheet1')
-            json_str = excel_data_df.to_json()
-            print('Excel Sheet to JSON:\n', json_str)
-        except Exception as e1:
-            print(f"error trying pandas read {e1}")
+        data = []
+        dict = {}
+        columns = wb.ws('Sheet1').row(1)
+            for i in range(len(columns)):
+            dict[columns[i]] = wb.ws('Sheet1').row(2)[i]
+
+
+        publishSNS(json.dumps(dict))
+       
     else:
         print('--- did not find an Excel file ---')
