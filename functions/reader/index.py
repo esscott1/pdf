@@ -67,6 +67,6 @@ def lambda_handler(event, context):
             json_str = excel_data_df.to_json()
             print('Excel Sheet to JSON:\n', json_str)
         except Exception as e1:
-            print(f"error trying pandas read {e}")
+            print(f"error trying pandas read {e1}")
     else:
         print('--- did not find an Excel file ---')
