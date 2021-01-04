@@ -5,7 +5,22 @@ import csv
 import pylightxl as xl
 import io
 
+def publishSNS(workbook):
+    snsclient = boto3.client('sns')
+    print('---- trying to publish message ----')
+    try:
+        response= snsclient.publish(
+            TopicARN='arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
+            Message='message from Reader Lambda',
+            Subject='SNS message from Lambda')
+        print(f'--- published sns message ---')
+        print(response)
+    except Exception as e:
+        print(f'---  error in publishing to sns; error: {e}')
+
+
 def lambda_handler(event, context):
+
     print("Triggered getTextFromS3PDF event: " + json.dumps(event, indent=2))
 
     # Get the object from the event and show its content type
@@ -37,12 +52,13 @@ def lambda_handler(event, context):
             print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket))
             raise e
     else:
-        print('--- did not find file ---')
+        print('--- did not find PDF file ---')
     if 'xlsx' in str(key):
         print('---- found an Excel file ---')
         s3 = boto3.client('s3')
         s3.download_file(bucket,key,'/tmp/test.xlsx')
         wb = xl.readxl(fn='/tmp/test.xlsx')
         print(wb.ws_names)
+        publishSNS(wb)
     else:
         print('--- did not find an Excel file ---')
