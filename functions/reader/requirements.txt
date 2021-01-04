@@ -5,5 +5,8 @@ pylightxl==1.51
 pandas
 pytz
 numpy
-openpyxl==3.0.1
-xlsxwriter==1.2.5
+openpyxl
+lxml>=3.3.4
+pytest
+pillow
+tox
