@@ -4,29 +4,6 @@ import boto3
 import csv
 import pylightxl as xl
 import io
-from pyexcel_xlsx import get_data;
-
-def testexcel():
-    print("---- trying to get JSON from Excel with pyexcel_xlsx ---")
-    try:
-        data = get_data("/tmp/test.xlsx")
-        sheetName = "Sheet1"
-
-        data_list = []
-        # Iterate through each row and append in above list
-        for i in range(0, len(data[sheetName])):
-            data_list.append({
-                'pattern' : data[sheetName][i][0],
-                'response' : data[sheetName][i][1]
-            })
-        data_list = {'intents': data_list} # Converting to required object
-        j = json.dumps(data_list)
-        print(j)
-    except Exception as e:
-        print(f"----  error in test excel: error: {e}")
-    # Write to file
-    #with open('data1.json', 'w') as f:
-    #    f.write(j)
 
 
 def publishSNS(workbook):
