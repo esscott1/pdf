@@ -18,10 +18,10 @@ for i in range(len(columns)):
     dict[columns[i]] = wb.ws('Sheet1').row(2)[i]
 
 print(f"json is: {json.dumps(dict)}")
+#
 
-
-print(type(wb.ws('Sheet1').row(1)))
-print(json.dumps(wb.ws('Sheet1').row(1)))
+#print(type(wb.ws('Sheet1').row(1)))
+#print(json.dumps(wb.ws('Sheet1').row(1)))
 #sheet_ranges =  wb['Sheet1']
 
 #print(sheet_ranges['A1'].value)
