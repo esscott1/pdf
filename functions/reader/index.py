@@ -5,6 +5,13 @@ import csv
 import pylightxl as xl
 import io
 
+def saveToDynamodb(data):
+    print('--- saving to Dynamodb')
+    try:
+        db = boto3.client('dynamodb')
+        db.put_item(TableName='claimant', Item={'lastname':'Scott','firstname':'Eric'})
+    except Exception as e:
+        print(f'--- error saving to dynamodb ---:  error:{e}')
 
 def publishSNS(workbook):
     snsclient = boto3.client('sns')
@@ -72,6 +79,7 @@ def lambda_handler(event, context):
             print(f"error json from excel: error {identifier}")
 
         publishSNS(json.dumps(dict))
+        saveToDynamodb(json.dump(dict))
        
     else:
         print('--- did not find an Excel file ---')
