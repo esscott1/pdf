@@ -9,7 +9,7 @@ def saveToDynamodb(data):
     print('--- saving to Dynamodb')
     try:
         db = boto3.client('dynamodb')
-        db.put_item(TableName='claimant', Item={'lastname':'Scott','firstname':'Eric'})
+        db.put_item(TableName='claimant', Item={'lastname':{'S':'Scott'},'firstname':{'S':'Eric'}})
     except Exception as e:
         print(f'--- error saving to dynamodb ---:  error:{e}')
 
