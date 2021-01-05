@@ -79,7 +79,7 @@ def lambda_handler(event, context):
             print(f"error json from excel: error {identifier}")
 
         publishSNS(json.dumps(dict))
-        saveToDynamodb(json.dump(dict))
+        saveToDynamodb(json.dumps(dict))
        
     else:
         print('--- did not find an Excel file ---')
