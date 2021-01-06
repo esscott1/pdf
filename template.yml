@@ -24,11 +24,12 @@ Resources:
       DisplayName: LambdaSNSTopic
       TopicName: LambdaSNSTopic
   # ARCHER Custom topic for claimant data push distribution
+  # DbWriter Function will subscribe to SNS
   ARCHERClaimantSNSTopic:
     Type: AWS::SNS::Topic
     Properties: 
       DisplayName: ARCHERClaimantSNSTopic
-      TopicName: ARCHERClaimantSNSTopicSNSTopic
+      TopicName: ARCHERClaimantSNSTopic
   # End ARCHER Custom topic for claimant data push distribution
   # Read function triggered by S3 upload
   # It will publish to SNS
@@ -185,7 +186,7 @@ Resources:
             - s3:GetObject
             # short workaround to solve circular dependency with bucket
             Resource: '*'
-  # Role assumed by Write lambda
+  # Role assumed by Write lambda and the DbWriter lambda function
   WriteLambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -235,3 +236,4 @@ Resources:
             Action:
             - rds-db:connect
             Resource: !Sub 'arn:aws:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:*/${DemoUser}'
+
