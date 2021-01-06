@@ -100,7 +100,7 @@ Resources:
     Properties:
       Endpoint: !GetAtt DbWriterFunction.Arn
       Protocol: lambda
-      TopicArn: !Ref SNSTopic
+      TopicArn: !Ref ARCHERClaimantSNSTopic
   # Allow SNS to invoke the DbWriter lambda
   InvokePermission:
     Type: AWS::Lambda::Permission
