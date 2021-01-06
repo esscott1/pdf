@@ -10,3 +10,8 @@ functions = ["ReadFunction"]
 codeuri = "./functions/writer"
 runtime = "python3.7"
 functions = ["WriteFunction"]
+
+[build_definitions.56d77bcd-dc5c-405e-9cf0-c8346575dc75]
+codeuri = "./functions/dbwriter"
+runtime = "python3.7"
+functions = ["DbWriterFunction"]

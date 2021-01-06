@@ -77,6 +77,37 @@ Resources:
           - python3.7
         LicenseInfo: 'MIT'
         RetentionPolicy: Retain
+  #DbWriter function definition
+  DbWriterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.7
+      Handler: index.lambda_handler
+      Layers:
+        - !Ref WriteFunctionDepLayer
+      CodeUri: ./functions/dbwriter
+      Role: !GetAtt WriteLambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          # import values from db stack to write to RDS
+          DBEndPoint: !ImportValue DBEndpointAddress
+          DatabaseName: !ImportValue DBName
+          DBUserName: !Ref DemoUser
+          TableName: 'claimant'
+  # DbWriter Function subscribes to SNS
+  Subscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt DbWriterFunction.Arn
+      Protocol: lambda
+      TopicArn: !Ref SNSTopic
+  # Allow SNS to invoke the DbWriter lambda
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref DbWriterFunction
+      Principal: sns.amazonaws.com
   # Write Function subscribes to SNS
   Subscription:
     Type: AWS::SNS::Subscription
