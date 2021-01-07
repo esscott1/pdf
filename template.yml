@@ -134,6 +134,7 @@ Resources:
           Principal:
             Service:
             - textract.amazonaws.com
+            - lambda.amazonaws.com
           Action:
           - sts:AssumeRole
       Path: '/'
