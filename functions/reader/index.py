@@ -18,7 +18,7 @@ def publishSNS(workbook):
     print('---- trying to publish message ----')
     try:
         response= snsclient.publish(
-            TopicArn='arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
+            TopicArn='arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
             Message=str(workbook),
             Subject='SNS message from Lambda')
         print(f'--- published sns message ---')
