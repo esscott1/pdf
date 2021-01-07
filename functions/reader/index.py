@@ -22,7 +22,7 @@ def saveToDynamodb(data):
         print(f"--- printing data to load ---")
         print(datatoload)
 
-       serializer = TypeSerializer()
+        serializer = TypeSerializer()
         print(f"--- printing dynamo json data to load ---")
         try:
             dyamamoJson = {k: serializer.serialize(v) for k, v in Claimant.Schema().dump(datatoload) if v != ""}
