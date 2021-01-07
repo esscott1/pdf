@@ -11,6 +11,8 @@ def saveToDynamodb(data):
         db = boto3.client('dynamodb')
 #        db.put_item(TableName='claimant', Item={'lastname':{'S':'Scott'},'firstname':{'S':'Eric'}})
         datatoload = json.loads(data)
+        print(f"--- printing data to load ---")
+        print(datatoload)
         db.put_item(TableName='claimant', Item=datatoload)
     except Exception as e:
         print(f'--- error saving to dynamodb ---:  error:{e}')
