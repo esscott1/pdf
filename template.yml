@@ -114,7 +114,7 @@ Resources:
     Type: AWS::SNS::Subscription
     Properties:
       Endpoint: 
-        {"Fn::!GetAtt": [WriteFunction.Arn, DbWriterFunction.Arn]}
+        {"Fn::GetAtt": [WriteFunction.Arn, DbWriterFunction.Arn]}
       Protocol: lambda
       TopicArn: !Ref SNSTopic
   # Allow SNS to invoke the Write lambda
