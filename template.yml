@@ -134,7 +134,7 @@ Resources:
           Principal:
             Service:
             - textract.amazonaws.com
-            - lambda.amazonaws.com
+            - lam
           Action:
           - sts:AssumeRole
       Path: '/'
@@ -162,6 +162,14 @@ Resources:
           - sts:AssumeRole
       Path: '/'
       Policies:
+      - PolicyName: sns-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sns:*
+            Resource: arn:aws:sns:*:*:*
       - PolicyName: cloudwatch-policy
         PolicyDocument:
           Version: '2012-10-17'
