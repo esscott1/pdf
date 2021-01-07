@@ -15,7 +15,7 @@ def saveToDynamodb(data):
         print(f"--- printing data to load ---")
         print(datatoload)
 
-        dynamoJson = jsondb.dumps(data)
+        dynamoJson = jsondb.dumps(data, as_dict=True)
         print(f"--- printing dynamo json data to load ---")
         print(dynamoJson)
 
