@@ -14,6 +14,11 @@ def saveToDynamodb(data):
         datatoload = json.loads(data)
         print(f"--- printing data to load ---")
         print(datatoload)
+
+        dynamoJson = jsondb.dumps(data)
+        print(f"--- printing dynamo json data to load ---")
+        print(dynamoJson)
+
         db.put_item(TableName='claimant', Item=datatoload)
     except Exception as e:
         print(f'--- error saving to dynamodb ---:  error:{e}')
