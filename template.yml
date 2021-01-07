@@ -169,7 +169,7 @@ Resources:
           - Effect: Allow
             Action:
             - sns:*
-            Resource: arn:aws:sns:*:*:*
+            Resource: '*'
       - PolicyName: cloudwatch-policy
         PolicyDocument:
           Version: '2012-10-17'
