@@ -4,7 +4,14 @@ import boto3
 import csv
 import pylightxl as xl
 import io
-from dynamodb_json import json_util as jsondb
+from boto3.dynamodb.types import TypeSerializer
+
+@claimant_dataclasss
+class Claimant:
+    firstname: str
+    lastname: str
+    ssn: str
+    dob: str
 
 def saveToDynamodb(data):
     print('--- saving to Dynamodb')
@@ -15,10 +22,13 @@ def saveToDynamodb(data):
         print(f"--- printing data to load ---")
         print(datatoload)
 
-        dynamoJson = jsondb.dumps(data, as_dict=True)
+       serializer = TypeSerializer()
         print(f"--- printing dynamo json data to load ---")
-        print(dynamoJson)
-
+        try:
+            dyamamoJson = {k: serializer.serialize(v) for k, v in Claimant.Schema().dump(datatoload) if v != ""}
+            print(dynamoJson)
+        except Exception as e:
+            print(f'failed making dynamo db, error: {e}')
         db.put_item(TableName='claimant', Item=datatoload)
     except Exception as e:
         print(f'--- error saving to dynamodb ---:  error:{e}')
