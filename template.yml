@@ -96,14 +96,14 @@ Resources:
           DBUserName: !Ref DemoUser
           TableName: 'claimant'
   # DbWriter Function subscribes to SNS
-#  Subscription:
-#    Type: AWS::SNS::Subscription
-#    Properties:
-#      Endpoint: !GetAtt DbWriterFunction.Arn
-#      Protocol: lambda
-#      TopicArn: !Ref ARCHERClaimantSNSTopic
+  Subscription1:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt DbWriterFunction.Arn
+      Protocol: lambda
+      TopicArn: !Ref ARCHERClaimantSNSTopic
   # Allow SNS to invoke the DbWriter lambda
-  InvokePermission:
+  InvokePermission1:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
@@ -113,8 +113,7 @@ Resources:
   Subscription:
     Type: AWS::SNS::Subscription
     Properties:
-      Endpoint: 
-        {"Fn::GetAtt": [WriteFunction.Arn, DbWriterFunction.Arn]}
+      Endpoint: !GetAtt WriteFunction.Arn
       Protocol: lambda
       TopicArn: !Ref SNSTopic
   # Allow SNS to invoke the Write lambda
