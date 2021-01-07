@@ -4,6 +4,7 @@ import boto3
 import csv
 import pylightxl as xl
 import io
+from dynamodb_json import json_util as jsondb
 
 def saveToDynamodb(data):
     print('--- saving to Dynamodb')
