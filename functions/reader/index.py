@@ -13,7 +13,7 @@ def saveToDynamodb(data):
     print('--- saving to Document DB')
     try:
         ##Create a MongoDB client, open a connection to Amazon DocumentDB as a replica set and specify the read preference as secondary preferred
-        client = pymongo.MongoClient('mongodb://clustermaster:!!nimda1@archer-documentdb-cluster-1.cluster-c3bquq8vfcla.us-west-2.docdb.amazonaws.com:27017/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false') 
+        client = pymongo.MongoClient('mongodb://clustermaster:!!nimda1@archer-documentdb-cluster-2.cluster-c3bquq8vfcla.us-west-2.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false') 
 
 #        db.put_item(TableName='claimant', Item={'lastname':{'S':'Scott'},'firstname':{'S':'Eric'}})
         datatoload = json.loads(data)
