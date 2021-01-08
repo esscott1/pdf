@@ -94,7 +94,7 @@ Resources:
           DBEndPoint: !ImportValue DBEndpointAddress
           DatabaseName: !ImportValue DBName
           DBUserName: !Ref DemoUser
-          TableName: 'claimant'
+          TableName: !Ref TableName
   # DbWriter Function subscribes to SNS
   Subscription1:
     Type: AWS::SNS::Subscription
