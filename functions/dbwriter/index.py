@@ -6,9 +6,6 @@ import pylightxl as xl
 import io
 
 def saveJsonToPostgres(data, connection):
-      """
-    Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
-    """
     DBTable = os.environ.get('TableName')
     cursor = connection.cursor()
     placeholders = ', '.join(['%s'] * len(mydict))
