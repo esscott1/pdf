@@ -5,33 +5,24 @@ import csv
 import pylightxl as xl
 import io
 from boto3.dynamodb.types import TypeSerializer
+import pymongo
+import sys
 
-@claimant_dataclasss
-class Claimant:
-    firstname: str
-    lastname: str
-    ssn: str
-    dob: str
 
 def saveToDynamodb(data):
-    print('--- saving to Dynamodb')
+    print('--- saving to Document DB')
     try:
-        db = boto3.client('dynamodb')
+        ##Create a MongoDB client, open a connection to Amazon DocumentDB as a replica set and specify the read preference as secondary preferred
+        client = pymongo.MongoClient('mongodb://clustermaster:!!nimda1@archer-documentdb-cluster-1.cluster-c3bquq8vfcla.us-west-2.docdb.amazonaws.com:27017/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false') 
+
 #        db.put_item(TableName='claimant', Item={'lastname':{'S':'Scott'},'firstname':{'S':'Eric'}})
         datatoload = json.loads(data)
         print(f"--- printing data to load ---")
         print(datatoload)
 
-        serializer = TypeSerializer()
-        print(f"--- printing dynamo json data to load ---")
-        try:
-            dyamamoJson = {k: serializer.serialize(v) for k, v in Claimant.Schema().dump(datatoload) if v != ""}
-            print(dynamoJson)
-        except Exception as e:
-            print(f'failed making dynamo db, error: {e}')
-        db.put_item(TableName='claimant', Item=datatoload)
+
     except Exception as e:
-        print(f'--- error saving to dynamodb ---:  error:{e}')
+        print(f'--- error saving to Document DB ---:  error:{e}')
 
 def publishSNS(workbook):
     snsclient = boto3.client('sns')
