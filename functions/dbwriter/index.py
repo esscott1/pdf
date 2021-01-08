@@ -3,6 +3,7 @@ import os
 import boto3
 import csv
 import pylightxl as xl
+import pg8000
 import io
 
 def saveJsonToPostgres(data, connection):
