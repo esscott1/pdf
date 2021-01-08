@@ -9,26 +9,17 @@ def saveJsonToPostgres(data, connection):
       """
     Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
     """
+    DBTable = os.environ.get('TableName')
+    cursor = connection.cursor()
+    placeholders = ', '.join(['%s'] * len(mydict))
+    columns = ', '.join(mydict.keys())
+    sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
+    sql2 = "INSERT INTO ca_packet (jsondata) values ( %s )" % (data)
+    fieldtextlist2 = []
+    fieldtextlist2.append(data)
     try:
-        DBTable = os.environ.get('TableName')
-        cursor = connection.cursor()
-        placeholders = ', '.join(['%s'] * len(mydict))
-        columns = ', '.join(mydict.keys())
-    # sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
-        sql2 = "INSERT INTO ca_packet (jsondata) values ( %s )" % (data)
-        fieldtextlist2 = []
-        fieldtextlist2.append(data)
- '''       fieldtextlist = []
-        fieldvaluelist =  list(mydict.values())
-        for fieldvalue in fieldvaluelist:
-            fieldtextlist.append(str(fieldvalue))
-
-        print(sql, fieldvaluelist)
-        print(fieldtextlist)
-        '''
         print(f'runing statement {sql2}')
         cursor.execute(sql2)
-
         connection.commit()
         cursor.close()
     except Exception as e:
