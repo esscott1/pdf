@@ -9,9 +9,7 @@ import io
 def saveJsonToPostgres(data, connection):
     DBTable = os.environ.get('TableName')
     cursor = connection.cursor()
-    placeholders = ', '.join(['%s'] * len(mydict))
-    columns = ', '.join(mydict.keys())
-    sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
+
     sql2 = "INSERT INTO ca_packet (jsondata) values ( %s )" % (data)
     fieldtextlist2 = []
     fieldtextlist2.append(data)
