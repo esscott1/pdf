@@ -5,15 +5,35 @@ import csv
 import pylightxl as xl
 import io
 
-def saveJsonToPostgres(data):
-    print('--- saving to Dynamodb')
+def saveJsonToPostgres(data, connection):
+      """
+    Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
+    """
     try:
-        db = boto3.client('dynamodb')
-        tablenane='claimant'
-        print(f"table name from environment variable is: {os.environ.get('TableName')}")
-        db.put_item(TableName=tablenane, Item={'lastname':{'S':'Scott'},'firstname':{'S':'Eric'}})
+        DBTable = os.environ.get('TableName')
+        cursor = connection.cursor()
+        placeholders = ', '.join(['%s'] * len(mydict))
+        columns = ', '.join(mydict.keys())
+    # sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
+        sql2 = "INSERT INTO ca_packet (jsondata) values ( %s )" % (data)
+        fieldtextlist2 = []
+        fieldtextlist2.append(data)
+ '''       fieldtextlist = []
+        fieldvaluelist =  list(mydict.values())
+        for fieldvalue in fieldvaluelist:
+            fieldtextlist.append(str(fieldvalue))
+
+        print(sql, fieldvaluelist)
+        print(fieldtextlist)
+        '''
+        print(f'runing statement {sql2}')
+        cursor.execute(sql2)
+
+        connection.commit()
+        cursor.close()
     except Exception as e:
-        print(f'--- error saving to dynamodb ---:  error:{e}')
+        print(f'---- error writing to DB ---- error: {e}')
+
 
 def get_connection():
     """
@@ -52,5 +72,5 @@ def lambda_handler(event, context):
     print("JSON Event from SNS: " + json.dumps(event))
     msg = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
     print(f'message to save to jsondata in database {msg}')
-#    saveJsonToPostgres(msg)
+    saveJsonToPostgres(msg)
 
