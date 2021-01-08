@@ -60,5 +60,6 @@ def lambda_handler(event, context):
     print("JSON Event from SNS: " + json.dumps(event))
     msg = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
     print(f'message to save to jsondata in database {msg}')
-    saveJsonToPostgres(msg)
+    connection = get_connection()
+    saveJsonToPostgres(msg, connection)
 
