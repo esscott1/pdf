@@ -14,6 +14,11 @@ def saveToDynamodb(data):
     try:
         ##Create a MongoDB client, open a connection to Amazon DocumentDB as a replica set and specify the read preference as secondary preferred
         client = pymongo.MongoClient('mongodb://clustermaster:!!nimda1@archer-documentdb-cluster-2.cluster-c3bquq8vfcla.us-west-2.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false') 
+        db = client.claimant_database
+        col = db.claimant_collection # collection is mongo table
+        col.insert_one(data)
+        x = col.find_one({'last name': 'Scott'})
+        print(f'saved and found: {x}')
 
 #        db.put_item(TableName='claimant', Item={'lastname':{'S':'Scott'},'firstname':{'S':'Eric'}})
         datatoload = json.loads(data)
