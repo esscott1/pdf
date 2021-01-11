@@ -653,7 +653,7 @@ def lambda_handler(event, context):
     connection = get_connection()
     for dictionary in all_values:
         json_object = json.dumps(dictionary)
-        dictionary['jsondata'] = json_object
+        print(f'json_object is: {json_object}')
         write_dict_to_db(dictionary, connection)
 
 
