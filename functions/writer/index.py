@@ -640,7 +640,9 @@ def lambda_handler(event, context):
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
+
     CollapeYESNO(dictrow)
+    dictrow['jsondata'] = dictrow
     all_values.append(dictrow)
     try:
         writetosnstopic(dictrow['Claimant_Social_Security_Number'])
