@@ -642,7 +642,7 @@ def lambda_handler(event, context):
 
 
     CollapeYESNO(dictrow)
-    dictrow['jsondata'] = dictrow
+    dictrow['jsondata'] = "'"+ dictrow+"'"
     all_values.append(dictrow)
     try:
         writetosnstopic(dictrow['Claimant_Social_Security_Number'])
