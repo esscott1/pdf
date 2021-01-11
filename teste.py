@@ -1,4 +1,5 @@
 import csv
+import json
 from dateutil.parser import parse
 
 csv_headers = ['Primary Attorney',
@@ -287,13 +288,15 @@ for page in pages:
 
 print('printing dict after method to add')
 collapeYESNO(dictrow)
+json_object = json.dumps(dictrow)
+dictrow['jsondata'] = json_object
 print(dictrow)
 
-print('---- testing date of birth ----')
-dob = '01 12611952'
-print(type(dob))
-parsedob = dob[0:3]
-print(parsedob)
+#print('---- testing date of birth ----')
+#dob = '01 12611952'
+#print(type(dob))
+#parsedob = dob[0:3]
+#print(parsedob)
 #parsed_date = parse(dob)
 #print(parsed_date)
 #print(type(parsed_date))
