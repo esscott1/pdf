@@ -642,7 +642,6 @@ def lambda_handler(event, context):
 
 
     CollapeYESNO(dictrow)
-    dictrow['jsondata'] = "'"+ dictrow+"'"
     all_values.append(dictrow)
     try:
         writetosnstopic(dictrow['Claimant_Social_Security_Number'])
@@ -653,6 +652,7 @@ def lambda_handler(event, context):
 #    save_orc_to_bucket(all_values, 'testeric')
     connection = get_connection()
     for dictionary in all_values:
+        print(f'--- json --- :{json.loads(json.dumps(dictionary))}')
         write_dict_to_db(dictionary, connection)
 
 
