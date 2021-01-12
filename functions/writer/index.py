@@ -662,6 +662,8 @@ def lambda_handler(event, context):
 #    save_orc_to_bucket(all_values, 'testeric')
     connection = get_connection()
     for dictionary in all_values:
+        print('writing this to DB')
+        print(dictionary)
         write_dict_to_db(dictionary, connection)
 
 
