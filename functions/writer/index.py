@@ -620,7 +620,7 @@ def lambda_handler(event, context):
                     dictrow[csv_key] = cleanDOB
                     dictrow[ca_csv_key] = ListcleanDOB[1]
                 else:
-                    dictrow[csv_key] = correctField.value
+                    dictrow[csv_key] = str(correctField.value)
 #                    ca_csv_key = 'ca_'+csv_key
                     try:
                         dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
