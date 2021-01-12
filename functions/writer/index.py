@@ -652,6 +652,7 @@ def lambda_handler(event, context):
         print(f'--- error print json: {e}')
         #dictrow['jsondata']=json_object
 
+    dictrow['jsondata'] = json_object
     all_values.append(dictrow)
     try:
         writetosnstopic(dictrow['Claimant_Social_Security_Number'])
