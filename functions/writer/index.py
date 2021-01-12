@@ -642,8 +642,10 @@ def lambda_handler(event, context):
 
 
     CollapeYESNO(dictrow)
-    json_object = json.dumps(dictrow)
-    print(json_object)
+    print('--- printing dictrow ---')
+    print(dictrow)
+#    json_object = json.dumps(dictrow)
+ #   print(json_object)
     #dictrow['jsondata']=json_object
     all_values.append(dictrow)
     try:
