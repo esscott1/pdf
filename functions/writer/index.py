@@ -447,7 +447,7 @@ def read_config():
         print('--- printing config info ---')
         print(jdata)
 
-    except Exception as s:
+    except Exception as e:
         print('error reading json config')
         print(e)
 
