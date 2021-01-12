@@ -434,6 +434,22 @@ def get_connection():
         print ("While connecting failed due to :{0}".format(str(e)))
         return None
 
+def read_config():
+    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(AWS_BUCKET_NAME)
+    key = 'jsondata1.json'
+
+    try:
+        response = s3.get_object(Bucket = AWS_BUCKET_NAME, Key = key)
+        content = response['Body']
+        jdata = json.loads(content.read())
+        print('--- printing config info ---')
+        print(jdata)
+
+    except Exception as s:
+        print('error reading json config')
+
 def save_orc_to_bucket(all_values, docname):
     csv_file='/tmp/'+docname+'_data.csv'
 #    csv_columns = ['Claimant First Name', 'Claimant Last Name', 'City']
@@ -479,26 +495,7 @@ def write_dict_to_db(mydict, connection):
     connection.commit()
     cursor.close()
 
-'''
-def printresponsetos3(doc):
-     # upload file to s3 bucket
-    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket(AWS_BUCKET_NAME)
-    path = 'textractresponse.txt'
-    data = doc
-    print('trying to print textract response to s3')
-    try:
-        bucket.put_object(
-            ACL='public-read',
-            ContentType='application/json',
-            Key=path,
-            Body= str(data),
-        )
-    except Exception as e:
-        print(e)
-        print('error trying to write doc to bucket')
-'''
+
 def CleanDate(dateFieldValue):
     datestring = str(dateFieldValue)
     cleanDateResult = 'Trouble Reading, see PDF'
@@ -517,17 +514,7 @@ def CleanDate(dateFieldValue):
 
 
 def GetFromTheTopofPage(fieldlist, pos, page):
-#    print('--- unsorted ---')
-#    for field in fieldlist:
-#        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
-
     sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-
-#    print('--- sorted ---')
-#    for field in sorted_field:
-#        print('key: ',field.key,' value: ',field.value,' toplocation: ',field.key.geometry.boundingBox.top)
-    
-#    print('first one is',sorted_field[pos].value)
     return sorted_field[pos]
 
 def writetosnstopic(claimantname):
@@ -627,16 +614,7 @@ def lambda_handler(event, context):
                     except Exception as e:
                         dictrow[ca_csv_key] = 'error getting confidence, see PDF'
                         print(f'error getting confidence: {e}')
-#                        print(f'error getting confidence for {ca_csv_key} error: {e}')
 
-#                    print(f'content confidence is: {str(correctField.value.content[0].confidence)}')
-#                print('--- KVP pair block: '+str(correctField.key.block))
-#                print(f'--- the csv key is: {csv_key}  the correctField is {correctField.value}')
-#            else:
-#                print(' --- no correctField found --- ')
-            #print(f'write a cell to column: {csv_key} with value: {correctField.value}')
-#        print(f'---------------- print dictrow afterpage {pageno} is processed ----------')
-#        print(dictrow)
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
@@ -666,6 +644,8 @@ def lambda_handler(event, context):
         print('writing this to DB')
         print(dictionary)
         write_dict_to_db(dictionary, connection)
+    print('trying to read config')
+    read_config()
 
 
 #    print(dictrow)

@@ -1,6 +1,7 @@
 import csv
 import json
 from dateutil.parser import parse
+import pkg_resources
 
 csv_headers = ['Primary Attorney',
 'HTX ARCHER ID',
@@ -291,6 +292,13 @@ collapeYESNO(dictrow)
 json_object = json.dumps(dictrow)
 dictrow['jsondata'] = json_object
 print(dictrow)
+
+print('--- printing external resources ---')
+
+with open("jsondata1.txt") as data_file:
+    jdata = json.loads(data_file.read())
+    data_file.close()
+print(jdata)
 
 #print('---- testing date of birth ----')
 #dob = '01 12611952'
