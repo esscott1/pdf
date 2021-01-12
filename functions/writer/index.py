@@ -24,25 +24,8 @@ csv_2_ocr_map_enroll = {
 'Were you married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1}
 
 }
-db_csv_2_ocr_map_enroll2 = {}
+db_csv_2_ocr_map_enroll = {}
 
-db_csv_2_ocr_map_enroll = {
-'Claimant_First_Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
-'Claimant_Last_Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1},
-'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1},
-'State':{'ocr_key':'State', 'PageNo': 2, 'TopPos': 1},
-'Zip_Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
-'Address_1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
-'Claimant_Date_of_Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
-'Current_Citizenship_Status_YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
-'Current_Citizenship_Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1},
-'Citizenship_Status_at_time_of_Exposure_YES':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
-'Citizenship_Status_at_time_of_Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2},
-'Were_you_married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1},
-'Were_you_married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1},
-'Claimant_Social_Security_Number':{'ocr_key': 'ssn', 'PageNo': 2, 'TopPos':1}
-
-}
 
 db_csv_2_ocr_map_afft = {
 'afft_Address': {'ocr_key':'Address', 'PageNo': 1, 'TopPos': 1},
@@ -175,36 +158,13 @@ def read_config():
         print(ocr_maps)
         print('---  ocr enroll map ---')
         print(ocr_maps['db_csv_2_ocr_map_enroll'])
-        db_csv_2_ocr_map_enroll2 = ocr_maps['db_csv_2_ocr_map_enroll']
+        db_csv_2_ocr_map_enroll = ocr_maps['db_csv_2_ocr_map_enroll']
 
     except Exception as e:
         print('error reading json config')
         print(e)
 
-'''
-def save_orc_to_bucket(all_values, docname):
-    csv_file='/tmp/'+docname+'_data.csv'
-#    csv_columns = ['Claimant First Name', 'Claimant Last Name', 'City']
-   ## writing to lambda temp area
-    print('trying to write file to temp lambda space named: '+csv_file)
-    try:
-        with open('/tmp/'+docname+'_data.csv', 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=db_csv_headers)
-            writer.writeheader()
-            for data in all_values:
-                writer.writerow(data)
-    except Exception as e:
-       print('error writing csv to lambda local:', e)
 
-    # upload file to s3 bucket
-    AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket(AWS_BUCKET_NAME)
-    try:
-        bucket.upload_file(csv_file,'s3tosalesforce/'+docname+'.csv')
-    except Exception as s:
-        print('error uploading local lambda file to s3')
-'''
 
 def write_dict_to_db(mydict, connection):
     """
@@ -284,7 +244,7 @@ def lambda_handler(event, context):
         doc = Document(response)
 # logic for getting the correct map based on file name
     if(str(docname).find('ENROLL') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_enroll2
+        csv_2_ocr_map = db_csv_2_ocr_map_enroll
     if(str(docname).find('RELFULL') > -1):
         csv_2_ocr_map = csv_2_ocr_map_relfull
     if(str(docname).find('AFFT') > -1):
