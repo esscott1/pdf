@@ -437,14 +437,20 @@ def get_connection():
 def read_config():
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
-    key = 'jsondata1.json'
+    key = 'ocr_config.json'
 
     try:
         response = s3.get_object(Bucket = bucket, Key = key)
         content = response['Body']
-        jdata = json.loads(content.read())
+        ocr_config_json = json.loads(content.read())
+        ocr_maps = ocr_config_json["ocr_maps"]
         print('--- printing config info ---')
-        print(jdata)
+
+        print(ocr_config_json)
+        print('--- printing ocr maps ---')
+        print(ocr_maps)
+        print('---  ocr enroll map ---')
+        print(ocr_maps['db_csv_2_ocr_map_enroll'])
 
     except Exception as e:
         print('error reading json config')

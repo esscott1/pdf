@@ -1,0 +1,33 @@
+{
+    "ocr_maps":
+    [
+        {
+            "db_csv_2_ocr_map_afft":
+            {
+                "afft_Address": {"ocr_key":"Address", "PageNo": 1, "TopPos": 1},
+                "afft_City_state_zip": {"ocr_key":"City", "PageNo": 1, "TopPos": 1},
+                "afft_ssn":{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1},
+                "afft_dob":{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1}
+            }
+        },
+        {
+            "db_csv_2_ocr_map_enroll": 
+            {
+                "Claimant_First_Name": {"ocr_key":"First", "PageNo": 2, "TopPos": 1}, 
+                "Claimant_Last_Name": {"ocr_key":"Last", "PageNo": 2, "TopPos": 1},
+                "City":{"ocr_key":"City", "PageNo": 2, "TopPos": 1},
+                "State":{"ocr_key":"State", "PageNo": 2, "TopPos": 1},
+                "Zip_Code":{"ocr_key":"Zip", "PageNo": 2, "TopPos": 1},
+                "Address_1":{"ocr_key":"Street/P.O. B", "PageNo": 2, "TopPos": 1},
+                "Claimant_Date_of_Birth":{"ocr_key":"(Month/Day/Year)", "PageNo": 2, "TopPos": 1},
+                "Current_Citizenship_Status_YES":{"ocr_key":"YES","PageNo": 2, "TopPos": 1},
+                "Current_Citizenship_Status_NO":{"ocr_key": "NO", "PageNo": 2, "TopPos": 1},
+                "Citizenship_Status_at_time_of_Exposure_YES":{"ocr_key":"YES","PageNo":2, "TopPos": 2},
+                "Citizenship_Status_at_time_of_Exposure_NO":{"ocr_key":"NO","PageNo":2, "TopPos": 2},
+                "Were_you_married_YES":{"ocr_key": "YES", "PageNo": 3, "TopPos":1},
+                "Were_you_married_NO":{"ocr_key": "NO", "PageNo": 3, "TopPos":1},
+                "Claimant_Social_Security_Number":{"ocr_key": "ssn", "PageNo": 2, "TopPos":1}
+            }
+        }
+    ]
+}
