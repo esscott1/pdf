@@ -441,7 +441,7 @@ def read_config():
     key = 'jsondata1.json'
 
     try:
-        response = s3.get_object(Bucket = AWS_BUCKET_NAME, Key = key)
+        response = s3.Object(AWS_BUCKET_NAME, key)
         content = response['Body']
         jdata = json.loads(content.read())
         print('--- printing config info ---')
