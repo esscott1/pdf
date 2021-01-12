@@ -447,8 +447,9 @@ def read_config():
         print('--- printing config info ---')
         print(jdata)
 
-    except Exception as s:
+    except Exception as e:
         print('error reading json config')
+        print(e)
 
 def save_orc_to_bucket(all_values, docname):
     csv_file='/tmp/'+docname+'_data.csv'
