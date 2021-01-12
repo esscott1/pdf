@@ -299,6 +299,7 @@ csv_2_ocr_map_enroll = {
 'Were you married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1}
 
 }
+db_csv_2_ocr_map_enroll2 = {}
 
 db_csv_2_ocr_map_enroll = {
 'Claimant_First_Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
@@ -451,6 +452,7 @@ def read_config():
         print(ocr_maps)
         print('---  ocr enroll map ---')
         print(ocr_maps['db_csv_2_ocr_map_enroll'])
+        db_csv_2_ocr_map_enroll2 = ocr_maps['db_csv_2_ocr_map_enroll']
 
     except Exception as e:
         print('error reading json config')
@@ -537,6 +539,8 @@ def lambda_handler(event, context):
     Get Extraction Status, JobTag and JobId from SNS. 
     If the Status is SUCCEEDED then create a dict of the values and write those to the RDS database.
     """
+
+    read_config()
     notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
     
     pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
@@ -555,7 +559,7 @@ def lambda_handler(event, context):
         doc = Document(response)
 # logic for getting the correct map based on file name
     if(str(docname).find('ENROLL') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_enroll
+        csv_2_ocr_map = db_csv_2_ocr_map_enroll2
     if(str(docname).find('RELFULL') > -1):
         csv_2_ocr_map = csv_2_ocr_map_relfull
     if(str(docname).find('AFFT') > -1):
@@ -651,7 +655,7 @@ def lambda_handler(event, context):
         print(dictionary)
         write_dict_to_db(dictionary, connection)
     print('trying to read config')
-    read_config()
+
 
 
 #    print(dictrow)
