@@ -436,18 +436,18 @@ def get_connection():
 
 def read_config():
     AWS_BUCKET_NAME = 'archer-ocr-doc-bucket'
-    s3 = boto3.resource('s3')
+    s3 = boto3.client('s3')
     bucket = s3.Bucket(AWS_BUCKET_NAME)
     key = 'jsondata1.json'
 
     try:
-        response = s3.Object(AWS_BUCKET_NAME, key)
+        response = s3.get_object(Bucket = AWS_BUCKET_NAME, Key = key)
         content = response['Body']
         jdata = json.loads(content.read())
         print('--- printing config info ---')
         print(jdata)
 
-    except Exception as e:
+    except Exception as s:
         print('error reading json config')
         print(e)
 
