@@ -7,30 +7,9 @@ from trp import Document
 from dateutil.parser import parse
 import re
 
-
-csv_2_ocr_map_enroll = {
-'Claimant First Name': {'ocr_key':'First', 'PageNo': 2, 'TopPos': 1}, 
-'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 2, 'TopPos': 1},
-'City':{'ocr_key':'City', 'PageNo': 2, 'TopPos': 1},
-'State':{'ocr_key':'State', 'PageNo': 2, 'TopPos': 1},
-'Zip Code':{'ocr_key':'Zip', 'PageNo': 2, 'TopPos': 1},
-'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 2, 'TopPos': 1},
-'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 2, 'TopPos': 1},
-'Current Citizenship Status_YES':{'ocr_key':'YES','PageNo': 2, 'TopPos': 1},
-'Current Citizenship Status_NO':{'ocr_key': 'NO', 'PageNo': 2, 'TopPos': 1},
-'Citizenship Status at time of Exposure_YES':{'ocr_key':'YES','PageNo':2, 'TopPos': 2},
-'Citizenship Status at time of Exposure_NO':{'ocr_key':'NO','PageNo':2, 'TopPos': 2},
-'Were you married_YES':{'ocr_key': 'YES', 'PageNo': 3, 'TopPos':1},
-'Were you married_NO':{'ocr_key': 'NO', 'PageNo': 3, 'TopPos':1}
-
-}
 db_csv_2_ocr_map_enroll = {}
 db_csv_2_ocr_map_afft = {}
 csv_2_ocr_map_relfull = {}
-
-
-
-#csv_2_ocr_map = csv_2_ocr_map_enroll
 
 def CollapeYESNO(dict):
     ca_Current_Citizenship_Status_Yes = dict.pop('ca_Current_Citizenship_Status_YES', None)
