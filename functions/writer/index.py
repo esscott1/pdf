@@ -7,9 +7,7 @@ from trp import Document
 from dateutil.parser import parse
 import re
 
-db_csv_2_ocr_map_enroll = {}
-db_csv_2_ocr_map_afft = {}
-csv_2_ocr_map_relfull = {}
+
 
 
 #  taking YES and NO and collaping into a single DB field
@@ -100,6 +98,9 @@ def get_connection():
         return None
 
 def read_config():
+    global db_csv_2_ocr_map_enroll = {}
+    global db_csv_2_ocr_map_afft = {}
+    global csv_2_ocr_map_relfull = {}
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
     key = 'ocr_config.json'
