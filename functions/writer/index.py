@@ -34,18 +34,9 @@ db_csv_2_ocr_map_afft = {
 'afft_dob':{'ocr_key':'My Date of Birth', 'PageNo': 1, 'TopPos': 1}
 
 }
+csv_2_ocr_map_relfull = {}
 
-csv_2_ocr_map_relfull = {
-'Claimant First Name': {'ocr_key':'First', 'PageNo': 3, 'TopPos': 1}, 
-'Claimant Last Name': {'ocr_key':'Last', 'PageNo': 3, 'TopPos': 1},
-'City':{'ocr_key':'City', 'PageNo': 3, 'TopPos': 1},
-'State':{'ocr_key':'State', 'PageNo': 3, 'TopPos': 1},
-'Zip Code':{'ocr_key':'Zip', 'PageNo': 3, 'TopPos': 1},
-'Address 1':{'ocr_key':'Street/P.O. B', 'PageNo': 3, 'TopPos': 1},
-'Claimant Date of Birth':{'ocr_key':'(Month/Day/Year)', 'PageNo': 3, 'TopPos': 1},
-'Current Citizenship Status':{'ocr_key':'YES','PageNo': 3, 'TopPos': 1},
-'Citizenship Status at time of Exposure':{'ocr_key':'YES','PageNo':3, 'TopPos': 2}
-}
+
 
 #csv_2_ocr_map = csv_2_ocr_map_enroll
 
@@ -159,6 +150,9 @@ def read_config():
         print('---  ocr enroll map ---')
         print(ocr_maps['db_csv_2_ocr_map_enroll'])
         db_csv_2_ocr_map_enroll = ocr_maps['db_csv_2_ocr_map_enroll']
+        print('--- relful map ---')
+        csv_2_ocr_map_relfull = ocr_maps['csv_2_ocr_map_relfull']
+        print(csv_2_ocr_map_relfull)
 
     except Exception as e:
         print('error reading json config')
