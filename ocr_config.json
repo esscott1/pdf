@@ -6,7 +6,8 @@
             "afft_Address": {"ocr_key":"Address", "PageNo": 1, "TopPos": 1},
             "afft_City_state_zip": {"ocr_key":"City", "PageNo": 1, "TopPos": 1},
             "afft_ssn":{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1},
-            "afft_dob":{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1}
+            "afft_dob":{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1},
+            "during_the_time_period_i_was_exposed_to_roundup_10_20_hour":{"orc_key":"10 - 20 Hours per year on average", "PageNo": 1, "TopPos": 1}
         },
         "db_csv_2_ocr_map_enroll" :
         {

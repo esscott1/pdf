@@ -11,6 +11,7 @@ db_csv_2_ocr_map_enroll = {}
 db_csv_2_ocr_map_afft = {}
 csv_2_ocr_map_relfull = {}
 
+#  taking YES and NO and collaping into a single DB field
 def CollapeYESNO(dict):
     ca_Current_Citizenship_Status_Yes = dict.pop('ca_Current_Citizenship_Status_YES', None)
     ca_Current_Citizenship_Status_No = dict.pop('ca_Current_Citizenship_Status_NO', None)
@@ -64,12 +65,6 @@ def getJobResults(jobId):
 
     return pages
 
-def convert_row_to_list(row):
-    """
-    Helper method to convert a row to a list.
-    """
-    list_of_cells = [cell.text.strip() for cell in row.cells]
-    return list_of_cells
 
 def get_connection():
     """
@@ -202,8 +197,7 @@ def lambda_handler(event, context):
     pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
     print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
-#     print('printing doc location')
-#     print(pdfTextExtractionDocLoc)
+
 
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     print('document name is: '+docname)
@@ -217,7 +211,7 @@ def lambda_handler(event, context):
         csv_2_ocr_map = csv_2_ocr_map_relfull
     if(str(docname).find('AFFT') > -1):
         csv_2_ocr_map = db_csv_2_ocr_map_afft
-
+    print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
 # End logic for getting the correct map based on file name
 #    printresponsetos3(doc)
     all_keys = []
@@ -324,6 +318,9 @@ def printSections(doc):
                 print ('block: '+str(field.key.block))
 
 
+def convert_row_to_list(row):
+    list_of_cells = [cell.text.strip() for cell in row.cells]
+    return list_of_cells
 
 
 
