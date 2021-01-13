@@ -11,6 +11,7 @@ db_csv_2_ocr_map_enroll = {}
 db_csv_2_ocr_map_afft = {}
 csv_2_ocr_map_relfull = {}
 
+
 #  taking YES and NO and collaping into a single DB field
 def CollapeYESNO(dict):
     ca_Current_Citizenship_Status_Yes = dict.pop('ca_Current_Citizenship_Status_YES', None)
@@ -211,6 +212,7 @@ def lambda_handler(event, context):
         csv_2_ocr_map = csv_2_ocr_map_relfull
     if(str(docname).find('AFFT') > -1):
         csv_2_ocr_map = db_csv_2_ocr_map_afft
+        print(f'it is an AFFT doc so using: {db_csv_2_ocr_map_afft}')
     print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
 # End logic for getting the correct map based on file name
 #    printresponsetos3(doc)
