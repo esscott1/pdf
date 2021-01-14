@@ -284,9 +284,9 @@ def lambda_handler(event, context):
                 sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correctField = sorted_field[csv_2_ocr_map[csv_key]['TopPos']-1]
                 correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['Type'])
-            
-               dictrow[csv_key] = correctCleanValueStr
-            
+
+                dictrow[csv_key] = correctCleanValueStr
+
                 if(correctField != None and correctField.value != None):
                     dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
                 else:
