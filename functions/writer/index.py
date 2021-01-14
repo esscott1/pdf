@@ -274,12 +274,12 @@ def lambda_handler(event, context):
 
             lFields = list(es)
             print(f"i found {str(len(lFields))} field objects")
-            tpos = csv_2_ocr_map[csv_key]['TopPos']
-            print(f'looking for position: {tpos}')
-            correctField = None
-            correctCleanValueStr = ''
-            ca_csv_key = 'ca_'+csv_key
             if(len(lFields)>0):
+                tpos = csv_2_ocr_map[csv_key]['TopPos']
+                print(f'looking for position: {tpos}')
+                correctField = None
+                correctCleanValueStr = ''
+                ca_csv_key = 'ca_'+csv_key
                 # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
                 sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correctField = sorted_field[csv_2_ocr_map[csv_key]['TopPos']-1]
