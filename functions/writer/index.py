@@ -17,27 +17,27 @@ def CollapeYESNO(dict):
 
     Current_Citizenship_Status_Yes = dict.pop('Current_Citizenship_Status_YES', None)
     Current_Citizenship_Status_No = dict.pop('Current_Citizenship_Status_NO', None)
-    if(str(Current_Citizenship_Status_Yes) == 'SELECTED'):
+    if(str(Current_Citizenship_Status_Yes) == 'YES'):
         dict["Current_Citizenship_Status"] = 'YES'
-    if(str(Current_Citizenship_Status_No) == 'SELECTED'):
+    if(str(Current_Citizenship_Status_No) == 'YES'):
         dict["Current_Citizenship_Status"] = 'NO'
 
     ca_Citizenship_Status_at_time_of_Exposure_YES = dict.pop('ca_Citizenship_Status_at_time_of_Exposure_YES', None)
     ca_Citizenship_Status_at_time_of_Exposure_NO = dict.pop('ca_Citizenship_Status_at_time_of_Exposure_NO', None)
     Citizenship_Status_at_time_of_Exposure_YES = dict.pop('Citizenship_Status_at_time_of_Exposure_YES', None)
     Citizenship_Status_at_time_of_Exposure_NO = dict.pop('Citizenship_Status_at_time_of_Exposure_NO', None)
-    if(str(Citizenship_Status_at_time_of_Exposure_YES) == 'SELECTED'):
+    if(str(Citizenship_Status_at_time_of_Exposure_YES) == 'YES'):
         dict["Citizenship_Status_at_time_of_Exposure"] = 'YES'
-    if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'SELECTED'):
+    if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'YES'):
         dict["Citizenship_Status_at_time_of_Exposure"] = 'NO'
 
     ca_Were_you_married_YES = dict.pop('ca_Were_you_married_YES', None)
     ca_Were_you_married_NO = dict.pop('ca_Were_you_married_NO', None)
     Were_you_married_YES = dict.pop('Were_you_married_YES', None)
     Were_you_married_NO = dict.pop('Were_you_married_NO', None)
-    if(str(Were_you_married_YES) == 'SELECTED'):
+    if(str(Were_you_married_YES) == 'YES'):
         dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'YES'
-    if(str(Were_you_married_NO) == 'SELECTED'):
+    if(str(Were_you_married_NO) == 'YES'):
         dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'NO'
 
 
