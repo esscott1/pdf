@@ -258,7 +258,8 @@ def lambda_handler(event, context):
 
             lFields = list(es)
             print(f"i found {str(len(lFields))} field objects")
-            print(f'looking for position: {csv_2_ocr_map[csv_key]['TopPos']} with variable type: {type(csv_2_ocr_map[csv_key]['TopPos'])}')
+            tpos = csv_2_ocr_map[csv_key]['TopPos']
+            print(f'looking for position: {tpos}')
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,csv_2_ocr_map[csv_key]['TopPos'],2)
                 ca_csv_key = 'ca_'+csv_key
