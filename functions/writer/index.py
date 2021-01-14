@@ -169,7 +169,8 @@ def CleanDate(dateFieldValue):
         print(f'error cleaning date string provided {datestring}:  error: {e}')
 
     listCleanDateResult = [cleanDateResult, ca_cleanDateResult]
-    return listCleanDateResult
+    #pulling confidence but not using.. might want to use to help determine the appropriate date to return
+    return cleanDateResult
 
 
 def GetFromTheTopofPage(fieldlist, pos, page):
