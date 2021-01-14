@@ -214,7 +214,7 @@ def lambda_handler(event, context):
 
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
-    
+
     print('document name is: '+docname)
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
@@ -254,7 +254,8 @@ def lambda_handler(event, context):
 #        print(pagelines)
 #        print('--- did it print a page line number?')
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
+            if(str(csv_2_ocr_map[csv_key]['PageNo'] = str(pageno)
+                print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
 
             #es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
             es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
@@ -298,11 +299,11 @@ def lambda_handler(event, context):
 
     dictrow['jsondata'] = json_object
     all_values.append(dictrow)
-    try:
-        writetosnstopic(dictrow['Claimant_Social_Security_Number'])
-    except Exception as e:
-        print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
-        print(e)
+    #try:
+    #    writetosnstopic(dictrow['Claimant_Social_Security_Number'])
+    #except Exception as e:
+    #    print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
+    #    print(e)
 
 #    save_orc_to_bucket(all_values, 'testeric')
     connection = get_connection()
