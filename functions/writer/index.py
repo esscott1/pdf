@@ -200,7 +200,7 @@ def get_csv_2_ocr_map(docname):
 def CleanSelectionFieldValue(value):
     result = 'NO'
     print(f'value passed into clean method is {value}')
-    if(value == 'SELECTED'):
+    if(str(value) == 'SELECTED'):
         result = 'YES'
     return result
     
