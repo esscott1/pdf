@@ -40,6 +40,7 @@ def CollapeYESNO(dict):
     if(str(Were_you_married_NO) == 'SELECTED'):
         dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'NO'
 
+
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
@@ -195,6 +196,14 @@ def get_csv_2_ocr_map(docname):
     print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
     return csv_2_ocr_map
 
+
+def CleanSelectionFieldValue(value):
+    result = 'NO'
+    if(value == 'SELECTED'):
+        result = 'YES'
+    return result
+    
+
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
@@ -263,7 +272,10 @@ def lambda_handler(event, context):
             if(len(lFields)>0):
                 correctField = GetFromTheTopofPage(lFields,csv_2_ocr_map[csv_key]['TopPos']-1,2)
                 ca_csv_key = 'ca_'+csv_key
-                print(f'value of correctField is: {correctField.value}')
+                correctCleanValue = correctField.value
+                if(csv_2_ocr_map[csv_key]['Type'] == 'Selection'):
+                    correctCleanValue = CleanSelectionFieldValue(correctField.value)
+                print(f'value of correctField is: {correctField.value} and the correctCleanValue is: {correctCleanValue}')
                 if(csv_key) == 'Claimant_Date_of_Birth':
                     print('trying to clean date')
                     ListcleanDOB = CleanDate(correctField.value)
@@ -271,7 +283,8 @@ def lambda_handler(event, context):
                     dictrow[csv_key] = cleanDOB
                     dictrow[ca_csv_key] = ListcleanDOB[1]
                 else:
-                    dictrow[csv_key] = str(correctField.value)
+                    #dictrow[csv_key] = str(correctField.value)
+                    dictrow[csv_key] = str(correctCleanValue)
 #                    ca_csv_key = 'ca_'+csv_key
                     try:
                         dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
