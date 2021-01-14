@@ -283,11 +283,11 @@ def lambda_handler(event, context):
                 # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
                 sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correctField = sorted_field[csv_2_ocr_map[csv_key]['TopPos']-1]
-
-            correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['Type'])
+                correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['Type'])
+            
             dictrow[csv_key] = correctCleanValueStr
             
-            if(correctField.value != None):
+            if(correctField != None and correctField.value != None):
                 dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
             else:
                 dictrow[ca_csv_key] = '0'
