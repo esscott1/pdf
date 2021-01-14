@@ -285,12 +285,12 @@ def lambda_handler(event, context):
                 correctField = sorted_field[csv_2_ocr_map[csv_key]['TopPos']-1]
                 correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['Type'])
             
-            dictrow[csv_key] = correctCleanValueStr
+               dictrow[csv_key] = correctCleanValueStr
             
-            if(correctField != None and correctField.value != None):
-                dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
-            else:
-                dictrow[ca_csv_key] = '0'
+                if(correctField != None and correctField.value != None):
+                    dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
+                else:
+                    dictrow[ca_csv_key] = '0'
 
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
