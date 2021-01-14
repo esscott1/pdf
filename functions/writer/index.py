@@ -197,11 +197,18 @@ def get_csv_2_ocr_map(docname):
     return csv_2_ocr_map
 
 
-def CleanSelectionFieldValue(value):
-    result = 'NO'
-    print(f'value passed into clean method is {value}')
-    if(str(value) == 'SELECTED'):
-        result = 'YES'
+def CleanSelectionFieldValueToStr(value, valueType):
+    result = ''
+    if(value != None):
+        if(str(valueType) == 'Selection'):
+            result = 'NO'
+            print(f'value passed into clean method is {value}')
+            if(str(value) == 'SELECTED'):
+                result = 'YES'
+        elif(str(valueType) == 'Date'):
+            result = CleanDate(value)
+        else:
+            result = str(value)
     return result
     
 
@@ -257,7 +264,6 @@ def lambda_handler(event, context):
 #                    ssn = str(word)
 #                    ca_ssn = word.confidence
 
-
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(str(csv_2_ocr_map[csv_key]['PageNo']) == str(pageno)):
                 print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr_key'],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['TopPos']),' on Page: ',str(pageno))
@@ -270,28 +276,21 @@ def lambda_handler(event, context):
             print(f"i found {str(len(lFields))} field objects")
             tpos = csv_2_ocr_map[csv_key]['TopPos']
             print(f'looking for position: {tpos}')
+            correctField = None
+            correctCleanValueStr = ''
+            ca_csv_key = 'ca_'+csv_key
             if(len(lFields)>0):
-                correctField = GetFromTheTopofPage(lFields,csv_2_ocr_map[csv_key]['TopPos']-1,2)
-                ca_csv_key = 'ca_'+csv_key
-                correctCleanValue = correctField.value
-                if(csv_2_ocr_map[csv_key]['Type'] == 'Selection'):
-                    correctCleanValue = CleanSelectionFieldValue(correctField.value)
-                print(f'value of correctField is: {correctField.value} and the correctCleanValue is: {correctCleanValue}')
-                if(csv_key) == 'Claimant_Date_of_Birth':
-                    print('trying to clean date')
-                    ListcleanDOB = CleanDate(correctField.value)
-                    cleanDOB = ListcleanDOB[0]
-                    dictrow[csv_key] = cleanDOB
-                    dictrow[ca_csv_key] = ListcleanDOB[1]
-                else:
-                    #dictrow[csv_key] = str(correctField.value)
-                    dictrow[csv_key] = str(correctCleanValue)
-#                    ca_csv_key = 'ca_'+csv_key
-                    try:
-                        dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
-                    except Exception as e:
-                        dictrow[ca_csv_key] = 'error getting confidence, see PDF'
-                        print(f'error getting confidence: {e}')
+                # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
+                sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+                correctField = sorted_field[csv_2_ocr_map[csv_key]['TopPos']-1]
+
+            correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['Type'])
+            dictrow[csv_key] = correctCleanValueStr
+            
+            if(correctField.value != None):
+                dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
+            else:
+                dictrow[ca_csv_key] = '0'
 
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
