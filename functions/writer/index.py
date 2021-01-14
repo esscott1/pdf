@@ -183,6 +183,17 @@ def writetosnstopic(claimantname):
         Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
     print(response)
 
+def get_csv_2_ocr_map(docname):
+    # logic for getting the correct map based on file name
+    if(str(docname).find('ENROLL') > -1):
+        csv_2_ocr_map = db_csv_2_ocr_map_enroll
+    if(str(docname).find('RELFULL') > -1):
+        csv_2_ocr_map = csv_2_ocr_map_relfull
+    if(str(docname).find('AFFT') > -1):
+        csv_2_ocr_map = db_csv_2_ocr_map_afft
+        print(f'it is an AFFT doc so using: {db_csv_2_ocr_map_afft}')
+    print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
+    return csv_2_ocr_map
 
 def lambda_handler(event, context):
     """
@@ -202,19 +213,13 @@ def lambda_handler(event, context):
 
 
     docname = pdfTextExtractionDocLoc['S3ObjectName']
+    csv_2_ocr_map = get_csv_2_ocr_map(docname)
+    
     print('document name is: '+docname)
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
-# logic for getting the correct map based on file name
-    if(str(docname).find('ENROLL') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_enroll
-    if(str(docname).find('RELFULL') > -1):
-        csv_2_ocr_map = csv_2_ocr_map_relfull
-    if(str(docname).find('AFFT') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_afft
-        print(f'it is an AFFT doc so using: {db_csv_2_ocr_map_afft}')
-    print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
+
 # End logic for getting the correct map based on file name
 #    printresponsetos3(doc)
     all_keys = []
