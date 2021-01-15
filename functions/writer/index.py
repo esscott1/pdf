@@ -239,6 +239,33 @@ def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
             dictrow[ca_csv_key] = '0'
     return dictrow
 
+def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
+    es_0 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields)
+    es_1 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][1]['PageNo'] == pageno ,page.form.fields)
+    correctField0 = None
+    correctField1 = None
+    lFields0 = list(es_0)
+    lFields1 = list(es_1)
+    if(len(lFields0)>1):
+        sf0 = sorted(lFields0, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+        correctField0 = sf0[csv_2_ocr_map[csv_key]['orc'][0]['TopPos']-1]
+    if(len(lFields1)>1):
+        sf1 = sorted(lFields1, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+        correctField1 = sf1[csv_2_ocr_map[csv_key]['orc'][1]['TopPos']-1]
+    correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][0]["Type"])
+    correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][1]["Type"])
+    if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
+        if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
+            dictrow[csv_key] = 'YES'
+        elif(correctCleanValueStr1 == 'YES'):
+            dictrow[csv_key] = 'NO'
+        else(correctCleanValueStr0 == 'YES'):
+            dictrow[csv_key] = 'YES and NO'
+    return dictrow
+        
+        
+
+
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
@@ -294,12 +321,13 @@ def lambda_handler(event, context):
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form'):
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-
+            if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
+                dictrow = process_ocr_multiselect(csv_2_ocr_map, csv_key, dictrow, pageno, page)
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
 
-    CollapeYESNO(dictrow)
+    #CollapeYESNO(dictrow)
     print('--- printing dictrow ---')
     print(dictrow)
     try:
