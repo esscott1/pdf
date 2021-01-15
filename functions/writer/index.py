@@ -267,7 +267,7 @@ def lambda_handler(event, context):
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form'):
-                if(str(csv_2_ocr_map[csv_key]['PageNo']) == str(pageno)):
+                if(str(csv_2_ocr_map[csv_key]['ocr'][0]['PageNo']) == str(pageno)):
                     print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr'][0]["ocr_key"],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['ocr'][0]['TopPos']),' on Page: ',str(pageno))
 
                 #es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
