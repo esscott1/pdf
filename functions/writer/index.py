@@ -248,8 +248,8 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     lFields1 = list(es_1)
     if(len(lFields0) != 0 and len(lFields1) != 0):
     #if(len(lFields0)>0):
-        print(f'found {len(lFields0)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key'])}')
-        print(f'found {len(lFields1)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key'])}')
+        print(f"found {len(lFields0)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key'])}")
+        print(f"found {len(lFields1)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key'])}")
         sf0 = sorted(lFields0, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
         correctField0 = sf0[csv_2_ocr_map[csv_key]['orc'][0]['TopPos']-1]
     #if(len(lFields1)>0):
