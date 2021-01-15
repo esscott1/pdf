@@ -256,7 +256,7 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
         sf1 = sorted(lFields1, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
         correctField1 = sf1[csv_2_ocr_map[csv_key]['ocr'][1]['TopPos']-1]
         correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][0]["Type"])
-        correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
+        correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField1.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
         print(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
         print(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
         if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
