@@ -134,6 +134,22 @@ csv_headers = ['Primary Attorney',
 'Additional Notes and Comments'
 ]
 
+ocr_map1  =  {
+'db_csv_2_ocr_map_afft' :
+{
+    'afft_Address': {'Type': 'MultiSelection','ocr':[
+        {'ocr_key' : 'NO', 'PageNo': 1, 'TopPos': 1, 'Type': 'String'},
+        {'ocr_key': 'YES', 'PageNo': 1, 'TopPos': 1, 'Type': 'String'} ]
+        },
+    'afft_City_state_zip': {'Type':'Form', 'ocr':[ {'ocr_key':'City', 'PageNo': 1, 'TopPos': 1, 'Type': 'String'} ]},
+    'afft_ssn':{'ocr_key':'My Social Security', 'PageNo': 1, 'TopPos': 1, 'Type': 'String'},
+    'afft_dob':{'ocr_key':'My Date of Birth', 'PageNo': 1, 'TopPos': 1, 'Type': 'Date'},
+    'during_the_time_period_i_was_exposed_to_roundup_less_than_':{'ocr_key':'10 Hours per year on average', 'PageNo': 1, 'TopPos': 1, 'Type': 'Selection'},
+    'during_the_time_period_i_was_exposed_to_roundup_10_20_hour':{'ocr_key':'- 20 Hours per year on average', 'PageNo': 1, 'TopPos': 1, 'Type': 'Selection'},
+    'during_the_time_period_i_was_exposed_to_roundup_20_40_hour':{'ocr_key':'40 Hours per year on average', 'PageNo': 1, 'TopPos': 1, 'Type': 'Selection'},
+    'during_the_time_period_i_was_exposed_to_roundup_over_40_ho':{'ocr_key':'Over 40 Hours', 'PageNo': 1, 'TopPos': 1, 'Type': 'Selection'}
+}}
+
 class Geometry:
     def __init__(self, boundingBox):
         self._boundingBox = boundingBox
@@ -280,25 +296,48 @@ for page in pages:
             correctField = GetFromTheTop(l,0, page)
             print('adding: '+correctField.value+ ' to dictrow')
             dictrow[csv_key] = correctField.value
+'''
     print('------')
     print('printing dict')
     print('------')
     print(dictrow)
     all_kvp.append(dictrow)
     print(lineNo)
-
+'''
 print('printing dict after method to add')
 collapeYESNO(dictrow)
 json_object = json.dumps(dictrow)
 dictrow['jsondata'] = json_object
-print(dictrow)
+#print(dictrow)
 
-print('--- printing external resources ---')
 
-with open("jsondata1.txt") as data_file:
-    jdata = json.loads(data_file.read())
-    data_file.close()
-print(jdata)
+print('--- printing ocr map1 ---')
+print(f'ocr_map1 is of type {type(ocr_map1)}')
+json_object = json.loads(json.dumps(ocr_map1))
+print('--- print object ---')
+print(json_object['db_csv_2_ocr_map_afft']['afft_Address']['ocr'])
+print(f"the type is: {json_object['db_csv_2_ocr_map_afft']['afft_Address']['Type']}")
+print(f'number of objects in ocr of afft_Address is: ')
+print(len(json_object['db_csv_2_ocr_map_afft']['afft_Address']['ocr']))
+
+print(json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['ocr'])
+print(f'number of objects in ocr of afft_City_state_zip is: ')
+print(len(json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['ocr']))
+print(f"the type is: {json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['Type']}")
+
+print(' ---  more stuff ---')
+for key in json_object["db_csv_2_ocr_map_afft"]:
+    print(f'printing key: {key} and is type: {type(key)} and the json_object is type {type(json_object)}')
+    if(json_object["db_csv_2_ocr_map_afft"][key]["Type"] == 'MultiSelection'):
+        print(f'its a multiselection')
+        print(f'looking for: {json_object["db_csv_2_ocr_map_afft"][key]["ocr"][0]["ocr_key"]}')
+    else:
+        print(f'not a mulitselection')
+        print(f'looking for: {json_object["db_csv_2_ocr_map_afft"][key]["ocr"][0]["ocr_key"]}')
+
+
+
+
 
 #print('---- testing date of birth ----')
 #dob = '01 12611952'

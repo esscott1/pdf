@@ -3,14 +3,18 @@
     {
         "db_csv_2_ocr_map_afft" :
         {
-            "afft_Address": {"ocr_key":"Address", "PageNo": 1, "TopPos": 1, "Type": "String"},
-            "afft_City_state_zip": {"ocr_key":"City", "PageNo": 1, "TopPos": 1, "Type": "String"},
-            "afft_ssn":{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1, "Type": "String"},
-            "afft_dob":{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1, "Type": "Date"},
-            "during_the_time_period_i_was_exposed_to_roundup_less_than_":{"ocr_key":"10 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"},
-            "during_the_time_period_i_was_exposed_to_roundup_10_20_hour":{"ocr_key":"- 20 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"},
-            "during_the_time_period_i_was_exposed_to_roundup_20_40_hour":{"ocr_key":"40 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"},
-            "during_the_time_period_i_was_exposed_to_roundup_over_40_ho":{"ocr_key":"Over 40 Hours", "PageNo": 1, "TopPos": 1, "Type": "Selection"}
+            "afft_Address": {"Type": "Form", "ocr":[{"ocr_key":"Address", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+            "afft_City_state_zip": {"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+            "afft_ssn":{"Type": "Form", "ocr":[{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+            "afft_dob":{"Type": "Form", "ocr":[{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1, "Type": "Date"}]},
+            "during_the_time_period_i_was_exposed_to_roundup_less_than_":{
+				"Type": "Form", "ocr":[{"ocr_key":"10 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},
+            "during_the_time_period_i_was_exposed_to_roundup_10_20_hour":{
+				"Type": "Form", "ocr":[{"ocr_key":"- 20 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},
+            "during_the_time_period_i_was_exposed_to_roundup_20_40_hour":{
+				"Type": "Form", "ocr":[{"ocr_key":"40 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},
+            "during_the_time_period_i_was_exposed_to_roundup_over_40_ho":{
+				"Type": "Form", "ocr":[{"ocr_key":"Over 40 Hours", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]}
         },
         "db_csv_2_ocr_map_enroll" :
         {
@@ -21,6 +25,10 @@
             "Zip_Code":{"ocr_key":"Zip", "PageNo": 2, "TopPos": 1, "Type": "String"},
             "Address_1":{"ocr_key":"Street/P.O. B", "PageNo": 2, "TopPos": 1, "Type": "String"},
             "Claimant_Date_of_Birth":{"ocr_key":"(Month/Day/Year)", "PageNo": 2, "TopPos": 1, "Type": "Date"},
+			
+			"Current_Citizenship_Status":{ "ocr":[{"ocr_key":"YES","PageNo": 2, "TopPos": 1, "Type": "Selection"},
+			{"ocr_key":"NO","PageNo": 2, "TopPos": 1, "Type": "Selection"}]},
+			
             "Current_Citizenship_Status_YES":{"ocr_key":"YES","PageNo": 2, "TopPos": 1, "Type": "Selection"},
             "Current_Citizenship_Status_NO":{"ocr_key": "NO", "PageNo": 2, "TopPos": 1, "Type": "Selection"},
             "Citizenship_Status_at_time_of_Exposure_YES":{"ocr_key":"YES","PageNo":2, "TopPos": 2, "Type": "Selection"},
