@@ -256,14 +256,17 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][1]["Type"])
     print(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
     print(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
-
     if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
         if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
-            dictrow[csv_key] = 'YES'
+            dictrow[csv_key] = 'YES and NO'
         elif(correctCleanValueStr1 == 'YES'):
             dictrow[csv_key] = 'NO'
-        else(correctCleanValueStr0 == 'YES'):
-            dictrow[csv_key] = 'YES and NO'
+        elif(correctCleanValueStr0 == 'YES'):
+            dictrow[csv_key] = 'YES'
+        else:
+            dictrow[csv_key] = ''
+        
+            
     return dictrow
 
 
