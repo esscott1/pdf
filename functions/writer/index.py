@@ -317,7 +317,7 @@ def lambda_handler(event, context):
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form'):
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
             if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
-                dictrow = process_ocr_multiselect(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
