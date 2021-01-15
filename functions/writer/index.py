@@ -246,27 +246,29 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     correctField1 = None
     lFields0 = list(es_0)
     lFields1 = list(es_1)
-    if(len(lFields0)>0):
+    if(len(lFields0) != 0 and len(lFields1) != 0):
+    #if(len(lFields0)>0):
+        print(f'found {len(lFields0)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key'])}')
+        print(f'found {len(lFields1)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key'])}')
         sf0 = sorted(lFields0, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
         correctField0 = sf0[csv_2_ocr_map[csv_key]['orc'][0]['TopPos']-1]
-    if(len(lFields1)>0):
+    #if(len(lFields1)>0):
         sf1 = sorted(lFields1, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
         correctField1 = sf1[csv_2_ocr_map[csv_key]['orc'][1]['TopPos']-1]
-    correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][0]["Type"])
-    correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][1]["Type"])
-    print(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
-    print(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
-    if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
-        if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
-            dictrow[csv_key] = 'YES and NO'
-        elif(correctCleanValueStr1 == 'YES'):
-            dictrow[csv_key] = 'NO'
-        elif(correctCleanValueStr0 == 'YES'):
-            dictrow[csv_key] = 'YES'
-        else:
-            dictrow[csv_key] = ''
-        
-            
+        correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][0]["Type"])
+        correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['orc'][1]["Type"])
+        print(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
+        print(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
+        if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
+            if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
+                dictrow[csv_key] = 'YES and NO'
+            elif(correctCleanValueStr1 == 'YES'):
+                dictrow[csv_key] = 'NO'
+            elif(correctCleanValueStr0 == 'YES'):
+                dictrow[csv_key] = 'YES'
+            else:
+                dictrow[csv_key] = ''
+
     return dictrow
 
 
@@ -325,8 +327,10 @@ def lambda_handler(event, context):
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form'):
+                print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
             if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
+                print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
