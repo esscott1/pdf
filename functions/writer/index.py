@@ -212,6 +212,32 @@ def CleanSelectionFieldValueToStr(value, valueType):
             result = str(value)
     return result
     
+def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
+    
+        #es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
+    es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields) 
+#            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
+
+    lFields = list(es)
+    print(f"i found {str(len(lFields))} field objects")
+    if(len(lFields)>0):
+        tpos = csv_2_ocr_map[csv_key]['ocr'][0]['TopPos']
+        print(f'looking for position: {tpos}')
+        correctField = None
+        correctCleanValueStr = ''
+        ca_csv_key = 'ca_'+csv_key
+        # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
+        sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+        correctField = sorted_field[csv_2_ocr_map[csv_key]['ocr'][0]['TopPos']-1]
+        correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
+
+        dictrow[csv_key] = correctCleanValueStr
+
+        if(correctField != None and correctField.value != None):
+            dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
+        else:
+            dictrow[ca_csv_key] = '0'
+    return dictrow
 
 def lambda_handler(event, context):
     """
@@ -256,8 +282,8 @@ def lambda_handler(event, context):
         print('---- page ',str(pageno),' ----',)
 
         lineNo = -1
-        for line in page.lines:
-            lineNo += 1
+#        for line in page.lines:
+#            lineNo += 1
 #            for word in line.words:  # update to read CSV and pull page number to avoid dups.
 #                if re.search('-..-',str(word)):
 #                    print(f'--- found -??- in word: {word} on line {lineNo}')
@@ -267,6 +293,8 @@ def lambda_handler(event, context):
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form'):
+                dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+'''
                 if(str(csv_2_ocr_map[csv_key]['ocr'][0]['PageNo']) == str(pageno)):
                     print('Looking for csv_key is: ',csv_key,' | ocr key: ', csv_2_ocr_map[csv_key]['ocr'][0]["ocr_key"],' | at TopPos: ', str(csv_2_ocr_map[csv_key]['ocr'][0]['TopPos']),' on Page: ',str(pageno))
 
@@ -293,7 +321,7 @@ def lambda_handler(event, context):
                         dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
                     else:
                         dictrow[ca_csv_key] = '0'
-
+'''
     dictrow['Claimant_Social_Security_Number'] = ssn
     dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
