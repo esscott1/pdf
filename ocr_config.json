@@ -1,6 +1,25 @@
 {
     "ocr_maps":
     {
+		"db_csv_2_ocr_map_lygdaa":
+		{
+			"First_Name":{"Type": "Form", "ocr":[{"ocr_key":"Officer's First Name:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Last_Name":{"Type": "Form", "ocr":[{"ocr_key":"Officer's Last Name", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Middle_Name":{"Type": "Form", "ocr":[{"ocr_key":"MI:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Address1":{"Type": "Form", "ocr":[{"ocr_key":"Address 1", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Address2":{"Type": "Form", "ocr":[{"ocr_key":"Address 2", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"City":{"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"State":{"Type": "Form", "ocr":[{"ocr_key":"Stata", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Zip":{"Type": "Form", "ocr":[{"ocr_key":"ZIP", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Day_Phone":{"Type": "Form", "ocr":[{"ocr_key":"Day Phone", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Evening_Phone":{"Type": "Form", "ocr":[{"ocr_key":"Evening Phone", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Email_Address":{"Type": "Form", "ocr":[{"ocr_key":"Email Address", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Employee_Id":{"Type": "Form", "ocr":[{"ocr_key":"City of Dallas Employee Id No", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"SSN":{"Type": "Form", "ocr":[{"ocr_key":"Social Security No", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Employment_Beginning_Date":{"Type": "Form", "ocr":[{"ocr_key":"Beginning Date:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Employment_Ending_Date":{"Type": "Form", "ocr":[{"ocr_key":"Ending Date:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+			"Applicable_Class":{"Type": "Form", "ocr":[{"ocr_key":"Circle Applicable Class:", "PageNo": 1, "TopPos": 1, "Type": "String"}]}
+		},
         "db_csv_2_ocr_map_afft" :
         {
             "afft_Address": {"Type": "Form", "ocr":[{"ocr_key":"Address", "PageNo": 1, "TopPos": 1, "Type": "String"}]},

@@ -126,7 +126,7 @@ def read_config():
         db_csv_2_ocr_map_afft = ocr_maps['db_csv_2_ocr_map_afft']
         print('----  affidatite map ---')
         print(db_csv_2_ocr_map_afft)
-                db_csv_2_ocr_map_lygdaa = ocr_maps['db_csv_2_ocr_map_lygdaa']
+            db_csv_2_ocr_map_lygdaa = ocr_maps['db_csv_2_ocr_map_lygdaa']
         print('----  lygdaa Dallas map ---')
         print(db_csv_2_ocr_map_lygdaa)
 
@@ -136,7 +136,7 @@ def read_config():
 
 
 
-def write_dict_to_db(mydict, connection):
+cd def write_dict_to_db(mydict, connection):
     """
     Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
     """
