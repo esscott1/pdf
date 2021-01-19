@@ -102,6 +102,7 @@ def read_config():
     global db_csv_2_ocr_map_enroll
     global db_csv_2_ocr_map_afft
     global csv_2_ocr_map_relfull
+    global db_csv_2_ocr_map_lygdaa
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
     key = 'ocr_config.json'
@@ -125,6 +126,9 @@ def read_config():
         db_csv_2_ocr_map_afft = ocr_maps['db_csv_2_ocr_map_afft']
         print('----  affidatite map ---')
         print(db_csv_2_ocr_map_afft)
+                db_csv_2_ocr_map_lygdaa = ocr_maps['db_csv_2_ocr_map_lygdaa']
+        print('----  lygdaa Dallas map ---')
+        print(db_csv_2_ocr_map_lygdaa)
 
     except Exception as e:
         print('error reading json config')
@@ -194,6 +198,9 @@ def get_csv_2_ocr_map(docname):
     if(str(docname).find('AFFT') > -1):
         csv_2_ocr_map = db_csv_2_ocr_map_afft
         print(f'it is an AFFT doc so using: {db_csv_2_ocr_map_afft}')
+    if(str(docname).find('LYGDAA') > -1):
+        csv_2_ocr_map = db_csv_2_ocr_map_lygdaa
+        print(f'it is an LYGDAA doc from Dallas docket so using: {db_csv_2_ocr_map_lygdaa}')
     print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
     return csv_2_ocr_map
 
@@ -368,14 +375,14 @@ def lambda_handler(event, context):
 #    print(dictrow)
 #    printSections(doc)
 
-def printSections(doc):
-    print('trying to print out SelectionElement:')
-    for page in doc.pages:
-        for field in page.form.fields:
-            if str(field.value) == 'SELECTED':
-                print('checkbox: '+str(field.key)+' is: '+str(field.value))
-                print(' with confidence: '+str(field.key.confidence))
-                print ('block: '+str(field.key.block))
+#def printSections(doc):
+#    print('trying to print out SelectionElement:')
+#    for page in doc.pages:
+#        for field in page.form.fields:
+#            if str(field.value) == 'SELECTED':
+#                print('checkbox: '+str(field.key)+' is: '+str(field.value))
+#                print(' with confidence: '+str(field.key.confidence))
+#                print ('block: '+str(field.key.block))
 
 
 def convert_row_to_list(row):

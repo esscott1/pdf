@@ -18,6 +18,8 @@
         },
         "db_csv_2_ocr_map_enroll" :
         {
+			"roundup_enrollment_form_i_elect_to_participate_in_the_roun": {
+				"Type": "Form", "ocr":[{"ocr_key":"I elect to participate in the", "PageNo": 2, "TopPos": 1, "Type": "Selection"}]}, 
             "Claimant_First_Name": {
 				"Type": "Form", "ocr":[{"ocr_key":"First", "PageNo": 2, "TopPos": 1, "Type": "String"}]}, 
             "Claimant_Last_Name": {
