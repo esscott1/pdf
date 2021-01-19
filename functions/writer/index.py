@@ -136,7 +136,7 @@ def read_config():
 
 
 
-cd def write_dict_to_db(mydict, connection):
+def write_dict_to_db(mydict, connection):
     """
     Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
     """
