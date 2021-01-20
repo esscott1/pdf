@@ -1,4 +1,7 @@
 {
+	"ocr_table_maps":{
+		"db_csv_2_ocr_map_lygdaa":""
+	},
     "ocr_maps":
     {
 		"db_csv_2_ocr_map_lygdaa":

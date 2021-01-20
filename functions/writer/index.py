@@ -220,11 +220,8 @@ def CleanSelectionFieldValueToStr(value, valueType):
     return result
     
 def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
-    
-        #es = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
-    es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields) 
-#            selections = filter(lambda x: str(x.key).startswith(str(csv_2_ocr_map[csv_key]['ocr_key'])) and  csv_2_ocr_map[csv_key]['PageNo'] == pageno ,page.form.fields) 
 
+    es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields) 
     lFields = list(es)
     print(f"i found {str(len(lFields))} field objects")
     if(len(lFields)>0):
@@ -278,6 +275,14 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
     return dictrow
 
+def get_tablename(docname):
+    result = ''
+    tablefilemaps = ocr_config_json["ocr_table_file_maps"]
+    for map in tablefilemaps:
+        rex = map["fileregex"]
+        if(str(docname).find(str(rex)) > -1):
+            result = str(map["table"])
+    return result
 
 
 def lambda_handler(event, context):
@@ -299,8 +304,10 @@ def lambda_handler(event, context):
 
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
+    tablename = get_tablename(docname)
 
     print('document name is: '+docname)
+    print(f'content of document should print to table name: {tablename}')
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
