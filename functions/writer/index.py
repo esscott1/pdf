@@ -103,6 +103,7 @@ def read_config():
     global db_csv_2_ocr_map_afft
     global csv_2_ocr_map_relfull
     global db_csv_2_ocr_map_lygdaa
+    global ocr_config_json
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
     key = 'ocr_config.json'
