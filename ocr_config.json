@@ -1,6 +1,15 @@
 {
-	"ocr_table_maps":{
-		"db_csv_2_ocr_map_lygdaa":""
+	"ocr_table_file_maps":{
+		"db_csv_2_ocr_map_lygdaa":{
+			"table":"dallas_test",
+			"fileregex": "LYGDAA"},
+		"db_csv_2_ocr_map_afft" :
+		{"table":"ca_packet",
+			"fileregex": "afft"},
+		
+		"db_csv_2_ocr_map_enroll": 
+		{"table":"ca_packet",
+			"fileregex": "enroll"}
 	},
     "ocr_maps":
     {

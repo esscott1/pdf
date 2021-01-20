@@ -279,6 +279,8 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 def get_tablename(docname):
     result = ''
     tablefilemaps = ocr_config_json["ocr_table_file_maps"]
+    print('---  tablefilemaps ---')
+    print(tablefilemaps)
     for map in tablefilemaps:
         rex = map["fileregex"]
         if(str(docname).find(str(rex)) > -1):
