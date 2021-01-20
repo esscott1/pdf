@@ -110,7 +110,7 @@ def read_config():
     try:
         response = s3.get_object(Bucket = bucket, Key = key)
         content = response['Body']
-        ocr_config_json = json.loads(content.read())
+        global ocr_config_json = json.loads(content.read())
         ocr_maps = ocr_config_json["ocr_maps"]
         print('--- printing config info ---')
 
