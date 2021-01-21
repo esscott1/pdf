@@ -311,6 +311,8 @@ def lambda_handler(event, context):
     for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
         if(str(docname).find(snippet) > -1):
             print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
+            omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
+            print(f'map should by {configDict["ocr_maps"][omap]}')
 
 
     print('document name is: '+docname)
