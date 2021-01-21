@@ -35,10 +35,7 @@ def lambda_handler(event, context):
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = unquote_plus(event['Records'][0]['s3']['object']['key'])
-    print(f'bucket is: {bucket}')
-    print(f'key is: {key}')
     jobkey = key.replace('/','_')
-    print(f'jobkey is: {jobkey}')
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
         try:
