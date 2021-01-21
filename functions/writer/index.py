@@ -195,20 +195,16 @@ def writetosnstopic(claimantname):
         Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
     print(response)
 
-def get_csv_2_ocr_map(docname):
+def get_csv_2_ocr_map(docname,configDict):
     # logic for getting the correct map based on file name
-    if(str(docname).find('ENROLL') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_enroll
-    if(str(docname).find('RELFULL') > -1):
-        csv_2_ocr_map = csv_2_ocr_map_relfull
-    if(str(docname).find('AFFT') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_afft
-        print(f'it is an AFFT doc so using: {db_csv_2_ocr_map_afft}')
-    if(str(docname).find('LYGDAA') > -1):
-        csv_2_ocr_map = db_csv_2_ocr_map_lygdaa
-        print(f'it is an LYGDAA doc from Dallas docket so using: {db_csv_2_ocr_map_lygdaa}')
-    print(f'the csv_2_ocr_map is: {csv_2_ocr_map}')
-    return csv_2_ocr_map
+    result = {}
+    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
+    if(str(docname).find(snippet) > -1):
+        print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
+        omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
+        print(f'map should by {configDict["ocr_maps"][omap]}')
+        result = configDict["ocr_maps"][omap]
+    return result
 
 
 def CleanSelectionFieldValueToStr(value, valueType):
@@ -306,14 +302,14 @@ def lambda_handler(event, context):
     tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
     print(f'---- table name from config Dict is: {tablename} ----')
 
-    #csv_2_ocr_map = get_csv_2_ocr_map(docname)
+    csv_2_ocr_map = get_csv_2_ocr_map(docname,configDict)
 
-    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
-        if(str(docname).find(snippet) > -1):
-            print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
-            omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
-            print(f'map should by {configDict["ocr_maps"][omap]}')
-            csv_2_ocr_map = configDict["ocr_maps"][omap]
+#    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
+#        if(str(docname).find(snippet) > -1):
+#            print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
+#            omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
+#            print(f'map should by {configDict["ocr_maps"][omap]}')
+#            csv_2_ocr_map = configDict["ocr_maps"][omap]
 
 
     print('document name is: '+docname)
