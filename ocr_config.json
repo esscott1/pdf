@@ -1,4 +1,10 @@
 {
+	"s3_prefix_table_map":
+	{
+		"dallas":"dallas_test",
+		"dbj": "ca_packet"
+	},
+	
 	"ocr_table_file_maps":{
 		"db_csv_2_ocr_map_lygdaa":{
 			"table":"dallas_test",

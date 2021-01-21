@@ -98,6 +98,9 @@ def get_connection():
         print ("While connecting failed due to :{0}".format(str(e)))
         return None
 
+'''
+Returns a dictionanry of KVP that are in the json config file
+'''
 def read_config():
     global db_csv_2_ocr_map_enroll
     global db_csv_2_ocr_map_afft
@@ -130,6 +133,7 @@ def read_config():
         db_csv_2_ocr_map_lygdaa = ocr_maps['db_csv_2_ocr_map_lygdaa']
         print('----  lygdaa Dallas map ---')
         print(db_csv_2_ocr_map_lygdaa)
+        return ocr_config_json
 
     except Exception as e:
         print('error reading json config')
@@ -293,7 +297,7 @@ def lambda_handler(event, context):
     If the Status is SUCCEEDED then create a dict of the values and write those to the RDS database.
     """
 
-    read_config()
+    configDict = read_config()
     notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
     
     pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
@@ -307,7 +311,8 @@ def lambda_handler(event, context):
     print(f'----  Job Tag ----')
     print(pdfTextExtractionJobTag)
 
-
+    tablename = pdfTextExtractionDocLoc[0:pdfTextExtractionDocLoc.find('/')]
+    print(f'---- table name from config Dict is: {tablename} ----')
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
     tablename = get_tablename(docname)

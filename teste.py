@@ -2,6 +2,7 @@ import csv
 import json
 from dateutil.parser import parse
 import pkg_resources
+import re
 
 csv_headers = ['Primary Attorney',
 'HTX ARCHER ID',
@@ -340,15 +341,20 @@ print(f'number of objects in ocr of afft_City_state_zip is: ')
 print(len(json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['ocr']))
 print(f"the type is: {json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['Type']}")
 
-print(' ---  more stuff ---')
-for key in json_object["db_csv_2_ocr_map_afft"]:
-    print(f'printing key: {key} and is type: {type(key)} and the json_object is type {type(json_object)}')
-    if(json_object["db_csv_2_ocr_map_afft"][key]["Type"] == 'MultiSelection'):
-        print(f'its a multiselection')
-        print(f'looking for: {json_object["db_csv_2_ocr_map_afft"][key]["ocr"][0]["ocr_key"]}')
-    else:
-        print(f'not a mulitselection')
-        print(f'looking for: {json_object["db_csv_2_ocr_map_afft"][key]["ocr"][0]["ocr_key"]}')
+
+print('----')
+print('----')
+print('----')
+print('parsing s3 prefix')
+s3Name = 'dallas/LYGDAA10207-CF--201901021834.pdf'
+print(f'S3Object name is: {s3Name}')
+sindex = s3Name.find('/')
+print(f'sindex is: {sindex}')
+prefix = s3Name[0:s3Name.find('/')]
+print (f'Prefix variable is {prefix}')
+print(f'prefix is: {s3Name[0:sindex]}')
+#prefix = str.startswith(s3Name,beg=0,end=sindex)
+#print(f'prefix is: {prefix}')
 
 
 
