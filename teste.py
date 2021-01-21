@@ -135,6 +135,18 @@ csv_headers = ['Primary Attorney',
 ]
 
 ocr_map1  =  {
+    'ocr_table_file_maps':{
+		'db_csv_2_ocr_map_lygdaa':{
+			'table':'dallas_test',
+			'fileregex': 'LYGDAA'},
+		'db_csv_2_ocr_map_afft' :
+		{'table':'ca_packet',
+			'fileregex': 'afft'},
+		
+		'db_csv_2_ocr_map_enroll': 
+		{'table':'ca_packet',
+			'fileregex': 'enroll'}
+	},
 'db_csv_2_ocr_map_afft' :
 {
     'afft_Address': {'Type': 'MultiSelection','ocr':[
@@ -314,12 +326,15 @@ dictrow['jsondata'] = json_object
 print('--- printing ocr map1 ---')
 print(f'ocr_map1 is of type {type(ocr_map1)}')
 json_object = json.loads(json.dumps(ocr_map1))
-print('--- print object ---')
-print(json_object['db_csv_2_ocr_map_afft']['afft_Address']['ocr'])
-print(f"the type is: {json_object['db_csv_2_ocr_map_afft']['afft_Address']['Type']}")
-print(f'number of objects in ocr of afft_Address is: ')
-print(len(json_object['db_csv_2_ocr_map_afft']['afft_Address']['ocr']))
-
+print('--- print ocr_table_file_maps object ---')
+print(json_object['ocr_table_file_maps'])
+print('------')
+print('--- print db_csv_2_ocr_map_lygdaa object ---')
+print(json_object['ocr_table_file_maps']['db_csv_2_ocr_map_lygdaa'])
+print('------')
+print('--- print fileregex object ---')
+print(json_object['ocr_table_file_maps']['db_csv_2_ocr_map_lygdaa']["fileregex"])
+print('------')
 print(json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['ocr'])
 print(f'number of objects in ocr of afft_City_state_zip is: ')
 print(len(json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip']['ocr']))
