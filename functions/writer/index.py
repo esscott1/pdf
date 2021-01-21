@@ -195,7 +195,7 @@ def writetosnstopic(claimantname):
         Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
     print(response)
 
-def get_csv_2_ocr_map(docname,configDict):
+def get_csv_2_ocr_map(docname,configDict, prefixName):
     # logic for getting the correct map based on file name
     result = {}
     for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
@@ -302,7 +302,7 @@ def lambda_handler(event, context):
     tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
     print(f'---- table name from config Dict is: {tablename} ----')
 
-    csv_2_ocr_map = get_csv_2_ocr_map(docname,configDict)
+    csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
 
 #    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
 #        if(str(docname).find(snippet) > -1):
