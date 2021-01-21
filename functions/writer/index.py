@@ -356,12 +356,12 @@ def lambda_handler(event, context):
     #CollapeYESNO(dictrow)
     print('--- printing dictrow ---')
     print(dictrow)
-    #try:
+    try:
     #    print('tring to dumps and print json')
-    #    json_object = json.dumps(dictrow, indent = 2)
+        json_object = json.dumps(dictrow, indent = 2)
     #    print(json_object)
-    #except Exception as e:
-    #    print(f'--- error print json: {e}')
+    except Exception as e:
+        print(f'--- error print json: {e}')
     #    #dictrow['jsondata']=json_object
 
     dictrow['jsondata'] = json_object
