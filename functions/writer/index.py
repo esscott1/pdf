@@ -317,7 +317,7 @@ def lambda_handler(event, context):
     print(f'---- table name from config Dict is: {tablename} ----')
 
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
-    tablename = get_tablename(docname)
+    #tablename = get_tablename(docname)
 
     print('document name is: '+docname)
     print(f'content of document should print to table name: {tablename}')
