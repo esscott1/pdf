@@ -286,8 +286,9 @@ def get_tablename(docname):
         print(type(map))
         rex = tablefilemaps[map]["fileregex"]
         print(f'--- rex is: {rex}')
-        #if(str(docname).find(str(rex)) > -1):
-        #result = str(map["table"])
+        if(str(docname).find(str(rex)) > -1):
+            result = str(tablefilemaps[map]["table"])
+    
     return result
 
 
