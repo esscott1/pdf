@@ -302,6 +302,10 @@ def lambda_handler(event, context):
     pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
     print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
+    print(f'----  Document Location ----')
+    print(pdfTextExtractionDocLoc)
+        print(f'----  Job Tag ----')
+    print(pdfTextExtractionJobTag)
 
 
     docname = pdfTextExtractionDocLoc['S3ObjectName']
