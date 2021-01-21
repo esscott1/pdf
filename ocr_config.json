@@ -5,16 +5,17 @@
 			"table":"dallas_test",
 			"filename_ocrmap":
 			{
-				"enroll":"db_csv_2_ocr_map_enroll",
-				"relfull": "csv_2_ocr_map_relfull",
-				"afft":"db_csv_2_ocr_map_afft"
+				"LYGDAA":"db_csv_2_ocr_map_lygdaa"
 			}
 		},
 		"dbj": {
 			"table": "ca_packet",
 			"filename_ocrmap":
 			{
-				"LYGDAA":"db_csv_2_ocr_map_lygdaa"
+				"ENROLL":"db_csv_2_ocr_map_enroll",
+				"RELFULL": "csv_2_ocr_map_relfull",
+				"AFFT":"db_csv_2_ocr_map_afft"
+				
 			}
 		}
 	},

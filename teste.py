@@ -136,6 +136,25 @@ csv_headers = ['Primary Attorney',
 ]
 
 ocr_map1  =  {
+    's3_prefix_table_map':
+	{
+		'dallas':{
+			'table':'dallas_test',
+			'filename_ocrmap':
+			{
+				'enroll':'db_csv_2_ocr_map_enroll',
+				'relfull': 'csv_2_ocr_map_relfull',
+				'afft':'db_csv_2_ocr_map_afft'
+			}
+		},
+		'dbj': {
+			'table': 'ca_packet',
+			'filename_ocrmap':
+			{
+				'LYGDAA':'db_csv_2_ocr_map_lygdaa'
+			}
+		}
+	},
     'ocr_table_file_maps':{
 		'db_csv_2_ocr_map_lygdaa':{
 			'table':'dallas_test',
@@ -343,16 +362,11 @@ print(f"the type is: {json_object['db_csv_2_ocr_map_afft']['afft_City_state_zip'
 
 
 print('----')
-print('----')
-print('----')
-print('parsing s3 prefix')
-s3Name = 'dallas/LYGDAA10207-CF--201901021834.pdf'
-print(f'S3Object name is: {s3Name}')
-sindex = s3Name.find('/')
-print(f'sindex is: {sindex}')
-prefix = str(s3Name)[0:str(s3Name).find('/')]
-print (f'Prefix variable is {prefix}')
-print(f'prefix is: {s3Name[0:sindex]}')
+json_dict = json.loads(json.dumps(ocr_map1))
+print(type(json_dict))
+for snippet in json_dict["s3_prefix_table_map"]["dallas"]["filename_ocrmap"]:
+    print(f'snippet is {snippet}')
+    print(json_dict["s3_prefix_table_map"]["dallas"]["filename_ocrmap"][snippet])
 #prefix = str.startswith(s3Name,beg=0,end=sindex)
 #print(f'prefix is: {prefix}')
 

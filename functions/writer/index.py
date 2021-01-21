@@ -308,6 +308,10 @@ def lambda_handler(event, context):
 
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
 
+    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
+        if(str(docname).find(snippet) > -1):
+            print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
+
 
     print('document name is: '+docname)
     print(f'content of document should print to table name: {tablename}')
