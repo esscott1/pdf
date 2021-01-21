@@ -1,8 +1,21 @@
 {
 	"s3_prefix_table_map":
 	{
-		"dallas":"dallas_test",
-		"dbj": "ca_packet"
+		"dallas":{
+			"table":"dallas_test",
+			"filename_ocrmap":
+			{
+				"enroll":"db_csv_2_ocr_map_enroll",
+				"relfull": "csv_2_ocr_map_relfull",
+				"afft":"db_csv_2_ocr_map_afft"
+			}
+		},
+		"dbj": {
+			"table": "ca_packet",
+			"filename_ocrmap":
+			{
+				"LYGDAA":"db_csv_2_ocr_map_lygdaa"
+			}
 	},
 	
 	"ocr_table_file_maps":{

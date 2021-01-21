@@ -281,16 +281,6 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
     return dictrow
 
-def get_tablename(docname):
-    result = ''
-    tablefilemaps = ocr_config_json["ocr_table_file_maps"]
-    for map in tablefilemaps:
-        rex = tablefilemaps[map]["fileregex"]
-        if(str(docname).find(str(rex)) > -1):
-            result = str(tablefilemaps[map]["table"])
-    return result
-
-
 def lambda_handler(event, context):
     """
     Get Extraction Status, JobTag and JobId from SNS. 
@@ -313,11 +303,11 @@ def lambda_handler(event, context):
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     prefixName = docname[0:docname.find('/')]
     print(f'prefix name is {prefixName}')
-    tablename = configDict["s3_prefix_table_map"][prefixName]
+    tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
     print(f'---- table name from config Dict is: {tablename} ----')
 
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
-    #tablename = get_tablename(docname)
+
 
     print('document name is: '+docname)
     print(f'content of document should print to table name: {tablename}')
