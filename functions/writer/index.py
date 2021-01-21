@@ -137,11 +137,12 @@ def read_config():
 
 
 
-def write_dict_to_db(mydict, connection):
+def write_dict_to_db(mydict, connection, tablename):
     """
     Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
     """
-    DBTable = os.environ.get('TableName')
+    #DBTable = os.environ.get('TableName')
+    DBTable = tablename
     cursor = connection.cursor()
     placeholders = ', '.join(['%s'] * len(mydict))
     columns = ', '.join(mydict.keys())
@@ -279,16 +280,10 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 def get_tablename(docname):
     result = ''
     tablefilemaps = ocr_config_json["ocr_table_file_maps"]
-    print('---  tablefilemaps ---')
-    print(tablefilemaps)
     for map in tablefilemaps:
-        print(map)
-        print(type(map))
         rex = tablefilemaps[map]["fileregex"]
-        print(f'--- rex is: {rex}')
         if(str(docname).find(str(rex)) > -1):
             result = str(tablefilemaps[map]["table"])
-    
     return result
 
 
@@ -381,7 +376,7 @@ def lambda_handler(event, context):
     for dictionary in all_values:
         print('writing this to DB')
         print(dictionary)
-        write_dict_to_db(dictionary, connection)
+        write_dict_to_db(dictionary, connection, tablename)
     print('trying to read config')
 
 
