@@ -199,11 +199,11 @@ def get_csv_2_ocr_map(docname,configDict):
     # logic for getting the correct map based on file name
     result = {}
     for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
-    if(str(docname).find(snippet) > -1):
-        print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
-        omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
-        print(f'map should by {configDict["ocr_maps"][omap]}')
-        result = configDict["ocr_maps"][omap]
+        if(str(docname).find(snippet) > -1):
+            print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
+            omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
+            print(f'map should by {configDict["ocr_maps"][omap]}')
+            result = configDict["ocr_maps"][omap]
     return result
 
 
