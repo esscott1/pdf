@@ -350,7 +350,7 @@ s3Name = 'dallas/LYGDAA10207-CF--201901021834.pdf'
 print(f'S3Object name is: {s3Name}')
 sindex = s3Name.find('/')
 print(f'sindex is: {sindex}')
-prefix = s3Name[0:s3Name.find('/')]
+prefix = str(s3Name)[0:str(s3Name).find('/')]
 print (f'Prefix variable is {prefix}')
 print(f'prefix is: {s3Name[0:sindex]}')
 #prefix = str.startswith(s3Name,beg=0,end=sindex)

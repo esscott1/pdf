@@ -311,7 +311,7 @@ def lambda_handler(event, context):
     print(f'----  Job Tag ----')
     print(pdfTextExtractionJobTag)
 
-    tablename = pdfTextExtractionDocLoc[0:pdfTextExtractionDocLoc.find('/')]
+    tablename = str(pdfTextExtractionDocLoc)[0:str(pdfTextExtractionDocLoc).find('/')]
     print(f'---- table name from config Dict is: {tablename} ----')
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     csv_2_ocr_map = get_csv_2_ocr_map(docname)
