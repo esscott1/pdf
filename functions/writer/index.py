@@ -304,7 +304,7 @@ def lambda_handler(event, context):
     print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
     print(f'----  Document Location ----')
     print(pdfTextExtractionDocLoc)
-        print(f'----  Job Tag ----')
+    print(f'----  Job Tag ----')
     print(pdfTextExtractionJobTag)
 
 
