@@ -282,9 +282,10 @@ def get_tablename(docname):
     print('---  tablefilemaps ---')
     print(tablefilemaps)
     for map in tablefilemaps:
-        rex = map["fileregex"]
-        if(str(docname).find(str(rex)) > -1):
-            result = str(map["table"])
+        print(map)
+        #rex = map["fileregex"]
+        #if(str(docname).find(str(rex)) > -1):
+        #result = str(map["table"])
     return result
 
 
