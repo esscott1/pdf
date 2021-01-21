@@ -283,7 +283,8 @@ def get_tablename(docname):
     print(tablefilemaps)
     for map in tablefilemaps:
         print(map)
-        #rex = map["fileregex"]
+        rex = tablefilemaps["ocr_table_file_maps"][map]["fileregex"]
+        print(f'--- rex is: {rex}')
         #if(str(docname).find(str(rex)) > -1):
         #result = str(map["table"])
     return result
