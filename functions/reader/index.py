@@ -37,6 +37,8 @@ def lambda_handler(event, context):
     key = unquote_plus(event['Records'][0]['s3']['object']['key'])
     print(f'bucket is: {bucket}')
     print(f'key is: {key}')
+    jobkey = key.replace('/','_')
+    print(f'jobkey is: {jobkey}')
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
         try:
@@ -48,7 +50,7 @@ def lambda_handler(event, context):
                     'Name': key
                 }
             },
-            JobTag=key + '_Job',
+            JobTag=jobkey + '_Job',
             FeatureTypes=[
                 'FORMS'
             ],
