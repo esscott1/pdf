@@ -7,6 +7,7 @@ import io
 from boto3.dynamodb.types import TypeSerializer
 import pymongo
 import sys
+from urllib.parse import unquote_plus
 
 
 def saveToDynamodb(data):
@@ -33,7 +34,7 @@ def lambda_handler(event, context):
 
     # Get the object from the event and show its content type
     bucket = event['Records'][0]['s3']['bucket']['name']
-    key = event['Records'][0]['s3']['object']['key']
+    key = unquote_plus(event['Records'][0]['s3']['object']['key'])
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
         try:
