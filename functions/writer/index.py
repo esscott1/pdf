@@ -8,39 +8,6 @@ from dateutil.parser import parse
 import re
 
 
-
-
-#  taking YES and NO and collaping into a single DB field
-def CollapeYESNO(dict):
-    ca_Current_Citizenship_Status_Yes = dict.pop('ca_Current_Citizenship_Status_YES', None)
-    ca_Current_Citizenship_Status_No = dict.pop('ca_Current_Citizenship_Status_NO', None)
-
-    Current_Citizenship_Status_Yes = dict.pop('Current_Citizenship_Status_YES', None)
-    Current_Citizenship_Status_No = dict.pop('Current_Citizenship_Status_NO', None)
-    if(str(Current_Citizenship_Status_Yes) == 'YES'):
-        dict["Current_Citizenship_Status"] = 'YES'
-    if(str(Current_Citizenship_Status_No) == 'YES'):
-        dict["Current_Citizenship_Status"] = 'NO'
-
-    ca_Citizenship_Status_at_time_of_Exposure_YES = dict.pop('ca_Citizenship_Status_at_time_of_Exposure_YES', None)
-    ca_Citizenship_Status_at_time_of_Exposure_NO = dict.pop('ca_Citizenship_Status_at_time_of_Exposure_NO', None)
-    Citizenship_Status_at_time_of_Exposure_YES = dict.pop('Citizenship_Status_at_time_of_Exposure_YES', None)
-    Citizenship_Status_at_time_of_Exposure_NO = dict.pop('Citizenship_Status_at_time_of_Exposure_NO', None)
-    if(str(Citizenship_Status_at_time_of_Exposure_YES) == 'YES'):
-        dict["Citizenship_Status_at_time_of_Exposure"] = 'YES'
-    if(str(Citizenship_Status_at_time_of_Exposure_NO) == 'YES'):
-        dict["Citizenship_Status_at_time_of_Exposure"] = 'NO'
-
-    ca_Were_you_married_YES = dict.pop('ca_Were_you_married_YES', None)
-    ca_Were_you_married_NO = dict.pop('ca_Were_you_married_NO', None)
-    Were_you_married_YES = dict.pop('Were_you_married_YES', None)
-    Were_you_married_NO = dict.pop('Were_you_married_NO', None)
-    if(str(Were_you_married_YES) == 'YES'):
-        dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'YES'
-    if(str(Were_you_married_NO) == 'YES'):
-        dict["Were_you_married_at_any_time_from_the_date_of_your_initial"] = 'NO'
-
-
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
@@ -107,7 +74,6 @@ def read_config():
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
     key = 'ocr_config.json'
-
     try:
         response = s3.get_object(Bucket = bucket, Key = key)
         content = response['Body']
@@ -160,14 +126,12 @@ def CleanDate(dateFieldValue):
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
     return cleanDateResult
 
-
 def GetFromTheTopofPage(fieldlist, pos, page):
     sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
     return sorted_field[pos]
 
 def writetosnstopic(claimantname):
     sns = boto3.client('sns')
-    
     response = sns.publish(
         TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
         Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
@@ -330,8 +294,6 @@ def lambda_handler(event, context):
 #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
 
-
-    #CollapeYESNO(dictrow)
     print('--- printing dictrow ---')
     print(dictrow)
     try:
