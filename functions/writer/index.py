@@ -7,8 +7,14 @@ from trp import Document
 from dateutil.parser import parse
 import re
 
+global debug
+
 def eprint(msg):
-    print(msg)
+    if(debug != None and debug == 'on'):
+        print(msg)
+    if(debug != None and debug == 'yes'):
+        print(msg)
+
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
@@ -39,19 +45,19 @@ def get_connection():
     Method to establish the connection to RDS using IAM Role based authentication.
     """
     try:
-        print ('Connecting to database')
+        eprint ('Connecting to database')
         client = boto3.client('rds')
         DBEndPoint = os.environ.get('DBEndPoint')
         DatabaseName = os.environ.get('DatabaseName')
         DBUserName = os.environ.get('DBUserName')
         # Generates an auth token used to connect to a db with IAM credentials.
-        print ('trying to get password with auth token for endpoint: ',DBEndPoint)
+        eprint ('trying to get password with auth token for endpoint: ',DBEndPoint)
         password = client.generate_db_auth_token(
             DBHostname=DBEndPoint, Port=5432, DBUsername=DBUserName
         )
-        print ('connecting to: ', DatabaseName)
-        print ('connecting as: ', DBUserName)
-        print ('connecting with pw: ', password)
+        eprint ('connecting to: ', DatabaseName)
+        eprint ('connecting as: ', DBUserName)
+        eprint ('connecting with pw: ', password)
         # Establishes the connection with the server using the token generated as password
         conn = pg8000.connect(
             host=DBEndPoint,
@@ -60,11 +66,11 @@ def get_connection():
             password=password,
             ssl={'sslmode': 'verify-full', 'sslrootcert': 'rds-ca-2015-root.pem'},
         )
-        print ("Succesful connection!")
+        eprint ("Succesful connection!")
         return conn
     except Exception as e:
         msg = f'DB connection error: {e}'
-        print ("While connecting failed due to :{0}".format(str(e)))
+        eprint ("While connecting failed due to :{0}".format(str(e)))
         writetosnstopic(msg)
         return None
 
@@ -84,8 +90,8 @@ def read_config():
         return ocr_config_json
     except Exception as e:
         msg = f'error reading json config file: {key} in bucket: {bucket}, err msg is: {e}'
-        print(msg)
-        print(msg)
+        eprint(msg)
+        writetosnstopic(msg)
 
 
 
@@ -105,8 +111,8 @@ def write_dict_to_db(mydict, connection, tablename):
     for fieldvalue in fieldvaluelist:
         fieldtextlist.append(str(fieldvalue))
 
-    print(sql, fieldvaluelist)
-    print(fieldtextlist)
+    eprint(sql, fieldvaluelist)
+    eprint(fieldtextlist)
     cursor.execute(sql, fieldtextlist)
 
     connection.commit()
@@ -117,15 +123,15 @@ def CleanDate(dateFieldValue):
     datestring = str(dateFieldValue)
     cleanDateResult = 'Trouble Reading, see PDF'
     ca_cleanDateResult = '0'
-    print(f'--- trying to clean: {datestring}----')
+    eprint(f'--- trying to clean: {datestring}----')
     try:
         parsed_date = parse(datestring)
         cleanDateResult = parsed_date.strftime('%m/%d/%Y')
-        print(f'----Cleaned date to: {cleanDateResult}')
+        eprint(f'----Cleaned date to: {cleanDateResult}')
         ca_cleanDateResult = dateFieldValue.content[0].confidence
     except Exception as e:
         msg = f'error cleaning date string provided {datestring}:  error: {e}'
-        print(msg)
+        eprint(msg)
         writetosnstopic(msg)
 
     listCleanDateResult = [cleanDateResult, ca_cleanDateResult]
@@ -137,7 +143,7 @@ def writetosnstopic(msg):
     response = sns.publish(
         TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
         Message=msg,)
-    print(response)
+    eprint(response)
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
     # logic for getting the correct map based on file name
@@ -156,7 +162,7 @@ def CleanSelectionFieldValueToStr(value, valueType):
     if(value != None):
         if(str(valueType) == 'Selection'):
             result = 'NO'
-            print(f'value passed into clean method is {value}')
+            eprint(f'value passed into clean method is {value}')
             if(str(value) == 'SELECTED'):
                 result = 'YES'
         elif(str(valueType) == 'Date'):
@@ -172,7 +178,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     eprint(f"i found {str(len(lFields))} field objects")
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
-        print(f'looking for position: {tpos}')
+        eprint(f'looking for position: {tpos}')
         # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
         sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
         result = sorted_field[csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']-1]
@@ -181,7 +187,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     
 def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
-    print(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
+    eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
     correctField = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
     if(correctField != None):
         correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
@@ -223,6 +229,9 @@ def lambda_handler(event, context):
     """
 
     configDict = read_config()
+    global debug
+    debug = configDict['debug']
+    print(f'Debugging is set to: {debug}')
     notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
     
     pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
@@ -230,33 +239,33 @@ def lambda_handler(event, context):
     pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
     pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
-    print(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
-    print(f'----  Document Location ----')
-    print(pdfTextExtractionDocLoc)
-    print(f'----  Job Tag ----')
-    print(pdfTextExtractionJobTag)
+    eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
+    eprint(f'----  Document Location ----')
+    eprint(pdfTextExtractionDocLoc)
+    eprint(f'----  Job Tag ----')
+    eprint(pdfTextExtractionJobTag)
     docname = pdfTextExtractionDocLoc['S3ObjectName']
     prefixName = docname[0:docname.find('/')]
-    print(f'prefix name is {prefixName}')
+    eprint(f'prefix name is {prefixName}')
     tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
-    print(f'---- table name from config Dict is: {tablename} ----')
+    eprint(f'---- table name from config Dict is: {tablename} ----')
 
     csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
-    print(csv_2_ocr_map)
-    print('document name is: '+docname)
-    print(f'content of document should print to table name: {tablename}')
+    eprint(csv_2_ocr_map)
+    eprint('document name is: '+docname)
+    eprint(f'content of document should eprint to table name: {tablename}')
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
 
 # End logic for getting the correct map based on file name
-#    printresponsetos3(doc)
+#    eprintresponsetos3(doc)
     all_keys = []
     all_values = []
     pageno = 0
     dictrow = {}
     dictrow['SourceFileName'] = docname
-    print(f'docname type is: {type(docname)}')
+    eprint(f'docname type is: {type(docname)}')
     dictrow['archer_id'] = docname[0:11]
     ssn = ''
     ca_ssn = ''
@@ -264,32 +273,32 @@ def lambda_handler(event, context):
 #   building the array of KVP
     for page in doc.pages:
         pageno = pageno + 1
-        print('---- page ',str(pageno),' ----',)
+        eprint('---- page ',str(pageno),' ----',)
 
         lineNo = -1
 #        for line in page.lines:
 #            lineNo += 1
 #            for word in line.words:  # update to read CSV and pull page number to avoid dups.
 #                if re.search('-..-',str(word)):
-#                    print(f'--- found -??- in word: {word} on line {lineNo}')
-#                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
+#                    eprint(f'--- found -??- in word: {word} on line {lineNo}')
+#                    eprint(f'the line {lineNo} is: {page.lines[lineNo]}')
 #                    ssn = str(word)
 #                    ca_ssn = word.confidence
-        print('---- printing the csv_2_ocr_map again ---')
-        print(csv_2_ocr_map)
+        eprint('---- eprinting the csv_2_ocr_map again ---')
+        eprint(csv_2_ocr_map)
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno)):
-                print(f'looking for csv_key: {csv_key}')
+                eprint(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
             if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
-                print(f'looking for csv_key: {csv_key}' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno))
+                eprint(f'looking for csv_key: {csv_key}' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno))
                 # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
                 dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
 #    dictrow['Claimant_Social_Security_Number'] = ssn
 #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
-    print('--- printing dictrow ---')
-    print(dictrow)
+    eprint('--- eprinting dictrow ---')
+    eprint(dictrow)
     try:
         dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
     except Exception as e:
@@ -301,29 +310,29 @@ def lambda_handler(event, context):
 #    save_ocr_to_bucket(all_values, 'testeric')
     connection = get_connection()
     for dictionary in all_values:
-        print('writing this to DB')
-        print(dictionary)
+        eprint('writing this to DB')
+        eprint(dictionary)
         write_dict_to_db(dictionary, connection, tablename)
         try:
-            print('--- trying to write to SNS topic ---')
+            eprint('--- trying to write to SNS topic ---')
             writetosnstopic("successfully wrote OCR data for document: "+docname)
         except Exception as e:
-            print(f'failed to write to SNS topic error:{e}')
+            eprint(f'failed to write to SNS topic error:{e}')
 
 
 
 
-#    print(dictrow)
-#    printSections(doc)
+#    eprint(dictrow)
+#    eprintSections(doc)
 
-#def printSections(doc):
-#    print('trying to print out SelectionElement:')
+#def eprintSections(doc):
+#    eprint('trying to eprint out SelectionElement:')
 #    for page in doc.pages:
 #        for field in page.form.fields:
 #            if str(field.value) == 'SELECTED':
-#                print('checkbox: '+str(field.key)+' is: '+str(field.value))
-#                print(' with confidence: '+str(field.key.confidence))
-#                print ('block: '+str(field.key.block))
+#                eprint('checkbox: '+str(field.key)+' is: '+str(field.value))
+#                eprint(' with confidence: '+str(field.key.confidence))
+#                eprint ('block: '+str(field.key.block))
 
 
 def convert_row_to_list(row):

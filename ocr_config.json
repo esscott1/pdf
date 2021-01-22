@@ -1,4 +1,6 @@
 {
+	"debug":"yes",
+	"sns":"on",
 	"s3_prefix_table_map":
 	{
 		"dallas":{
