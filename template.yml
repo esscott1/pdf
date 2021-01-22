@@ -236,6 +236,14 @@ Resources:
             - s3:*
             Resource: '*'
       # Use Access Management (IAM) database authentication
+      - PolicyName: sns-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sns:*
+            Resource: '*'
       - PolicyName: rds-policy
         PolicyDocument:
           Version: '2012-10-17'
