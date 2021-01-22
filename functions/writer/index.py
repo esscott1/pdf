@@ -246,9 +246,9 @@ def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     return dictrow
 
 def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
-'''
+    '''
     Won't work if the yes and no are split between 2 different pages.
-'''
+    '''
     es_0 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields)
     es_1 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][1]['PageNo'] == pageno ,page.form.fields)
     correctField0 = None
@@ -345,10 +345,12 @@ def lambda_handler(event, context):
                 print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
             if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
-                print(f'looking for csv_key: {csv_key}')
+                print(f'looking for csv_key: {csv_key}' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno))
+                # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
                 dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
 #    dictrow['Claimant_Social_Security_Number'] = ssn
 #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
+
 
 
     #CollapeYESNO(dictrow)
