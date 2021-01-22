@@ -129,7 +129,7 @@ def CleanDate(dateFieldValue):
 def writetosnstopic(claimantname):
     sns = boto3.client('sns')
     response = sns.publish(
-        TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopicSNSTopic',
+        TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
         Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
     print(response)
 
