@@ -7,7 +7,8 @@ from trp import Document
 from dateutil.parser import parse
 import re
 
-
+def eprint(msg):
+    print(msg)
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
@@ -143,9 +144,9 @@ def get_csv_2_ocr_map(docname,configDict, prefixName):
     result = {}
     for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
         if(str(docname).find(snippet) > -1):
-            print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
+            eprint(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
             omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
-            print(f'map should by {configDict["ocr_maps"][omap]}')
+            eprint(f'map should by {configDict["ocr_maps"][omap]}')
             result = configDict["ocr_maps"][omap]
     return result
 
@@ -168,7 +169,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     result = None
     es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][itemNo]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][itemNo]['PageNo'] == pageno ,page.form.fields) 
     lFields = list(es)
-    print(f"i found {str(len(lFields))} field objects")
+    eprint(f"i found {str(len(lFields))} field objects")
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
         print(f'looking for position: {tpos}')
@@ -202,8 +203,8 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     #if(len(lFields1)>0):
         correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][0]["Type"])
         correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField1.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
-        print(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
-        print(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
+        eprint(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
+        eprint(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
         if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
             if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
                 dictrow[csv_key] = 'YES and NO'
@@ -287,16 +288,8 @@ def lambda_handler(event, context):
 #    dictrow['Claimant_Social_Security_Number'] = ssn
 #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
-
     print('--- printing dictrow ---')
     print(dictrow)
-    try:
-    #    print('tring to dumps and print json')
-        json_object = json.dumps(dictrow, indent = 2)
-    #    print(json_object)
-    except Exception as e:
-        print(f'--- error print json: {e}')
-    #    #dictrow['jsondata']=json_object
     try:
         dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
     except Exception as e:
