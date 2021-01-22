@@ -297,8 +297,12 @@ def lambda_handler(event, context):
     except Exception as e:
         print(f'--- error print json: {e}')
     #    #dictrow['jsondata']=json_object
-
-    dictrow['jsondata'] = json_object
+    try:
+        dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
+    except Exception as e:
+        msg = f'error writing jsondata to dictrow, err: {e}'
+        writetosnstopic(msg)
+    #dictrow['jsondata'] = json_object
     all_values.append(dictrow)
 
 #    save_ocr_to_bucket(all_values, 'testeric')
