@@ -338,10 +338,10 @@ def lambda_handler(event, context):
 #                    ca_ssn = word.confidence
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and csv_2_ocr_map[csv_key]["ocr"]["PageNo"] == str(pageno)):
+            if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"] == str(pageno)):
                 print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-            if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo' and csv_2_ocr_map[csv_key]["ocr"]["PageNo"] == str(pageno)):
+            if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
                 print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
 #    dictrow['Claimant_Social_Security_Number'] = ssn
