@@ -304,14 +304,6 @@ def lambda_handler(event, context):
 
     csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
 
-#    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
-#        if(str(docname).find(snippet) > -1):
-#            print(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
-#            omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
-#            print(f'map should by {configDict["ocr_maps"][omap]}')
-#            csv_2_ocr_map = configDict["ocr_maps"][omap]
-
-
     print('document name is: '+docname)
     print(f'content of document should print to table name: {tablename}')
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
@@ -346,10 +338,10 @@ def lambda_handler(event, context):
 #                    ca_ssn = word.confidence
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            if(csv_2_ocr_map[csv_key]["Type"] == 'Form'):
+            if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and csv_2_ocr_map[csv_key]["ocr"]["PageNo"] == str(pageno)):
                 print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-            if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
+            if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo' and csv_2_ocr_map[csv_key]["ocr"]["PageNo"] == str(pageno)):
                 print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
 #    dictrow['Claimant_Social_Security_Number'] = ssn
