@@ -62,7 +62,9 @@ def get_connection():
         print ("Succesful connection!")
         return conn
     except Exception as e:
+        msg = f'DB connection error: {e}'
         print ("While connecting failed due to :{0}".format(str(e)))
+        writetosnstopic(msg)
         return None
 
 '''
@@ -80,8 +82,9 @@ def read_config():
         ocr_config_json = json.loads(content.read())
         return ocr_config_json
     except Exception as e:
-        print('error reading json config')
-        print(e)
+        msg = f'error reading json config file: {key} in bucket: {bucket}, err msg is: {e}'
+        print(msg)
+        print(msg)
 
 
 
@@ -120,7 +123,9 @@ def CleanDate(dateFieldValue):
         print(f'----Cleaned date to: {cleanDateResult}')
         ca_cleanDateResult = dateFieldValue.content[0].confidence
     except Exception as e:
-        print(f'error cleaning date string provided {datestring}:  error: {e}')
+        msg = f'error cleaning date string provided {datestring}:  error: {e}'
+        print(msg)
+        writetosnstopic(msg)
 
     listCleanDateResult = [cleanDateResult, ca_cleanDateResult]
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
@@ -295,11 +300,6 @@ def lambda_handler(event, context):
 
     dictrow['jsondata'] = json_object
     all_values.append(dictrow)
-    #try:
-    #    writetosnstopic(dictrow['Claimant_Social_Security_Number'])
-    #except Exception as e:
-    #    print('failed to write to custom SNS Topic, need to update yaml to push it correct with permissions')
-    #    print(e)
 
 #    save_ocr_to_bucket(all_values, 'testeric')
     connection = get_connection()
