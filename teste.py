@@ -3,6 +3,7 @@ import json
 from dateutil.parser import parse
 import pkg_resources
 import re
+import traceback
 
 csv_headers = ['Primary Attorney',
 'HTX ARCHER ID',
@@ -367,11 +368,18 @@ print(type(json_dict))
 for snippet in json_dict["s3_prefix_table_map"]["dallas"]["filename_ocrmap"]:
     print(f'snippet is {snippet}')
     print(json_dict["s3_prefix_table_map"]["dallas"]["filename_ocrmap"][snippet])
+    print
 #prefix = str.startswith(s3Name,beg=0,end=sindex)
 #print(f'prefix is: {prefix}')
 
+def dostuff(stuff):
+    a=2
 
-
+try:
+    dostuff("one", "two")
+except Exception as e:
+    print(e)
+    traceback.print_exc()
 
 
 #print('---- testing date of birth ----')
