@@ -195,21 +195,10 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     '''
     Won't work if the yes and no are split between 2 different pages.
     '''
-    es_0 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields)
-    es_1 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][1]['PageNo'] == pageno ,page.form.fields)
-    correctField0 = None
-    correctField1 = None
-    lFields0 = list(es_0)
-    lFields1 = list(es_1)
-    if(len(lFields0) != 0 and len(lFields1) != 0):
-    #if(len(lFields0)>0):
-        print(f"found {len(lFields0)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key'])}")
-        print(f"found {len(lFields1)} in ocr_key {str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key'])}")
-        sf0 = sorted(lFields0, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-        correctField0 = sf0[csv_2_ocr_map[csv_key]['ocr'][0]['TopPos']-1]
+    correctField0 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
+    correctField1 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 1)
+    if(correctField0 != None and correctField1 != None):
     #if(len(lFields1)>0):
-        sf1 = sorted(lFields1, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-        correctField1 = sf1[csv_2_ocr_map[csv_key]['ocr'][1]['TopPos']-1]
         correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][0]["Type"])
         correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField1.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
         print(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
@@ -223,7 +212,6 @@ def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
                 dictrow[csv_key] = 'YES'
             else:
                 dictrow[csv_key] = ''
-
     return dictrow
 
 def lambda_handler(event, context):
