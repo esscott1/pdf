@@ -126,10 +126,6 @@ def CleanDate(dateFieldValue):
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
     return cleanDateResult
 
-def GetFromTheTopofPage(fieldlist, pos, page):
-    sorted_field = sorted(fieldlist, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-    return sorted_field[pos]
-
 def writetosnstopic(claimantname):
     sns = boto3.client('sns')
     response = sns.publish(
