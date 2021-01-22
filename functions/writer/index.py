@@ -179,6 +179,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     
 def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
+    print(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
     correctField = get_correct_field(cvs_2_ocr_map, csv_key, _dictrow, pageno, page, 0)
     correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
     dictrow[csv_key] = correctCleanValueStr
@@ -283,7 +284,8 @@ def lambda_handler(event, context):
 #                    print(f'the line {lineNo} is: {page.lines[lineNo]}')
 #                    ssn = str(word)
 #                    ca_ssn = word.confidence
-
+        print('---- printing the csv_2_ocr_map again ---')
+        print(csv_2_ocr_map)
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
             if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno)):
                 print(f'looking for csv_key: {csv_key}')
