@@ -246,6 +246,9 @@ def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     return dictrow
 
 def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
+'''
+    Won't work if the yes and no are split between 2 different pages.
+'''
     es_0 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][0]['PageNo'] == pageno ,page.form.fields)
     es_1 = filter(lambda  x: str(csv_2_ocr_map[csv_key]['ocr'][1]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][1]['PageNo'] == pageno ,page.form.fields)
     correctField0 = None
@@ -338,7 +341,7 @@ def lambda_handler(event, context):
 #                    ca_ssn = word.confidence
 
         for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"] == str(pageno)):
+            if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno)):
                 print(f'looking for csv_key: {csv_key}')
                 dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
             if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
