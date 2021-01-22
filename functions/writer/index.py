@@ -181,13 +181,14 @@ def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
     print(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
     correctField = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
-    correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
-    dictrow[csv_key] = correctCleanValueStr
-    ca_csv_key = 'ca_'+csv_key
-    if(correctField != None and correctField.value != None):
-        dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
-    else:
-        dictrow[ca_csv_key] = '0'
+    if(correctField != None):
+        correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
+        dictrow[csv_key] = correctCleanValueStr
+        ca_csv_key = 'ca_'+csv_key
+        if(correctField != None and correctField.value != None):
+            dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
+        else:
+            dictrow[ca_csv_key] = '0'
     return dictrow
 
 def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
