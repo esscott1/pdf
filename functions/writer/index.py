@@ -232,92 +232,97 @@ def lambda_handler(event, context):
     global debug
     debug = configDict['debug']
     print(f'Debugging is set to: {debug}')
-    notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
-    
-    pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
-    pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
-    pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
-    pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
-    eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
-    eprint(f'----  Document Location ----')
-    eprint(pdfTextExtractionDocLoc)
-    eprint(f'----  Job Tag ----')
-    eprint(pdfTextExtractionJobTag)
-    docname = pdfTextExtractionDocLoc['S3ObjectName']
-    prefixName = docname[0:docname.find('/')]
-    eprint(f'prefix name is {prefixName}')
-    tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
-    eprint(f'---- table name from config Dict is: {tablename} ----')
-
-    csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
-    eprint(csv_2_ocr_map)
-    eprint('document name is: '+docname)
-    eprint(f'content of document should eprint to table name: {tablename}')
-    if(pdfTextExtractionStatus == 'SUCCEEDED'):
-        response = getJobResults(pdfTextExtractionJobId)
-        doc = Document(response)
-
-# End logic for getting the correct map based on file name
-#    eprintresponsetos3(doc)
-    all_keys = []
-    all_values = []
-    pageno = 0
-    dictrow = {}
-    dictrow['SourceFileName'] = docname
-    eprint(f'docname type is: {type(docname)}')
-    dictrow['archer_id'] = docname[0:11]
-    ssn = ''
-    ca_ssn = ''
-    regex = re.compile('-..-')
-#   building the array of KVP
-    for page in doc.pages:
-        pageno = pageno + 1
-        eprint('---- page ',str(pageno),' ----',)
-
-        lineNo = -1
-#        for line in page.lines:
-#            lineNo += 1
-#            for word in line.words:  # update to read CSV and pull page number to avoid dups.
-#                if re.search('-..-',str(word)):
-#                    eprint(f'--- found -??- in word: {word} on line {lineNo}')
-#                    eprint(f'the line {lineNo} is: {page.lines[lineNo]}')
-#                    ssn = str(word)
-#                    ca_ssn = word.confidence
-        eprint('---- eprinting the csv_2_ocr_map again ---')
-        eprint(csv_2_ocr_map)
-        for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-            if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno)):
-                eprint(f'looking for csv_key: {csv_key}')
-                dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-            if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
-                eprint(f'looking for csv_key: {csv_key}' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno))
-                # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
-                dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-#    dictrow['Claimant_Social_Security_Number'] = ssn
-#    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
-
-    eprint('--- eprinting dictrow ---')
-    eprint(dictrow)
     try:
-        dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
-    except Exception as e:
-        msg = f'error writing jsondata to dictrow, err: {e}'
-        writetosnstopic(msg)
-    #dictrow['jsondata'] = json_object
-    all_values.append(dictrow)
+        notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
+        
+        pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
+        pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
+        pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
+        pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
-#    save_ocr_to_bucket(all_values, 'testeric')
-    connection = get_connection()
-    for dictionary in all_values:
-        eprint('writing this to DB')
-        eprint(dictionary)
-        write_dict_to_db(dictionary, connection, tablename)
+        eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
+        eprint(f'----  Document Location ----')
+        eprint(pdfTextExtractionDocLoc)
+        eprint(f'----  Job Tag ----')
+        eprint(pdfTextExtractionJobTag)
+        docname = pdfTextExtractionDocLoc['S3ObjectName']
+        prefixName = docname[0:docname.find('/')]
+        eprint(f'prefix name is {prefixName}')
+        tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
+        eprint(f'---- table name from config Dict is: {tablename} ----')
+
+        csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
+        eprint(csv_2_ocr_map)
+        eprint('document name is: '+docname)
+        eprint(f'content of document should eprint to table name: {tablename}')
+        if(pdfTextExtractionStatus == 'SUCCEEDED'):
+            response = getJobResults(pdfTextExtractionJobId)
+            doc = Document(response)
+
+    # End logic for getting the correct map based on file name
+    #    eprintresponsetos3(doc)
+        all_keys = []
+        all_values = []
+        pageno = 0
+        dictrow = {}
+        dictrow['SourceFileName'] = docname
+        eprint(f'docname type is: {type(docname)}')
+        dictrow['archer_id'] = docname[0:11]
+        ssn = ''
+        ca_ssn = ''
+        regex = re.compile('-..-')
+    #   building the array of KVP
+        for page in doc.pages:
+            pageno = pageno + 1
+            eprint(f'---- page {str(pageno)} ----',)
+
+            lineNo = -1
+    #        for line in page.lines:
+    #            lineNo += 1
+    #            for word in line.words:  # update to read CSV and pull page number to avoid dups.
+    #                if re.search('-..-',str(word)):
+    #                    eprint(f'--- found -??- in word: {word} on line {lineNo}')
+    #                    eprint(f'the line {lineNo} is: {page.lines[lineNo]}')
+    #                    ssn = str(word)
+    #                    ca_ssn = word.confidence
+            eprint('---- eprinting the csv_2_ocr_map again ---')
+            eprint(csv_2_ocr_map)
+            for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
+                if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno)):
+                    eprint(f'looking for csv_key: {csv_key}')
+                    dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
+                    eprint(f'looking for csv_key: {csv_key}' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno))
+                    # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
+                    dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+    #    dictrow['Claimant_Social_Security_Number'] = ssn
+    #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
+
+        eprint('--- eprinting dictrow ---')
+        eprint(dictrow)
         try:
-            eprint('--- trying to write to SNS topic ---')
-            writetosnstopic("successfully wrote OCR data for document: "+docname)
+            dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
         except Exception as e:
-            eprint(f'failed to write to SNS topic error:{e}')
+            msg = f'error writing jsondata to dictrow, err: {e}'
+            writetosnstopic(msg)
+        #dictrow['jsondata'] = json_object
+        all_values.append(dictrow)
+
+    #    save_ocr_to_bucket(all_values, 'testeric')
+        connection = get_connection()
+        for dictionary in all_values:
+            eprint('writing this to DB')
+            eprint(dictionary)
+            write_dict_to_db(dictionary, connection, tablename)
+            try:
+                eprint('--- trying to write to SNS topic ---')
+                writetosnstopic("successfully wrote OCR data for document: "+docname)
+            except Exception as e:
+                eprint(f'failed to write to SNS topic error:{e}')
+    except Exception as e:
+        eprint(f'-- general error with msg: {e}')
+        writetosnstopic(f'-- general error with msg: {e}')
 
 
 
