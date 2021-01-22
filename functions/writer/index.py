@@ -112,7 +112,7 @@ def write_dict_to_db(mydict, connection, tablename):
     for fieldvalue in fieldvaluelist:
         fieldtextlist.append(str(fieldvalue))
 
-    eprint(sql, fieldvaluelist)
+    eprint(f'{sql} and {fieldvaluelist}')
     eprint(fieldtextlist)
     cursor.execute(sql, fieldtextlist)
 
