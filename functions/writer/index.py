@@ -126,11 +126,11 @@ def CleanDate(dateFieldValue):
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
     return cleanDateResult
 
-def writetosnstopic(claimantname):
+def writetosnstopic(msg):
     sns = boto3.client('sns')
     response = sns.publish(
         TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
-        Message=f'test from lambda,i have a new claimant named  {claimantname}  - sent from writer lambda',)
+        Message=msg,)
     print(response)
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
@@ -309,7 +309,7 @@ def lambda_handler(event, context):
         write_dict_to_db(dictionary, connection, tablename)
         try:
             print('--- trying to write to SNS topic ---')
-            writetosnstopic("test claimant")
+            writetosnstopic("successfully wrote OCR data for document: "+docname)
         except Exception as e:
             print(f'failed to write to SNS topic error:{e}')
 
