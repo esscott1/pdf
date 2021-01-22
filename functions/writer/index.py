@@ -102,11 +102,8 @@ def get_connection():
 Returns a dictionanry of KVP that are in the json config file
 '''
 def read_config():
-    global db_csv_2_ocr_map_enroll
-    global db_csv_2_ocr_map_afft
-    global csv_2_ocr_map_relfull
-    global db_csv_2_ocr_map_lygdaa
-    global ocr_config_json
+
+    ocr_config_json = {}
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
     key = 'ocr_config.json'
@@ -115,26 +112,7 @@ def read_config():
         response = s3.get_object(Bucket = bucket, Key = key)
         content = response['Body']
         ocr_config_json = json.loads(content.read())
-        ocr_maps = ocr_config_json["ocr_maps"]
-        print('--- printing config info ---')
-
-        print(ocr_config_json)
-        print('--- printing ocr maps ---')
-        print(ocr_maps)
-        print('---  ocr enroll map ---')
-        print(ocr_maps['db_csv_2_ocr_map_enroll'])
-        db_csv_2_ocr_map_enroll = ocr_maps['db_csv_2_ocr_map_enroll']
-        print('--- relful map ---')
-        csv_2_ocr_map_relfull = ocr_maps['csv_2_ocr_map_relfull']
-        print(csv_2_ocr_map_relfull)
-        db_csv_2_ocr_map_afft = ocr_maps['db_csv_2_ocr_map_afft']
-        print('----  affidatite map ---')
-        print(db_csv_2_ocr_map_afft)
-        db_csv_2_ocr_map_lygdaa = ocr_maps['db_csv_2_ocr_map_lygdaa']
-        print('----  lygdaa Dallas map ---')
-        print(db_csv_2_ocr_map_lygdaa)
         return ocr_config_json
-
     except Exception as e:
         print('error reading json config')
         print(e)
