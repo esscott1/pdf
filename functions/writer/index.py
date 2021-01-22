@@ -307,7 +307,12 @@ def lambda_handler(event, context):
         print('writing this to DB')
         print(dictionary)
         write_dict_to_db(dictionary, connection, tablename)
-    print('trying to read config')
+        try:
+            print('--- trying to write to SNS topic ---')
+            writetosnstopic("test claimant")
+        except Exception as e:
+            print(f'failed to write to SNS topic error:{e}')
+
 
 
 
