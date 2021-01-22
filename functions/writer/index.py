@@ -171,24 +171,22 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
         print(f'looking for position: {tpos}')
-        correctField = None
-        correctCleanValueStr = ''
-        ca_csv_key = 'ca_'+csv_key
         # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
         sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-        result = sorted_field[csv_2_ocr_map[csv_key]['ocr'][0]['TopPos']-1]
+        result = sorted_field[csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']-1]
     return result
 
     
 def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
-        correctField = get_correct_field(cvs_2_ocr_map, csv_key, _dictrow, pageno, page, 0)
-        correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
-        dictrow[csv_key] = correctCleanValueStr
-        if(correctField != None and correctField.value != None):
-            dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
-        else:
-            dictrow[ca_csv_key] = '0'
+    correctField = get_correct_field(cvs_2_ocr_map, csv_key, _dictrow, pageno, page, 0)
+    correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
+    dictrow[csv_key] = correctCleanValueStr
+    ca_csv_key = 'ca_'+csv_key
+    if(correctField != None and correctField.value != None):
+        dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
+    else:
+        dictrow[ca_csv_key] = '0'
     return dictrow
 
 def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
