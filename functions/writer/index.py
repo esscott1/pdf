@@ -250,7 +250,7 @@ def lambda_handler(event, context):
     print(f'---- table name from config Dict is: {tablename} ----')
 
     csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
-
+    print(csv_2_ocr_map)
     print('document name is: '+docname)
     print(f'content of document should print to table name: {tablename}')
     if(pdfTextExtractionStatus == 'SUCCEEDED'):
