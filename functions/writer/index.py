@@ -87,7 +87,7 @@ def read_config():
     s3 = boto3.client('s3')
     key = 'ocr_config.json'
     try:
-        response = s3.get_object(Bucket = bucket, Key = key)
+        response = s3.get_object(Bucket = configFileBucket, Key = configFileKey)
         content = response['Body']
         ocr_config_json = json.loads(content.read())
         return ocr_config_json

@@ -4,9 +4,6 @@ Parameters:
   DemoUser:
     Description: The demo user name to connect to Postgres.
     Type: String
-  TableName:
-    Description: The RDS Postgres table name.
-    Type: String    
   ConfigKeyName:
     Description: The name of the Config File for Writer Lamdba Function
     Type: String
