@@ -38,7 +38,7 @@ def eprint(msg, sev=10):
     '''
     global debug
     print(f'debug in eprint is: {debug}')
-    if(debug.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug')):
+    if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
         print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
         debug = 'debug'
     loglevel = 10 if debug == 'debug' else 20 if debug == 'info' else 30 if debug == 'warning' else 40 if debug == 'error' else 50 if debug == 'critical' else 0
@@ -54,7 +54,7 @@ def writetosnstopic(msg, sev=10):
     print('--- trying to write to SNS topic ---')
     global snsnotify
     print(f'snsnotify in writetosnstopic is: {snsnotify}')
-    if(snsnotify.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug' or 'off')):
+    if snsnotify.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'off')):
         print(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".')
         snsnotify = 'error'
     snslevel = 10 if snsnotify == 'debug' else 20 if snsnotify == 'info' else 30 if snsnotify == 'warning' else 40 if snsnotify == 'error' else 50 if snsnotify == 'critical' else 0

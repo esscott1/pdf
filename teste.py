@@ -379,6 +379,10 @@ try:
     dostuff("one", "two")
 except:
     traceback.print_exc()
+
+debug = 'warning2'
+if debug.lower() not in {'critical', 'info', 'debug', 'warning'}:
+    print(f'debug does not matches')
     #traceback.print_tb(e.__traceback__)
 
 
