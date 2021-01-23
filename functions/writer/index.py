@@ -49,7 +49,7 @@ def writetosnstopic(msg, sev=10):
     '''
     default off unless turned on by correct config
     '''
-    eprint('--- trying to write to SNS topic ---')
+    print('--- trying to write to SNS topic ---')
     global snsnotify
     if(snsnotify.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug' or 'off')):
         print(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".')
