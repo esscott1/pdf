@@ -27,7 +27,7 @@ def read_config():
         snsnotify = configDict['snsnotification']
         return ocr_config_json
     except Exception as e:
-        msg = f'error reading json config file: {key} in bucket: {bucket}, err msg is: {e}  on lineNo: {e.__traceback__.tb_lineno}'
+        msg = f'error reading json config file: {configFileKey} in bucket: {configFileBucket}, err msg is: {e}  on lineNo: {e.__traceback__.tb_lineno}'
         eprint(msg, 50)
 
 def eprint(msg, sev=10):
