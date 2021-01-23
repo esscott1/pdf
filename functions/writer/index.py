@@ -29,6 +29,7 @@ def read_config():
     except Exception as e:
         msg = f'error reading json config file: {configFileKey} in bucket: {configFileBucket}, err msg is: {e}  on lineNo: {e.__traceback__.tb_lineno}'
         eprint(msg, 50)
+        traceback.print_tb(e.__traceback__)
 
 def eprint(msg, sev=10):
     '''

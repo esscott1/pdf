@@ -379,13 +379,8 @@ try:
     dostuff("one", "two")
 except Exception as e:
     print(e)
-    traceback.print_exc()
+    traceback.print_tb(e.__traceback__)
 
-    sd = 'crap'
-    debug = 10 if sd == 'debug' else 20 if sd == 'info' else 30 if sd == 'warning' else 40 if sd == 'error' else 50 if sd == 'critical' else 0
-    print(f'debug value is {debug}')
-    if(sd.lower() != 'crap1'):
-        print('true')
 
 
 #print('---- testing date of birth ----')
