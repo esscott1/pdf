@@ -31,7 +31,7 @@ def read_config():
     except:
         traceback.print_exc()
 
-def eprint(msg, sev=10):
+def eprint(msg, sev=10, sendsns=True):
     '''
     default is debug or notset unless correctly specified in config
     sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | notset: 0 
@@ -44,18 +44,19 @@ def eprint(msg, sev=10):
     loglevel = 10 if debug == 'debug' else 20 if debug == 'info' else 30 if debug == 'warning' else 40 if debug == 'error' else 50 if debug == 'critical' else 0
     if(sev >= loglevel):
         print(msg)
-    writetosnstopic(msg, sev)
+    if(sendsns):
+        writetosnstopic(msg, sev)
 
 
 def writetosnstopic(msg, sev=10):
     '''
     default off unless turned on by correct config
     '''
-    print('--- trying to write to SNS topic ---')
+    eprint('--- trying to write to SNS topic ---',10,False)
     global snsnotify
-    print(f'snsnotify in writetosnstopic is: {snsnotify}')
+    eprint(f'snsnotify in writetosnstopic is: {snsnotify}',10,False)
     if snsnotify.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'off')):
-        print(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".')
+        eprint(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".',10,False)
         snsnotify = 'error'
     snslevel = 10 if snsnotify == 'debug' else 20 if snsnotify == 'info' else 30 if snsnotify == 'warning' else 40 if snsnotify == 'error' else 50 if snsnotify == 'critical' else 0
     if(sev >= snslevel):
@@ -65,7 +66,7 @@ def writetosnstopic(msg, sev=10):
                 TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
                 Message=msg,)
         except Exception as e:
-            print(f'SNS publish ERROR: {e} on lineNo {e.__traceback__.tb_lineno}')
+            eprint(f'SNS publish ERROR: {e} on lineNo {e.__traceback__.tb_lineno}',40,False)
 
 
 def getJobResults(jobId):
