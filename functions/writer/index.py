@@ -22,7 +22,7 @@ def read_config():
         content = response['Body']
         ocr_config_json = json.loads(content.read())
         global debug
-        debug = configDict['debug']
+        debug = configDict['logginglevel']
         global snsnotify
         snsnotify = configDict['snsnotification']
         return ocr_config_json
