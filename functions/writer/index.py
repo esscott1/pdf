@@ -124,15 +124,13 @@ def get_connection():
 Returns a dictionanry of KVP that are in the json config file
 '''
 
-
-
 def write_dict_to_db(mydict, connection, tablename):
     """
     Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
     """
     #DBTable = os.environ.get('TableName')
     DBTable = tablename
-    cursor = connection.cursor()
+
     placeholders = ', '.join(['%s'] * len(mydict))
     columns = ', '.join(mydict.keys())
     sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
@@ -144,10 +142,13 @@ def write_dict_to_db(mydict, connection, tablename):
 
     eprint(f'{sql} and {fieldvaluelist}')
     eprint(fieldtextlist)
-    cursor.execute(sql, fieldtextlist)
-
-    connection.commit()
-    cursor.close()
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql, fieldtextlist)
+        connection.commit()
+        cursor.close()
+    except Exception as e:
+        eprint(f'Error writing to Database, error: {e} on lineNo {e.__traceback__.tb_lineno}',40)
 
 
 def CleanDate(dateFieldValue):
