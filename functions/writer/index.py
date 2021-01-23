@@ -23,8 +23,10 @@ def read_config():
         ocr_config_json = json.loads(content.read())
         global debug
         debug = ocr_config_json['logginglevel']
+        print(f'read config has debug as: {debug}')
         global snsnotify
         snsnotify = ocr_config_json['snsnotification']
+        print(f'read config has snsnotify as: {snsnotify}')
         return ocr_config_json
     except:
         traceback.print_exc()
@@ -35,6 +37,7 @@ def eprint(msg, sev=10):
     sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | notset: 0 
     '''
     global debug
+    print(f'debug in eprint is: {debug}')
     if(debug.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug')):
         print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
         debug = 'debug'
@@ -50,6 +53,7 @@ def writetosnstopic(msg, sev=10):
     '''
     print('--- trying to write to SNS topic ---')
     global snsnotify
+    print(f'snsnotify in writetosnstopic is: {snsnotify}')
     if(snsnotify.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug' or 'off')):
         print(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".')
         snsnotify = 'error'
@@ -333,7 +337,7 @@ def lambda_handler(event, context):
             eprint('writing this to DB')
             eprint(dictionary)
             write_dict_to_db(dictionary, connection, tablename)
-            eprint("successfully wrote OCR data for document: "+docname, "info")
+            eprint("successfully wrote OCR data for document: "+docname, 10)
     except Exception as e:
         tberror =traceback.print_exc()
         emsg = f'error thrown {e} from line no {e.__traceback__.tb_lineno}'
