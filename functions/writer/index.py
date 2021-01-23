@@ -16,7 +16,8 @@ def eprint(msg):
         print(msg)
     elif(debug != ('off' or 'no')):
         print(f'debug in config file set to something other than "on" "yes" "off" or "no"  therefore debug will be turned on.')
-        global debug = 'on'
+        global debug
+        debug = 'on'
         print(msg)
 
 def getJobResults(jobId):
@@ -146,7 +147,8 @@ def CleanDate(dateFieldValue):
 def writetosnstopic(msg):
     if(snsnotify != ('off' or 'no')):
         print(f'snsnotification in config file set to something other than "on" "yes" "off" or "no"  therefore snsnotication will be turned on.')
-        global snsnotify = 'yes'
+        global snsnotify
+        snsnotify = 'yes'
     eprint('--- trying to write to SNS topic ---')
     if(snsnotify != None and snsnotify == ('on' or 'yes')):
         sns = boto3.client('sns')
