@@ -22,9 +22,9 @@ def read_config():
         content = response['Body']
         ocr_config_json = json.loads(content.read())
         global debug
-        debug = configDict['logginglevel']
+        debug = ocr_config_json['logginglevel']
         global snsnotify
-        snsnotify = configDict['snsnotification']
+        snsnotify = ocr_config_json['snsnotification']
         return ocr_config_json
     except Exception as e:
         msg = f'error reading json config file: {configFileKey} in bucket: {configFileBucket}, err msg is: {e}  on lineNo: {e.__traceback__.tb_lineno}'
