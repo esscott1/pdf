@@ -8,29 +8,71 @@ from dateutil.parser import parse
 import re
 import traceback
 
-global debug
-global snsnotify
+debug, snsnotify = '',''
 
-def eprint(msg):
-    if(debug != None and debug == ('on' or 'yes')):
-        print(msg)
-    elif(debug != ('off' or 'no')):
-        print(f'debug in config file set to something other than "on" "yes" "off" or "no"  therefore debug will be turned on.')
+def read_config():
+
+    configFileBucket = os.environ.get('ConfigBucket')
+    configFileKey = os.environ.get('ConfigKey')
+    print(f'read ConfigBucket as: {configFileBucket} and ConfigKey as {configFileKey}')
+    ocr_config_json = {}
+    s3 = boto3.client('s3')
+    try:
+        response = s3.get_object(Bucket = configFileBucket, Key = configFileKey)
+        content = response['Body']
+        ocr_config_json = json.loads(content.read())
         global debug
-        debug = 'on'
+        debug = configDict['debug']
+        global snsnotify
+        snsnotify = configDict['snsnotification']
+        return ocr_config_json
+    except Exception as e:
+        msg = f'error reading json config file: {key} in bucket: {bucket}, err msg is: {e}  on lineNo: {e.__traceback__.tb_lineno}'
+        eprint(msg, 50)
+
+def eprint(msg, sev=10):
+    '''
+    default is debug or notset unless correctly specified in config
+    sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | notset: 0 
+    '''
+    global debug
+    if(debug.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug')):
+        print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
+        debug = 'debug'
+    loglevel = 10 if debug == 'debug' else 20 if debug == 'info' else 30 if debug == 'warning' else 40 if debug == 'error' else 50 if debug == 'critical' else 0
+    if(sev >= loglevel):
         print(msg)
+    writetosnstopic(msg, sev)
+
+
+def writetosnstopic(msg, sev=10):
+    '''
+    default off unless turned on by correct config
+    '''
+    eprint('--- trying to write to SNS topic ---')
+    global snsnotify
+    if(snsnotify.lower() != ('critical' or 'error' or 'warning' or 'info' or 'debug' or 'off')):
+        print(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".')
+        snsnotify = 'error'
+    snslevel = 10 if snsnotify == 'debug' else 20 if snsnotify == 'info' else 30 if snsnotify == 'warning' else 40 if snsnotify == 'error' else 50 if snsnotify == 'critical' else 0
+    if(sev >= snslevel):
+        try:
+            sns = boto3.client('sns')
+            response = sns.publish(
+                TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
+                Message=msg,)
+        except Exception as e:
+            print(f'SNS publish ERROR: {e} on lineNo {e.__traceback__.tb_lineno}')
+
 
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
     """
-
     pages = []
     textract = boto3.client('textract')
     response = textract.get_document_analysis(JobId=jobId)
-    
     pages.append(response)
-
     nextToken = None
     if('NextToken' in response):
         nextToken = response['NextToken']
@@ -41,7 +83,6 @@ def getJobResults(jobId):
         nextToken = None
         if('NextToken' in response):
             nextToken = response['NextToken']
-
     return pages
 
 
@@ -74,30 +115,13 @@ def get_connection():
         eprint ("Succesful connection!")
         return conn
     except Exception as e:
-        msg = f'DB connection error: {e}'
-        eprint (msg)
-        writetosnstopic(msg)
+        msg = f'DB connection error: {e} on lineNo: {e.__traceback__.tb_lineno}'
+        eprint (msg, 40)
         return None
 
 '''
 Returns a dictionanry of KVP that are in the json config file
 '''
-def read_config():
-
-    configFileBucket = os.environ.get('ConfigBucket')
-    configFileKey = os.environ.get('ConfigKey')
-    print(f'read ConfigBucket as: {configFileBucket} and ConfigKey as {configFileKey}')
-    ocr_config_json = {}
-    s3 = boto3.client('s3')
-    try:
-        response = s3.get_object(Bucket = configFileBucket, Key = configFileKey)
-        content = response['Body']
-        ocr_config_json = json.loads(content.read())
-        return ocr_config_json
-    except Exception as e:
-        msg = f'error reading json config file: {key} in bucket: {bucket}, err msg is: {e}'
-        eprint(msg)
-        writetosnstopic(msg)
 
 
 
@@ -136,26 +160,14 @@ def CleanDate(dateFieldValue):
         eprint(f'----Cleaned date to: {cleanDateResult}')
         ca_cleanDateResult = dateFieldValue.content[0].confidence
     except Exception as e:
-        msg = f'error cleaning date string provided {datestring}:  error: {e}'
-        eprint(msg)
-        writetosnstopic(msg)
+        msg = f'error cleaning date string provided {datestring}:  error: {e} on lineNo: {e.__traceback__.tb_lineno}'
+        eprint(msg, 40)
 
     listCleanDateResult = [cleanDateResult, ca_cleanDateResult]
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
     return cleanDateResult
 
-def writetosnstopic(msg):
-    if(snsnotify != ('off' or 'no')):
-        print(f'snsnotification in config file set to something other than "on" "yes" "off" or "no"  therefore snsnotication will be turned on.')
-        global snsnotify
-        snsnotify = 'yes'
-    eprint('--- trying to write to SNS topic ---')
-    if(snsnotify != None and snsnotify == ('on' or 'yes')):
-        sns = boto3.client('sns')
-        response = sns.publish(
-            TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
-            Message=msg,)
-        eprint(response)
+
 
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
@@ -240,12 +252,7 @@ def lambda_handler(event, context):
     Get Extraction Status, JobTag and JobId from SNS. 
     If the Status is SUCCEEDED then create a dict of the values and write those to the RDS database.
     """
-
     configDict = read_config()
-    global debug
-    debug = configDict['debug']
-    global snsnotify
-    snsnotify = configDict['snsnotification']
     print(f'Debugging is set to: {debug}')
     print(f'SNS notification: {snsnotify}')
     try:
@@ -276,16 +283,13 @@ def lambda_handler(event, context):
             doc = Document(response)
 
     # End logic for getting the correct map based on file name
-    #    eprintresponsetos3(doc)
-        all_keys = []
-        all_values = []
-        pageno = 0
-        dictrow = {}
+
+        all_keys, all_values, pageno, dictrow = [], [], 0, {}
         dictrow['SourceFileName'] = docname
         eprint(f'docname type is: {type(docname)}')
         dictrow['archer_id'] = docname[0:11]
-        ssn = ''
-        ca_ssn = ''
+        ssn, ca_ssn = '', ''
+
         regex = re.compile('-..-')
     #   building the array of KVP
         for page in doc.pages:
@@ -319,8 +323,8 @@ def lambda_handler(event, context):
         try:
             dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
         except Exception as e:
-            msg = f'error writing jsondata to dictrow, err: {e}'
-            writetosnstopic(msg)
+            msg = f'error writing jsondata to dictrow, err: {e} on lineNo: {e.__traceback__.tb_lineno}'
+            eprint(msg, 40)
         #dictrow['jsondata'] = json_object
         all_values.append(dictrow)
 
@@ -330,15 +334,12 @@ def lambda_handler(event, context):
             eprint('writing this to DB')
             eprint(dictionary)
             write_dict_to_db(dictionary, connection, tablename)
-            try:
-                writetosnstopic("successfully wrote OCR data for document: "+docname)
-            except Exception as e:
-                eprint(f'failed to write to SNS topic error:{e}')
+            eprint("successfully wrote OCR data for document: "+docname, "info")
     except Exception as e:
         tberror =traceback.print_exc()
         emsg = f'error thrown {e} from line no {e.__traceback__.tb_lineno}'
-        print(emsg)
-        writetosnstopic(emsg)
+        print(emsg, "error")
+
 
 
 
