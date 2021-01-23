@@ -79,6 +79,9 @@ Returns a dictionanry of KVP that are in the json config file
 '''
 def read_config():
 
+    configFileBucket = os.environ.get('ConfigBucket')
+    configFileKey = os.environ.get('ConfigKey')
+    print(f'read ConfigBucket as: {configFileBucket} and ConfigKey as {configFileKey}')
     ocr_config_json = {}
     bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
