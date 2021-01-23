@@ -55,7 +55,7 @@ def writetosnstopic(msg, sev=10):
     eprint('--- trying to write to SNS topic ---',10,False)
     global snsnotify
     eprint(f'snsnotify in writetosnstopic is: {snsnotify}',10,False)
-    if snsnotify.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'off')):
+    if snsnotify.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'off'}:
         eprint(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".',10,False)
         snsnotify = 'error'
     snslevel = 10 if snsnotify == 'debug' else 20 if snsnotify == 'info' else 30 if snsnotify == 'warning' else 40 if snsnotify == 'error' else 50 if snsnotify == 'critical' else 0
