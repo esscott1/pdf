@@ -1,5 +1,5 @@
 {
-	"debug":"debug",
+	"logginglevel":"debug",
 	"snsnotification":"info",
 	"s3_prefix_table_map":
 	{

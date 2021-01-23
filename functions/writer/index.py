@@ -17,19 +17,17 @@ def read_config():
     print(f'read ConfigBucket as: {configFileBucket} and ConfigKey as {configFileKey}')
     ocr_config_json = {}
     s3 = boto3.client('s3')
-#    try:
-    response = s3.get_object(Bucket = configFileBucket, Key = configFileKey)
-    content = response['Body']
-    ocr_config_json = json.loads(content.read())
-    global debug
-    debug = ocr_config_json['logginglevel']
-    global snsnotify
-    snsnotify = ocr_config_json['snsnotification']
-    return ocr_config_json
-#    except Exception as e:
-#        msg = f'error reading json config file: {configFileKey} in bucket: {configFileBucket}, err msg is: {e}  on lineNo: {e.__traceback__.tb_lineno}'
-#        eprint(msg, 50)
-#        traceback.print_tb(e.__traceback__)
+    try:
+        response = s3.get_object(Bucket = configFileBucket, Key = configFileKey)
+        content = response['Body']
+        ocr_config_json = json.loads(content.read())
+        global debug
+        debug = ocr_config_json['logginglevel']
+        global snsnotify
+        snsnotify = ocr_config_json['snsnotification']
+        return ocr_config_json
+    except:
+        traceback.print_exc()
 
 def eprint(msg, sev=10):
     '''

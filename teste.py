@@ -377,11 +377,8 @@ def dostuff(stuff):
 
 try:
     dostuff("one", "two")
-except Exception as e:
-    print(e)
-
-    tbvar = traceback.format_stack(traceback.extract_tb(e.__traceback__))
-    print(tbvar)
+except:
+    traceback.print_exc()
     #traceback.print_tb(e.__traceback__)
 
 
