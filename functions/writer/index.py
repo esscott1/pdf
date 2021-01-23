@@ -14,6 +14,10 @@ global snsnotify
 def eprint(msg):
     if(debug != None and debug == ('on' or 'yes')):
         print(msg)
+    elif(debug != ('off' or 'no'))
+        print(f'debug in config file set to something other than "on" "yes" "off" or "no"  therefore debug will be turned on.')
+        global debug = 'on'
+        print(msg)
 
 def getJobResults(jobId):
     """
@@ -83,9 +87,7 @@ def read_config():
     configFileKey = os.environ.get('ConfigKey')
     print(f'read ConfigBucket as: {configFileBucket} and ConfigKey as {configFileKey}')
     ocr_config_json = {}
-    bucket = 'archer-ocr-doc-bucket'
     s3 = boto3.client('s3')
-    key = 'ocr_config.json'
     try:
         response = s3.get_object(Bucket = configFileBucket, Key = configFileKey)
         content = response['Body']
@@ -142,12 +144,17 @@ def CleanDate(dateFieldValue):
     return cleanDateResult
 
 def writetosnstopic(msg):
+    if(snsnotify != ('off' or 'no')):
+        print(f'snsnotification in config file set to something other than "on" "yes" "off" or "no"  therefore snsnotication will be turned on.')
+        global snsnotify = 'yes'
+    eprint('--- trying to write to SNS topic ---')
     if(snsnotify != None and snsnotify == ('on' or 'yes')):
         sns = boto3.client('sns')
         response = sns.publish(
             TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
             Message=msg,)
         eprint(response)
+
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
     # logic for getting the correct map based on file name
@@ -322,7 +329,6 @@ def lambda_handler(event, context):
             eprint(dictionary)
             write_dict_to_db(dictionary, connection, tablename)
             try:
-                eprint('--- trying to write to SNS topic ---')
                 writetosnstopic("successfully wrote OCR data for document: "+docname)
             except Exception as e:
                 eprint(f'failed to write to SNS topic error:{e}')

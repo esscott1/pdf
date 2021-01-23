@@ -1,6 +1,6 @@
 {
-	"debug":"on",
-	"snsnotification":"off",
+	"debug":"high",
+	"snsnotification":"on",
 	"s3_prefix_table_map":
 	{
 		"dallas":{
