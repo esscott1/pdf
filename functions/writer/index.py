@@ -14,7 +14,7 @@ global snsnotify
 def eprint(msg):
     if(debug != None and debug == ('on' or 'yes')):
         print(msg)
-    elif(debug != ('off' or 'no'))
+    elif(debug != ('off' or 'no')):
         print(f'debug in config file set to something other than "on" "yes" "off" or "no"  therefore debug will be turned on.')
         global debug = 'on'
         print(msg)
