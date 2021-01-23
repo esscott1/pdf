@@ -9,11 +9,10 @@ import re
 import traceback
 
 global debug
+global snsnotify
 
 def eprint(msg):
-    if(debug != None and debug == 'on'):
-        print(msg)
-    if(debug != None and debug == 'yes'):
+    if(debug != None and debug == ('on' or 'yes')):
         print(msg)
 
 def getJobResults(jobId):
@@ -140,11 +139,12 @@ def CleanDate(dateFieldValue):
     return cleanDateResult
 
 def writetosnstopic(msg):
-    sns = boto3.client('sns')
-    response = sns.publish(
-        TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
-        Message=msg,)
-    eprint(response)
+    if(snsnotify != None and snsnotify == ('on' or 'yes')):
+        sns = boto3.client('sns')
+        response = sns.publish(
+            TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
+            Message=msg,)
+        eprint(response)
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
     # logic for getting the correct map based on file name
@@ -232,7 +232,10 @@ def lambda_handler(event, context):
     configDict = read_config()
     global debug
     debug = configDict['debug']
+    global snsnotify
+    snsnotify = configDict['snsnotification']
     print(f'Debugging is set to: {debug}')
+    print(f'SNS notification: {snsnotify}')
     try:
         notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
         
@@ -322,7 +325,9 @@ def lambda_handler(event, context):
                 eprint(f'failed to write to SNS topic error:{e}')
     except Exception as e:
         tberror =traceback.print_exc()
-        writetosnstopic(f'error thrown {e} with traceback of {tberror}')
+        emsg = f'error thrown {e} from line no {e.__traceback__.tb_lineno}'
+        print(emsg)
+        writetosnstopic(emsg)
 
 
 
