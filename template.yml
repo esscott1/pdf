@@ -7,6 +7,12 @@ Parameters:
   TableName:
     Description: The RDS Postgres table name.
     Type: String    
+  ConfigKeyName:
+    Description: The name of the Config File for Writer Lamdba Function
+    Type: String
+  ConfigBucketName:
+    Description:  The name of the s3 bucket housing the writer lamdba config File
+    Type: String
 
 Globals:
   Function:
