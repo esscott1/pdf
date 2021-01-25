@@ -389,10 +389,10 @@ print('---  prefix test ---')
 print('')
 print('')
 print('')
-fullname = 'dbj/somefile.pdf'
+fullname = 'dbj/DBJRUA10044-AFFT--202012031203.pdf'
 prefixName = fullname[0:fullname.find('/')]
 print(f'-- prefix name is: {prefixName}')
-docname2 = fullname[fullname.find('/')+1:len(fullname)]
+docname2 = fullname[fullname.find('/')+1:15]
 print(f'--- name withouth prefix is: {docname2}')
 
 #print('---- testing date of birth ----')
