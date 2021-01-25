@@ -385,7 +385,15 @@ if debug.lower() not in {'critical', 'info', 'debug', 'warning'}:
     print(f'debug does not matches')
     #traceback.print_tb(e.__traceback__)
 
-
+print('---  prefix test ---')
+print('')
+print('')
+print('')
+fullname = 'dbj/somefile.pdf'
+prefixName = fullname[0:fullname.find('/')]
+print(f'-- prefix name is: {prefixName}')
+docname2 = fullname[fullname.find('/')+1:len(fullname)]
+print(f'--- name withouth prefix is: {docname2}')
 
 #print('---- testing date of birth ----')
 #dob = '01 12611952'
