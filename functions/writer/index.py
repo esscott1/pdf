@@ -184,7 +184,7 @@ def get_csv_2_ocr_map(docname,configDict, prefixName):
     return result
 
 def FormatSSN(value):
-    ssn = value
+    ssn = str(value)
     if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
         ssn = ssn.replace('.', '')
         ssn = ssn.replace(' ', '')
@@ -195,7 +195,7 @@ def FormatSSN(value):
             ssn = ssn[:5] + '-' + ssn[5:]
             ssn = ssn[:3] + '-' + ssn[3:]
         else:
-            ssn = value
+            ssn = str(value)
     else:
         eprint('SSN was in correct format',10)
     eprint(f'ssn after cleaning is: {ssn}',10)
