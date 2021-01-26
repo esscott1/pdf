@@ -36,6 +36,8 @@ def lambda_handler(event, context):
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = unquote_plus(event['Records'][0]['s3']['object']['key'])
     jobkey = key.replace('/','_')
+    jobkey = key.replace(',','_')
+
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
         try:

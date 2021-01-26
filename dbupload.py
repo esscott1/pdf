@@ -58,8 +58,8 @@ def write_dict_to_db(mydict, connection):
     for fieldvalue in fieldvaluelist:
         fieldtextlist.append(str(fieldvalue))
 
-    print(sql, fieldvaluelist)
-    print(fieldtextlist)
+    #print(sql, fieldvaluelist)
+    #print(fieldtextlist)
     cursor = connection.cursor()
     cursor.execute(sql, fieldtextlist)
 
@@ -69,7 +69,7 @@ def write_dict_to_db(mydict, connection):
 def csv_to_dict():
     allvalues = []
 #    dict={}
-    with open('testaddress.csv', 'r') as csvfile:
+    with open('testaddress2.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             dict={}
@@ -91,5 +91,9 @@ def csv_to_dict():
 
 connect = get_connection()
 data = csv_to_dict()
+icounter = 1
+idata = len(data)
 for rowdata in data:
     write_dict_to_db(rowdata,connect)
+    print(f'uploaded {icounter} of {idata}')
+    icounter += 1
