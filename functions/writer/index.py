@@ -32,7 +32,7 @@ def read_config():
 def eprint(msg, sev=10, sendsns=True):
     '''
     default is debug or notset unless correctly specified in config
-    sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | notset: 0 
+    sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | verbose: 0 
     '''
     global debug
     if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
@@ -49,11 +49,10 @@ def writetosnstopic(msg, sev=10):
     '''
     default off unless turned on by correct config
     '''
-    eprint('--- trying to write to SNS topic ---',10,False)
     global snsnotify
-    eprint(f'snsnotify in writetosnstopic is: {snsnotify}',10,False)
+    eprint(f'--- trying to write to SNS topic, snsnotify level is set to {snsnotify} ---',0,False)
     if snsnotify.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'off'}:
-        eprint(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".',10,False)
+        eprint(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".',0,False)
         snsnotify = 'error'
     snslevel = 10 if snsnotify == 'debug' else 20 if snsnotify == 'info' else 30 if snsnotify == 'warning' else 40 if snsnotify == 'error' else 50 if snsnotify == 'critical' else 0
     if(sev >= snslevel):
@@ -171,15 +170,14 @@ def CleanDate(dateFieldValue):
 
 
 
-
 def get_csv_2_ocr_map(docname,configDict, prefixName):
     # logic for getting the correct map based on file name
     result = {}
     for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
         if(str(docname).find(snippet) > -1):
-            eprint(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}')
+            eprint(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}',0)
             omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
-            eprint(f'map should by {configDict["ocr_maps"][omap]}')
+            eprint(f'map should by {configDict["ocr_maps"][omap]}',0)
             result = configDict["ocr_maps"][omap]
     return result
 
@@ -219,7 +217,7 @@ def CleanSelectionFieldValueToStr(value, valueType):
 
 def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     result = None
-    es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][itemNo]['ocr_key']) in str(x.key) and  csv_2_ocr_map[csv_key]['ocr'][itemNo]['PageNo'] == pageno ,page.form.fields) 
+    es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][itemNo]['ocr_key']) in str(x.key) and  pageno in csv_2_ocr_map[csv_key]['ocr'][itemNo]['PageNo'] ,page.form.fields) 
     lFields = list(es)
     eprint(f"i found {str(len(lFields))} field objects")
     if(len(lFields)>0):
@@ -329,11 +327,11 @@ def lambda_handler(event, context):
             eprint('---- eprinting the csv_2_ocr_map again ---')
             eprint(csv_2_ocr_map)
             for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-                if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno)):
+                if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]):
                     eprint(f'looking for csv_key: {csv_key}')
                     dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
-                    eprint(f'looking for csv_key: {csv_key}' and str(csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]) == str(pageno))
+                    eprint(f'looking for csv_key: {csv_key}' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"])
                     # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
                     dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
     #    dictrow['Claimant_Social_Security_Number'] = ssn

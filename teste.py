@@ -384,27 +384,22 @@ debug = 'warning2'
 if debug.lower() not in {'critical', 'info', 'debug', 'warning'}:
     print(f'debug does not matches')
     #traceback.print_tb(e.__traceback__)
+pagetestdata = {
+    "test_map":{
+        "claimant_id":{"Type":"Form", "ocr":[{"ocr_key":"Claimant ID","PageNo":[1,2],"TopPos":1,"Type":"String"}]}
+    }
+}
+print('---  page array format test ---')
 
-print('---  SSN format test ---')
-print('')
-print('')
-print('')
-value = '251-ba-erothtt --- '
-ssn = value
-if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
-    ssn = ssn.replace('.', '')
-    ssn = ssn.replace(' ', '')
-    ssn = ssn.replace('-', '')
-    print(f'ssn after replace periods is {ssn}')
-    print(f'length of ssn: {len(ssn)}')
-    if(len(ssn) == 9):
-        ssn = ssn[:5] + '-' + ssn[5:]
-        ssn = ssn[:3] + '-' + ssn[3:]
-    else:
-        ssn = value
+map = json.loads(json.dumps(pagetestdata))
+print(f'map is of type: {type(map)}')
+print(f'page number is: {map["test_map"]["claimant_id"]["ocr"][0]["PageNo"]}')
+pagelist = map["test_map"]["claimant_id"]["ocr"][0]["PageNo"]
+print(f'pagelist is of type {type(pagelist)}')
+if(3 in map["test_map"]["claimant_id"]["ocr"][0]["PageNo"]):
+    print(f'should check this page')
 else:
-    print('SSN was in correct format')
-print(f'ssn after cleaning is: {ssn}')
+    print(f'should not check this page')
 
 
 
