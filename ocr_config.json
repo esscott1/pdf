@@ -35,92 +35,92 @@
     {
 		"db_csv_2_ocr_map_elect":
 		{
-			"claimant_id":{"Type":"Form", "ocr":[{"ocr_key":"Claimant ID","PageNo":1,"TopPos":1,"Type":"String"}]},
-			"lump_sum":{"Type":"Form", "ocr":[{"ocr_key":"LUMP SUM PAYMENT","PageNo":1,"TopPos":1,"Type":"Section"}]},
-			"structured":{"Type":"Form", "ocr":[{"ocr_key":"STRUCTURED SETTLEMENT ANNUITY","PageNo":1,"TopPos":1,"Type":"Section"}]},
-			"special_needs":{"Type":"Form", "ocr":[{"ocr_key":"SPECIAL NEEDS TRUST","PageNo":1,"TopPos":1,"Type":"Section"}]},
-			"combination":{"Type":"Form", "ocr":[{"ocr_key":"COMBINATION LUMP","PageNo":1,"TopPos":1,"Type":"Section"}]},
-			"signature_date":{"Type":"Form", "ocr":[{"ocr_key":"Date","PageNo":1,"TopPos":2,"Type":"Section"}]}
+			"claimant_id":{"Type":"Form", "ocr":[{"ocr_key":"Claimant ID","PageNo":[1],"TopPos":1,"Type":"String"}]},
+			"lump_sum":{"Type":"Form", "ocr":[{"ocr_key":"LUMP SUM PAYMENT","PageNo":[1],"TopPos":1,"Type":"Section"}]},
+			"structured":{"Type":"Form", "ocr":[{"ocr_key":"STRUCTURED SETTLEMENT ANNUITY","PageNo":[1],"TopPos":1,"Type":"Section"}]},
+			"special_needs":{"Type":"Form", "ocr":[{"ocr_key":"SPECIAL NEEDS TRUST","PageNo":[1],"TopPos":1,"Type":"Section"}]},
+			"combination":{"Type":"Form", "ocr":[{"ocr_key":"COMBINATION LUMP","PageNo":[1],"TopPos":1,"Type":"Section"}]},
+			"signature_date":{"Type":"Form", "ocr":[{"ocr_key":"Date","PageNo":[1],"TopPos":2,"Type":"Section"}]}
 			
 		},
 		"db_csv_2_ocr_map_lygdaa":
 		{
-			"First_Name":{"Type": "Form", "ocr":[{"ocr_key":"Officer's First Name:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Last_Name":{"Type": "Form", "ocr":[{"ocr_key":"Officer's Last Name", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Middle_Name":{"Type": "Form", "ocr":[{"ocr_key":"MI:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Address1":{"Type": "Form", "ocr":[{"ocr_key":"Address 1", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Address2":{"Type": "Form", "ocr":[{"ocr_key":"Address 2", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"City":{"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"State":{"Type": "Form", "ocr":[{"ocr_key":"Stata", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Zip":{"Type": "Form", "ocr":[{"ocr_key":"ZIP", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Day_Phone":{"Type": "Form", "ocr":[{"ocr_key":"Day Phone", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Evening_Phone":{"Type": "Form", "ocr":[{"ocr_key":"Evening Phone", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Email_Address":{"Type": "Form", "ocr":[{"ocr_key":"Email Address", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Employee_Id":{"Type": "Form", "ocr":[{"ocr_key":"City of Dallas Employee Id No", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"SSN":{"Type": "Form", "ocr":[{"ocr_key":"Social Security No", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Employment_Beginning_Date":{"Type": "Form", "ocr":[{"ocr_key":"Beginning Date:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Employment_Ending_Date":{"Type": "Form", "ocr":[{"ocr_key":"Ending Date:", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-			"Applicable_Class":{"Type": "Form", "ocr":[{"ocr_key":"Circle Applicable Class:", "PageNo": 1, "TopPos": 1, "Type": "String"}]}
+			"First_Name":{"Type": "Form", "ocr":[{"ocr_key":"Officer's First Name:", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Last_Name":{"Type": "Form", "ocr":[{"ocr_key":"Officer's Last Name", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Middle_Name":{"Type": "Form", "ocr":[{"ocr_key":"MI:", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Address1":{"Type": "Form", "ocr":[{"ocr_key":"Address 1", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Address2":{"Type": "Form", "ocr":[{"ocr_key":"Address 2", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"City":{"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"State":{"Type": "Form", "ocr":[{"ocr_key":"Stata", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Zip":{"Type": "Form", "ocr":[{"ocr_key":"ZIP", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Day_Phone":{"Type": "Form", "ocr":[{"ocr_key":"Day Phone", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Evening_Phone":{"Type": "Form", "ocr":[{"ocr_key":"Evening Phone", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Email_Address":{"Type": "Form", "ocr":[{"ocr_key":"Email Address", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Employee_Id":{"Type": "Form", "ocr":[{"ocr_key":"City of Dallas Employee Id No", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"SSN":{"Type": "Form", "ocr":[{"ocr_key":"Social Security No", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Employment_Beginning_Date":{"Type": "Form", "ocr":[{"ocr_key":"Beginning Date:", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Employment_Ending_Date":{"Type": "Form", "ocr":[{"ocr_key":"Ending Date:", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+			"Applicable_Class":{"Type": "Form", "ocr":[{"ocr_key":"Circle Applicable Class:", "PageNo": [1], "TopPos": 1, "Type": "String"}]}
 		},
         "db_csv_2_ocr_map_afft" :
         {
-            "afft_Address": {"Type": "Form", "ocr":[{"ocr_key":"Address", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-            "afft_City_state_zip": {"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-            "afft_ssn":{"Type": "Form", "ocr":[{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1, "Type": "SSN"}]},
-            "afft_dob":{"Type": "Form", "ocr":[{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1, "Type": "Date"}]},
+            "afft_Address": {"Type": "Form", "ocr":[{"ocr_key":"Address", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+            "afft_City_state_zip": {"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": [1], "TopPos": 1, "Type": "String"}]},
+            "afft_ssn":{"Type": "Form", "ocr":[{"ocr_key":"My Social Security", "PageNo": [1], "TopPos": 1, "Type": "SSN"}]},
+            "afft_dob":{"Type": "Form", "ocr":[{"ocr_key":"My Date of Birth", "PageNo": [1], "TopPos": 1, "Type": "Date"}]},
             "during_the_time_period_i_was_exposed_to_roundup_less_than_":{
-				"Type": "Form", "ocr":[{"ocr_key":"10 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"10 Hours per year on average", "PageNo": [1], "TopPos": 1, "Type": "Selection"}]},
             "during_the_time_period_i_was_exposed_to_roundup_10_20_hour":{
-				"Type": "Form", "ocr":[{"ocr_key":"- 20 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"- 20 Hours per year on average", "PageNo": [1], "TopPos": 1, "Type": "Selection"}]},
             "during_the_time_period_i_was_exposed_to_roundup_20_40_hour":{
-				"Type": "Form", "ocr":[{"ocr_key":"40 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"40 Hours per year on average", "PageNo": [1], "TopPos": 1, "Type": "Selection"}]},
             "during_the_time_period_i_was_exposed_to_roundup_over_40_ho":{
-				"Type": "Form", "ocr":[{"ocr_key":"Over 40 Hours", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]}
+				"Type": "Form", "ocr":[{"ocr_key":"Over 40 Hours", "PageNo": [1], "TopPos": 1, "Type": "Selection"}]}
         },
         "db_csv_2_ocr_map_enroll" :
         {
 			"roundup_enrollment_form_i_elect_to_participate_in_the_roun": {
-				"Type": "Form", "ocr":[{"ocr_key":"I elect to participate in the", "PageNo": 2, "TopPos": 1, "Type": "Selection"}]}, 
+				"Type": "Form", "ocr":[{"ocr_key":"I elect to participate in the", "PageNo": [2], "TopPos": 1, "Type": "Selection"}]}, 
             "Claimant_First_Name": {
-				"Type": "Form", "ocr":[{"ocr_key":"First", "PageNo": 2, "TopPos": 1, "Type": "String"}]}, 
+				"Type": "Form", "ocr":[{"ocr_key":"First", "PageNo": [2], "TopPos": 1, "Type": "String"}]}, 
             "Claimant_Last_Name": {
-				"Type": "Form", "ocr":[{"ocr_key":"Last", "PageNo": 2, "TopPos": 1, "Type": "String"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"Last", "PageNo": [2], "TopPos": 1, "Type": "String"}]},
             "City":{
-				"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": 2, "TopPos": 1, "Type": "String"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": [2], "TopPos": 1, "Type": "String"}]},
             "State":{
-				"Type": "Form", "ocr":[{"ocr_key":"State", "PageNo": 2, "TopPos": 1, "Type": "String"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"State", "PageNo": [2], "TopPos": 1, "Type": "String"}]},
             "Zip_Code":{
-				"Type": "Form", "ocr":[{"ocr_key":"Zip", "PageNo": 2, "TopPos": 1, "Type": "String"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"Zip", "PageNo": [2], "TopPos": 1, "Type": "String"}]},
             "Address_1":{
-				"Type": "Form", "ocr":[{"ocr_key":"Street/P.O. B", "PageNo": 2, "TopPos": 1, "Type": "String"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"Street/P.O. B", "PageNo": [2], "TopPos": 1, "Type": "String"}]},
             "Claimant_Date_of_Birth":{
-				"Type": "Form", "ocr":[{"ocr_key":"(Month/Day/Year)", "PageNo": 2, "TopPos": 1, "Type": "Date"}]},
+				"Type": "Form", "ocr":[{"ocr_key":"(Month/Day/Year)", "PageNo": [2], "TopPos": 1, "Type": "Date"}]},
 			"Current_Citizenship_Status":{
-				"Type": "YesNo", "ocr":[{"ocr_key":"YES","PageNo": 2, "TopPos": 1, "Type": "Selection"},
-					{"ocr_key":"NO","PageNo": 2, "TopPos": 1, "Type": "Selection"}]},
+				"Type": "YesNo", "ocr":[{"ocr_key":"YES","PageNo": [2], "TopPos": 1, "Type": "Selection"},
+					{"ocr_key":"NO","PageNo": [2], "TopPos": 1, "Type": "Selection"}]},
 			
             "Citizenship_Status_at_time_of_Exposure":{
-				"Type": "YesNo", "ocr":[{"ocr_key":"YES","PageNo":2, "TopPos": 2, "Type": "Selection"},
-				{"ocr_key":"NO","PageNo":2, "TopPos": 2, "Type": "Selection"}]},
+				"Type": "YesNo", "ocr":[{"ocr_key":"YES","PageNo":[2], "TopPos": 2, "Type": "Selection"},
+				{"ocr_key":"NO","PageNo":[2], "TopPos": 2, "Type": "Selection"}]},
              
             "Were_you_married_at_any_time_from_the_date_of_your_initial":{
-				"Type": "YesNo", "ocr":[{"ocr_key": "YES", "PageNo": 3, "TopPos":1, "Type": "Selection"},
-            {"ocr_key": "NO", "PageNo": 3, "TopPos":1, "Type": "Selection"}]},
+				"Type": "YesNo", "ocr":[{"ocr_key": "YES", "PageNo": [3], "TopPos":1, "Type": "Selection"},
+            {"ocr_key": "NO", "PageNo": [3], "TopPos":1, "Type": "Selection"}]},
 			
             "Claimant_Social_Security_Number":{
-				"Type": "Line", "ocr":[{"ocr_key": "ssn", "PageNo": 2, "TopPos":1, "Type": "String"}]}
+				"Type": "Line", "ocr":[{"ocr_key": "ssn", "PageNo": [2], "TopPos":1, "Type": "String"}]}
         },
         "csv_2_ocr_map_relfull" :
         {
-            "Claimant First Name": {"ocr_key":"First", "PageNo": 3, "TopPos": 1, "Type": "String"}, 
-            "Claimant Last Name": {"ocr_key":"Last", "PageNo": 3, "TopPos": 1, "Type": "String"},
-            "City":{"ocr_key":"City", "PageNo": 3, "TopPos": 1, "Type": "String"},
-            "State":{"ocr_key":"State", "PageNo": 3, "TopPos": 1, "Type": "String"},
-            "Zip Code":{"ocr_key":"Zip", "PageNo": 3, "TopPos": 1, "Type": "String"},
-            "Address 1":{"ocr_key":"Street/P.O. B", "PageNo": 3, "TopPos": 1, "Type": "String"},
-            "Claimant Date of Birth":{"ocr_key":"(Month/Day/Year)", "PageNo": 3, "TopPos": 1, "Type": "Date"},
-            "Current Citizenship Status":{"ocr_key":"YES","PageNo": 3, "TopPos": 1, "Type": "String"},
-            "Citizenship Status at time of Exposure":{"ocr_key":"YES","PageNo":3, "TopPos": 2, "Type": "String"}
+            "Claimant First Name": {"ocr_key":"First", "PageNo": [3], "TopPos": 1, "Type": "String"}, 
+            "Claimant Last Name": {"ocr_key":"Last", "PageNo": [3], "TopPos": 1, "Type": "String"},
+            "City":{"ocr_key":"City", "PageNo": [3], "TopPos": 1, "Type": "String"},
+            "State":{"ocr_key":"State", "PageNo": [3], "TopPos": 1, "Type": "String"},
+            "Zip Code":{"ocr_key":"Zip", "PageNo": [3], "TopPos": 1, "Type": "String"},
+            "Address 1":{"ocr_key":"Street/P.O. B", "PageNo": [3], "TopPos": 1, "Type": "String"},
+            "Claimant Date of Birth":{"ocr_key":"(Month/Day/Year)", "PageNo": [3], "TopPos": 1, "Type": "Date"},
+            "Current Citizenship Status":{"ocr_key":"YES","PageNo": [3], "TopPos": 1, "Type": "String"},
+            "Citizenship Status at time of Exposure":{"ocr_key":"YES","PageNo":[3], "TopPos": 2, "Type": "String"}
             }
     }
     
