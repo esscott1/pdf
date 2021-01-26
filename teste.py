@@ -385,15 +385,30 @@ if debug.lower() not in {'critical', 'info', 'debug', 'warning'}:
     print(f'debug does not matches')
     #traceback.print_tb(e.__traceback__)
 
-print('---  prefix test ---')
+print('---  SSN format test ---')
 print('')
 print('')
 print('')
-fullname = 'dbj/DBJRUA10044-AFFT--202012031203.pdf'
-prefixName = fullname[0:fullname.find('/')]
-print(f'-- prefix name is: {prefixName}')
-docname2 = fullname[fullname.find('/')+1:15]
-print(f'--- name withouth prefix is: {docname2}')
+value = '251-ba-erothtt --- '
+ssn = value
+if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
+    ssn = ssn.replace('.', '')
+    ssn = ssn.replace(' ', '')
+    ssn = ssn.replace('-', '')
+    print(f'ssn after replace periods is {ssn}')
+    print(f'length of ssn: {len(ssn)}')
+    if(len(ssn) == 9):
+        ssn = ssn[:5] + '-' + ssn[5:]
+        ssn = ssn[:3] + '-' + ssn[3:]
+    else:
+        ssn = value
+else:
+    print('SSN was in correct format')
+print(f'ssn after cleaning is: {ssn}')
+
+
+
+
 
 #print('---- testing date of birth ----')
 #dob = '01 12611952'

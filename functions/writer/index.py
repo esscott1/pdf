@@ -183,6 +183,23 @@ def get_csv_2_ocr_map(docname,configDict, prefixName):
             result = configDict["ocr_maps"][omap]
     return result
 
+def FormatSSN(value):
+    ssn = value
+    if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
+        ssn = ssn.replace('.', '')
+        ssn = ssn.replace(' ', '')
+        ssn = ssn.replace('-', '')
+        print(f'ssn after replace periods is {ssn}',10)
+        print(f'length of ssn: {len(ssn)}',10)
+        if(len(ssn) == 9):
+            ssn = ssn[:5] + '-' + ssn[5:]
+            ssn = ssn[:3] + '-' + ssn[3:]
+        else:
+            ssn = value
+    else:
+        eprint('SSN was in correct format',10)
+    eprint(f'ssn after cleaning is: {ssn}',10)
+    return ssn
 
 def CleanSelectionFieldValueToStr(value, valueType):
     result = ''
@@ -194,6 +211,8 @@ def CleanSelectionFieldValueToStr(value, valueType):
                 result = 'YES'
         elif(str(valueType) == 'Date'):
             result = CleanDate(value)
+        elif(str(valueType) == 'SSN'):
+            result = FormatSSN(value)
         else:
             result = str(value)
     return result
