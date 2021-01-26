@@ -1,5 +1,5 @@
 {
-	"logginglevel":"debug",
+	"logginglevel":"info",
 	"snsnotification":"error",
 	"s3_prefix_table_map":
 	{
@@ -59,7 +59,7 @@
         {
             "afft_Address": {"Type": "Form", "ocr":[{"ocr_key":"Address", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
             "afft_City_state_zip": {"Type": "Form", "ocr":[{"ocr_key":"City", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
-            "afft_ssn":{"Type": "Form", "ocr":[{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1, "Type": "String"}]},
+            "afft_ssn":{"Type": "Form", "ocr":[{"ocr_key":"My Social Security", "PageNo": 1, "TopPos": 1, "Type": "SSN"}]},
             "afft_dob":{"Type": "Form", "ocr":[{"ocr_key":"My Date of Birth", "PageNo": 1, "TopPos": 1, "Type": "Date"}]},
             "during_the_time_period_i_was_exposed_to_roundup_less_than_":{
 				"Type": "Form", "ocr":[{"ocr_key":"10 Hours per year on average", "PageNo": 1, "TopPos": 1, "Type": "Selection"}]},

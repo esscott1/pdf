@@ -274,8 +274,8 @@ def lambda_handler(event, context):
     If the Status is SUCCEEDED then create a dict of the values and write those to the RDS database.
     """
     configDict = read_config()
-    print(f'Debugging is set to: {debug}')
-    print(f'SNS notification: {snsnotify}')
+    print(f'Debugging level is set to: {debug}')
+    print(f'SNS notification level set to: {snsnotify} ')
     try:
         notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
         
