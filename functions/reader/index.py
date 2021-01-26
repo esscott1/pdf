@@ -37,7 +37,9 @@ def lambda_handler(event, context):
     key = unquote_plus(event['Records'][0]['s3']['object']['key'])
     jobkey = key.replace('/','_')
     jobkey = key.replace(',','_')
-
+    snsrolearn = os.environ['SNSROLEARN']
+    snstopicarn = os.environ['SNSTOPIC']
+    print(f'Bucket: {bucket} | key: {key} | jobkey: {jobkey} | RoleARN: {snsrolearn} | SNSTopicARN: {snstopicarn}')
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
         try:
