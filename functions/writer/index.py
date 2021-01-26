@@ -189,8 +189,8 @@ def FormatSSN(value):
         ssn = ssn.replace('.', '')
         ssn = ssn.replace(' ', '')
         ssn = ssn.replace('-', '')
-        print(f'ssn after replace periods is {ssn}',10)
-        print(f'length of ssn: {len(ssn)}',10)
+        eprint(f'ssn after replace periods is {ssn}',10)
+        eprint(f'length of ssn: {len(ssn)}',10)
         if(len(ssn) == 9):
             ssn = ssn[:5] + '-' + ssn[5:]
             ssn = ssn[:3] + '-' + ssn[3:]
@@ -359,7 +359,7 @@ def lambda_handler(event, context):
     except Exception as e:
         tberror =traceback.print_exc()
         emsg = f'error thrown {e} from line no {e.__traceback__.tb_lineno}'
-        print(emsg, "error")
+        eprint(emsg, 50)
 
 
 
