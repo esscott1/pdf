@@ -42,9 +42,10 @@ def lambda_handler(event, context):
     snstopicarn = os.environ['SNSTOPIC']
     print(f'Bucket: {bucket} | key: {key} | jobkey: {jobkey} | RoleARN: {snsrolearn} | SNSTopicARN: {snstopicarn}')
     if 'tif' in str(key):
+                s3client = boto.client('s3')
+        s3client.download_file(bucket,key,'/tmp/test.tif')
         with open("/tmp/output.pdf", "wb") as f:
-            f.write(img2pdf.convert([i for i in os.listdir('.') if i.endswith(".tif")]))
-        s3client = boto.client('s3')
+            f.write(img2pdf.convert([i for i in os.listdir('/tmp/.') if i.endswith(".tif")]))
         s3client.upload_file(Bucket='archer-ocr-doc-bucket', Key='output.pdf',Filename="./tmp/output.pdf")
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
