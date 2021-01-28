@@ -8,7 +8,7 @@ from boto3.dynamodb.types import TypeSerializer
 import pymongo
 import sys
 from urllib.parse import unquote_plus
-#import img2pdf
+import img2pdf
 
 
 def saveToDynamodb(data):
