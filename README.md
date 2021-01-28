@@ -4,6 +4,18 @@ This demo project will deploy a Textract Demo Project. Textract will read a mult
 ![draw](https://user-images.githubusercontent.com/14105387/71366582-a7e5b400-25a2-11ea-9f77-bbcfc7acf9ed.png)
 
 
+## How to use the ARCHER OCR Forms Processing System:
+
+The ARCHER OCR Forms Processsing System, OCR, is 100% configuration driven.  Mapping form sections to database field is 100% configuration based. See the Configuration
+file section for details.
+
+OCR will process PDF, JPEG, or PNG.  More file extensions will be supported in future versions.
+
+OCR does not support file names with commas or spaces in the names.  Files submitted with commas or spaces will have their file renamed effectively replacing the 
+commas or spaces with '_'  underscores.
+
+###  Configuration File
+
 ### Steps to deploy the demo project
 
 1) Deploy RDS Postgres database.

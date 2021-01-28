@@ -391,7 +391,7 @@ pagetestdata = {
         "claimant_id":{"Type":"Form", "ocr":[{"ocr_key":"Claimant ID","PageNo":[1,2],"TopPos":1,"Type":"String"}]}
     }
 }
-print('--- tiff to PDF ---')
+print('---  tiff to PDF ---')
 
 with open("output.pdf", "wb") as f:
     f.write(img2pdf.convert([i for i in os.listdir('.') if

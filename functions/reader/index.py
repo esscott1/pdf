@@ -8,6 +8,7 @@ from boto3.dynamodb.types import TypeSerializer
 import pymongo
 import sys
 from urllib.parse import unquote_plus
+import img2pdf
 
 
 def saveToDynamodb(data):
@@ -40,6 +41,11 @@ def lambda_handler(event, context):
     snsrolearn = os.environ['SNSROLEARN']
     snstopicarn = os.environ['SNSTOPIC']
     print(f'Bucket: {bucket} | key: {key} | jobkey: {jobkey} | RoleARN: {snsrolearn} | SNSTopicARN: {snstopicarn}')
+    if 'tif' in str(key):
+        with open("/tmp/output.pdf", "wb") as f:
+            f.write(img2pdf.convert([i for i in os.listdir('.') if i.endswith(".tif")]))
+        s3client = boto.client('s3')
+        s3client.upload_file(Bucket='archer-ocr-doc-bucket', Key='output.pdf',Filename="./tmp/output.pdf")
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
         try:
