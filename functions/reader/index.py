@@ -42,7 +42,7 @@ def lambda_handler(event, context):
     snstopicarn = os.environ['SNSTOPIC']
     print(f'Bucket: {bucket} | key: {key} | jobkey: {jobkey} | RoleARN: {snsrolearn} | SNSTopicARN: {snstopicarn}')
     if 'tif' in str(key):
-                s3client = boto.client('s3')
+        s3client = boto.client('s3')
         s3client.download_file(bucket,key,'/tmp/test.tif')
         with open("/tmp/output.pdf", "wb") as f:
             f.write(img2pdf.convert([i for i in os.listdir('/tmp/.') if i.endswith(".tif")]))
