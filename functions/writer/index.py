@@ -232,7 +232,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
             sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
             result = sorted_field[csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']-1]
         else:
-            eprint(f'trying to find a Top Pos {tpos} when only {lFields} field objects found', 30)
+            eprint(f'trying to find a Top Pos {tpos} when only {len(lFields)} field objects found', 30)
     return result
 
     
