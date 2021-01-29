@@ -9,6 +9,7 @@ import re
 import traceback
 
 debug, snsnotify = '',''
+gDocumentName = ''
 
 def read_config():
 
@@ -34,6 +35,8 @@ def eprint(msg, sev=10, sendsns=True):
     default is debug or notset unless correctly specified in config
     sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | verbose: 0 
     '''
+
+    msg = 'Document name: '+gDocumentName+', msg: '+msg
     global debug
     if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
         print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
@@ -274,6 +277,7 @@ def lambda_handler(event, context):
     Get Extraction Status, JobTag and JobId from SNS. 
     If the Status is SUCCEEDED then create a dict of the values and write those to the RDS database.
     """
+    global gDocumentName
     configDict = read_config()
     print(f'Debugging level is set to: {debug}')
     print(f'SNS notification level set to: {snsnotify} ')
@@ -291,6 +295,7 @@ def lambda_handler(event, context):
         eprint(f'----  Job Tag ----')
         eprint(pdfTextExtractionJobTag)
         docname = pdfTextExtractionDocLoc['S3ObjectName']
+        gDocumentName = docname
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}')
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
