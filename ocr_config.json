@@ -40,7 +40,7 @@
 			"structured":{"Type":"Form", "ocr":[{"ocr_key":"STRUCTURED SETTLEMENT ANNUITY","PageNo":[1,2],"TopPos":1,"Type":"Section"}]},
 			"special_needs":{"Type":"Form", "ocr":[{"ocr_key":"SPECIAL NEEDS TRUST","PageNo":[1,2],"TopPos":1,"Type":"Section"}]},
 			"combination":{"Type":"Form", "ocr":[{"ocr_key":"COMBINATION LUMP","PageNo":[1,2],"TopPos":1,"Type":"Section"}]},
-			"signature_date":{"Type":"Form", "ocr":[{"ocr_key":"Date","PageNo":[1,2],"TopPos":2,"Type":"Section"}]}
+			"signature_date":{"Type":"Form", "ocr":[{"ocr_key":"Date","PageNo":[1,2],"TopPos":2,"Type":"String"}]}
 			
 		},
 		"db_csv_2_ocr_map_lygdaa":
