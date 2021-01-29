@@ -392,8 +392,11 @@ pagetestdata = {
     }
 }
 print('--- parse ---')
-dname = 'qsfelection/mydocuemnt-something.pdf'
-print(dname[dname.find('/')+1:])
+dname = 'qsfelection/MOSAMB01159-Hurst-_Annette_.pdf'
+print(dname[dname.find('/')+1:dname.find('/')+12])
+if('qssf' in dname):
+    print('the name starts with the default')
+
 
 
 

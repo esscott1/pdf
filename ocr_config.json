@@ -41,7 +41,7 @@
 			"special_needs":{"Type":"Form", "ocr":[{"ocr_key":"SPECIAL NEEDS TRUST","PageNo":[1,2],"TopPos":1,"Type":"Selection"}]},
 			"combination":{"Type":"Form", "ocr":[{"ocr_key":"COMBINATION LUMP","PageNo":[1,2],"TopPos":1,"Type":"Selection"}]},
 			"signature_date":{"Type":"Form", "ocr":[{"ocr_key":"Date","PageNo":[1,2],"TopPos":2,"Type":"String"}]},
-			"address_change":{"Type":"Form","ocr":[{"ocr_key": "Change my address","PageNo":[1,2],"TopPos":1,"Type":"Selection"}]
+			"address_change":{"Type":"Form","ocr":[{"ocr_key": "Change my address","PageNo":[1,2],"TopPos":1,"Type":"Selection"}]}
 			
 		},
 		"db_csv_2_ocr_map_lygdaa":

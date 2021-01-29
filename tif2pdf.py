@@ -10,6 +10,7 @@ parser.add_argument('-p','--path', required=True, help='path to search for docum
 parser.add_argument('-r', '--recursive', default='false', choices=['true', 'false'], help='true = will recursively search.  Default is false')
 parser.add_argument('-b','--bucket', default='textract-uploadbucket-bas6dcsjr2d2', help='the name of the s3 bucket to send files to.  {optional} Default is set consistent with OCR system')
 parser.add_argument('-f','--folder', default='', help='folder in the s3 bucket to copy the files to.')
+parser.add_argument('-s','--startswith', default='', help='finds files where the name starts with the string provided' )
 parser.add_argument('--verbose', action='store_const', const=0, help='sets the output logging level')
 parser.add_argument('--silent', action='store_const', const=50, help='sets the output logging level')
 parser.add_argument('--version', action='version', version='Version 2.0')
@@ -34,7 +35,7 @@ eprint(args.path,0)
 eprint(args.recursive,0)
 eprint(args.verbose,0)
 
-def uploadtoocr(path, recurse, bucket, keyprefix):
+def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
     global uploadcounter
     uploadcounter = 0
     if(recurse == None):
@@ -44,7 +45,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix):
     if(recurse == False):
         for entry in os.listdir(basepath):
             if os.path.isfile(os.path.join(basepath, entry)):
-                if ('.pdf' in entry) or ('.tif' in entry):
+                if (('.pdf' in entry) or ('.tif' in entry)) and (startswith in entry):
                     eprint(basepath+'/'+entry, 0)
                     uploadtos3(basepath, entry, bucket, keyprefix)
                     uploadcounter =uploadcounter+ 1
@@ -54,7 +55,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix):
             filecounttif = sum('.tif' in files for files in f)
             eprint(f'found {filecount} pdf and {filecounttif} tif files in {r}',20)
             for file in f:
-                if ('.pdf' in file) or ('.tif' in file):
+                if (('.pdf' in file) or ('.tif' in file)) and (startswith in file):
                     eprint(f'asking to upload {r}/{file}',0)
                     uploadtos3(r, file, bucket, keyprefix)
                     uploadcounter = uploadcounter+ 1
@@ -109,7 +110,7 @@ else:
     r = False
 if(args.dryrun is not None):
     print("running a Dryrun.. NO files will be submitted for OCR processing")
-count = uploadtoocr(args.path, r, args.bucket, args.folder)
+count = uploadtoocr(args.path, r, args.bucket, args.folder, args.startswith)
 eprint(f'uploaded {count} files',20)
 
 
