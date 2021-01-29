@@ -59,11 +59,13 @@ def writetosnstopic(msg, sev=10):
         eprint(f'snsnotification in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "error".',0,False)
         snsnotify = 'error'
     snslevel = 10 if snsnotify == 'debug' else 20 if snsnotify == 'info' else 30 if snsnotify == 'warning' else 40 if snsnotify == 'error' else 50 if snsnotify == 'critical' else 0
+    sevstring = 'debug' if sev == 10 else 'info' if sev == 20 else 'warning' if sev == 30 else 'error' if sev == 40 else 'critical' if sev ==50 else 'unknown'
     if(sev >= snslevel):
         try:
             sns = boto3.client('sns')
             response = sns.publish(
                 TopicArn = 'arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
+                Subject= sevstring+': from OCR Service',
                 Message=msg,)
         except Exception as e:
             eprint(f'SNS publish ERROR: {e} on lineNo {e.__traceback__.tb_lineno}',40,False)

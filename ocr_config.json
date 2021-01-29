@@ -1,6 +1,6 @@
 {
 	"logginglevel":"info",
-	"snsnotification":"error",
+	"snsnotification":"warning",
 	"s3_prefix_table_map":
 	{
 		"dallas":{
