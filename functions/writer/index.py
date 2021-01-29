@@ -38,7 +38,7 @@ def eprint(msg, sev=10, sendsns=True):
     global gDocumentName
     global debug
     if(type(msg) == str):
-        msg = "Doc name is: "+gDocumentName +"msg is: "+msg
+        msg = "Doc name is: "+gDocumentName +" msg is: "+msg
     if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
         print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
         debug = 'debug'
@@ -296,7 +296,7 @@ def lambda_handler(event, context):
         eprint(f'----  Job Tag ----')
         eprint(pdfTextExtractionJobTag)
         docname = pdfTextExtractionDocLoc['S3ObjectName']
-        gDocumentName = str(docname)
+        
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}')
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
@@ -306,6 +306,7 @@ def lambda_handler(event, context):
         eprint(csv_2_ocr_map)
         eprint('document name is: '+docname)
         eprint(f'content of document should eprint to table name: {tablename}')
+        gDocumentName = str(docname[docname.find('/')+1:])
         if(pdfTextExtractionStatus == 'SUCCEEDED'):
             response = getJobResults(pdfTextExtractionJobId)
             doc = Document(response)

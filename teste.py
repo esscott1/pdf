@@ -391,13 +391,10 @@ pagetestdata = {
         "claimant_id":{"Type":"Form", "ocr":[{"ocr_key":"Claimant ID","PageNo":[1,2],"TopPos":1,"Type":"String"}]}
     }
 }
-print('--- tiff to PDF ---')
+print('--- parse ---')
+dname = 'qsfelection/mydocuemnt-something.pdf'
+print(dname[dname.find('/')+1:])
 
-with open("output.pdf", "wb") as f:
-    f.write(img2pdf.convert([i for i in os.listdir('.') if
-    i.endswith(".tif")]))
-
-print('ran converter, check for output.pdf file')
 
 
 #print('---- testing date of birth ----')
