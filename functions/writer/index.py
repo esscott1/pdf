@@ -36,8 +36,9 @@ def eprint(msg, sev=10, sendsns=True):
     sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | verbose: 0 
     '''
     global gDocumentName
-    msg = 'Document name: '+gDocumentName+', msg: '+msg
     global debug
+    if(type(msg) == str):
+        msg = "Doc name is: "+gDocumentName +"msg is: "+msg
     if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
         print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
         debug = 'debug'
