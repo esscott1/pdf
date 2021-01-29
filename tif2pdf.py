@@ -13,6 +13,7 @@ parser.add_argument('-f','--folder', default='', help='folder in the s3 bucket t
 parser.add_argument('--verbose', action='store_const', const=0, help='sets the output logging level')
 parser.add_argument('--silent', action='store_const', const=50, help='sets the output logging level')
 parser.add_argument('--version', action='version', version='Version 2.0')
+parser.add_argument('--dryrun', action='store_const', const=100, help='will find files but NOT upload to S3 for processing')
 args = parser.parse_args()
 
 
@@ -50,8 +51,8 @@ def uploadtoocr(path, recurse, bucket, keyprefix):
     else:
         for r, d, f in os.walk(basepath):
             filecount = sum('.pdf' in files for files in f)
-            filecount = filecount + sum('.tif' in files for files in f)
-            eprint(f'found {filecount} pdf and tif files in {r}',20)
+            filecounttif = sum('.tif' in files for files in f)
+            eprint(f'found {filecount} pdf and {filecounttif} tif files in {r}',20)
             for file in f:
                 if ('.pdf' in file) or ('.tif' in file):
                     eprint(f'asking to upload {r}/{file}',0)
@@ -78,6 +79,7 @@ def cleanfilename(name):
 
 
 def uploadtos3(path, filename, bucket, keyprefix):
+
     fname = path+'/'+filename
     convertedfilename = filename
     foundtif = False
@@ -88,12 +90,13 @@ def uploadtos3(path, filename, bucket, keyprefix):
     key = convertedfilename
     if(keyprefix is not None):
         key = keyprefix+'/'+key
-    s3client = boto3.client('s3')
-    eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
-    s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
+    if(args.dryrun is None):
+        s3client = boto3.client('s3')
+        eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
+        s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
     eprint(f'uploaded {convertedfilename} to s3 bucket {args.bucket}',20)
     if(foundtif):
-        os.remove(path+'/'+convertedfilename)
+        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
         eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
 
 eprint('--- listing files ---', 20)
@@ -104,6 +107,8 @@ if(args.recursive == 'true'):
     r = True
 else:
     r = False
+if(args.dryrun is not None):
+    print("running a Dryrun.. NO files will be submitted for OCR processing")
 count = uploadtoocr(args.path, r, args.bucket, args.folder)
 eprint(f'uploaded {count} files',20)
 

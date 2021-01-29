@@ -48,7 +48,6 @@ def eprint(msg, sev=10, sendsns=True):
     if(sendsns):
         writetosnstopic(msg, sev)
 
-
 def writetosnstopic(msg, sev=10):
     '''
     default off unless turned on by correct config
@@ -70,7 +69,6 @@ def writetosnstopic(msg, sev=10):
         except Exception as e:
             eprint(f'SNS publish ERROR: {e} on lineNo {e.__traceback__.tb_lineno}',40,False)
 
-
 def getJobResults(jobId):
     """
     Get readed pages based on jobId
@@ -90,7 +88,6 @@ def getJobResults(jobId):
         if('NextToken' in response):
             nextToken = response['NextToken']
     return pages
-
 
 def get_connection():
     """
@@ -155,7 +152,6 @@ def write_dict_to_db(mydict, connection, tablename):
     except Exception as e:
         eprint(f'Error writing to Database, error: {e} on lineNo {e.__traceback__.tb_lineno}',40)
 
-
 def CleanDate(dateFieldValue):
     datestring = str(dateFieldValue)
     cleanDateResult = 'Trouble Reading, see PDF'
@@ -173,8 +169,6 @@ def CleanDate(dateFieldValue):
     listCleanDateResult = [cleanDateResult, ca_cleanDateResult]
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
     return cleanDateResult
-
-
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
     # logic for getting the correct map based on file name
@@ -237,7 +231,6 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
             eprint(f'trying to find a Top Pos {tpos} when only {len(lFields)} field objects found', 30)
     return result
 
-    
 def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
     eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
