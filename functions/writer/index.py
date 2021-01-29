@@ -8,8 +8,8 @@ from dateutil.parser import parse
 import re
 import traceback
 
-debug, snsnotify = '',''
-gDocumentName = ''
+debug, snsnotify, gDocumentName = '','',''
+
 
 def read_config():
 
@@ -35,7 +35,6 @@ def eprint(msg, sev=10, sendsns=True):
     default is debug or notset unless correctly specified in config
     sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | verbose: 0 
     '''
-
     msg = 'Document name: '+gDocumentName+', msg: '+msg
     global debug
     if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
