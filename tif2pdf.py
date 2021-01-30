@@ -50,6 +50,8 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
                     eprint(basepath+'/'+entry, 0)
                     uploadtos3(basepath, entry, bucket, keyprefix)
                     uploadcounter =uploadcounter+ 1
+                    if(uploadcounter >= 30):
+                        return uploadcounter
     else:
         eprint(f'searching {basepath} recursively',0)
         for r, d, f in os.walk(basepath):
@@ -61,6 +63,8 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
                     eprint(f'asking to upload {r}/{file}',0)
                     uploadtos3(r, file, bucket, keyprefix)
                     uploadcounter = uploadcounter+ 1
+                    if(uploadcounter >= 30):
+                        return uploadcounter
     return uploadcounter
 
 def convert_tif_2_pdf(path, filename):
@@ -88,21 +92,32 @@ def uploadtos3(path, filename, bucket, keyprefix):
     fname = path+'/'+filename
     convertedfilename = cleanfilename(filename)
     foundtif = False
+    s3client = boto3.client('s3')
     if(filename.find('.tif')>0):
         tif2pdfname = convert_tif_2_pdf(path, filename)
         fname = path+'/'+tif2pdfname
         foundtif = True
-    key = convertedfilename
-    if(keyprefix is not None):
-        key = keyprefix+'/'+key
-    if(args.dryrun is None):
-        s3client = boto3.client('s3')
-        eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
-        s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
-    eprint(f'uploaded {fname} to s3 bucket {args.bucket}',20)
-    if(foundtif):
-        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
-        eprint(f'deleted PDF that was generated from Tif: {path+"/"+convertedfilename}',0)
+        key = tif2pdfname
+        if(keyprefix is not None):
+            key = keyprefix+'/'+key
+        if(args.dryrun is None):
+            eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',20)
+            s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
+            eprint(f'uploaded {fname} to s3 bucket {args.bucket}',20)
+        else:
+            eprint(f'Would have uploaded {fname} to s3 bucket {args.bucket}  -- except DRYRUN',20)
+        os.remove(fname) # removing the pdf that was created by 
+        eprint(f'deleted PDF that was generated from Tif: {fname}',0)
+    else:
+        key = convertedfilename
+        if(keyprefix is not None):
+            key = keyprefix+'/'+key
+        if(args.dryrun is None):
+            eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',20)
+            s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
+        else:
+            eprint(f'Would have uploaded {fname} to s3 bucket {args.bucket} as {key}  -- except DRYRUN',20)
+
 
 eprint('--- listing files ---', 20)
 #path = str(sys.argv[1])
