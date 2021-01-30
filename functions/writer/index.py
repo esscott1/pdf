@@ -76,6 +76,8 @@ def getJobResults(jobId):
     pages = []
     textract = boto3.client('textract')
     response = textract.get_document_analysis(JobId=jobId)
+    eprint(f'textract job status: {response.JobStatus}',20)
+    eprint(f'textract job status message: {response.StatusMessage}',20)
     pages.append(response)
     nextToken = None
     if('NextToken' in response):
