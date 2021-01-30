@@ -292,6 +292,8 @@ def lambda_handler(event, context):
         eprint(pdfTextExtractionDocLoc)
         eprint(f'----  Job Tag ----')
         eprint(pdfTextExtractionJobTag)
+        eprint('----  Job Status ----',20)
+        eprint(pdfTextExtractionStatus,20)
         docname = pdfTextExtractionDocLoc['S3ObjectName']
         
         prefixName = docname[0:docname.find('/')]
