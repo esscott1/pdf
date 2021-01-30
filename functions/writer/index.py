@@ -78,9 +78,10 @@ def getJobResults(jobId):
     response = textract.get_document_analysis(JobId=jobId)
     eprint(f'----  textract response status ---',30)
     eprint(response['JobStatus'],30)
-#    eprint(f'----  textract response status message---',30)
-#    eprint(response['StatusMessage'],30)
-
+    if(response['JobStatus'] != "SUCCEEDED"):
+        eprint(f'----  textract response status message---',40)
+        eprint(response['StatusMessage'],40)
+        return None
     pages.append(response)
     nextToken = None
     if('NextToken' in response):
@@ -310,17 +311,19 @@ def lambda_handler(event, context):
         eprint('document name is: '+docname)
         eprint(f'content of document should eprint to table name: {tablename}')
         gDocumentName = str(docname[docname.find('/')+1:])
-        if(pdfTextExtractionStatus == 'SUCCEEDED'):
-            response = getJobResults(pdfTextExtractionJobId)
-            doc = Document(response)
-        else:
-            try:
-                statusmessage = json.loads(notificationMessage)['StatusMessage']
-                eprint(f'Textract status message is: {statusmessage}')
-            except:
-                eprint(f'Textract status message does not exist.  ending program', 30)
-            finally:
-                return
+#        if(pdfTextExtractionStatus == 'SUCCEEDED'):
+        response = getJobResults(pdfTextExtractionJobId)
+        if response == None:
+            return
+        doc = Document(response)
+#        else:
+#            try:
+#                statusmessage = json.loads(notificationMessage)['StatusMessage']
+#                eprint(f'Textract status message is: {statusmessage}',30)
+#            except:
+#                eprint(f'Textract status message does not exist.  ending program', 30)
+#            finally:
+#                return
 
     # End logic for getting the correct map based on file name
 
