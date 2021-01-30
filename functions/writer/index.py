@@ -76,13 +76,16 @@ def getJobResults(jobId):
     pages = []
     textract = boto3.client('textract')
     response = textract.get_document_analysis(JobId=jobId)
-    eprint(f'textract job status: {response.JobStatus}',20)
-    eprint(f'textract job status message: {response.StatusMessage}',20)
+    eprint(f'----  textract response status ---',30)
+    eprint(response['JobStatus'],30)
+    eprint(f'----  textract response status message---',30)
+    eprint(response['StatusMessage'],30)
+    eprint(f'----  textract response warnings message---',30)
+    eprint(response['Warnings'],30)
     pages.append(response)
     nextToken = None
     if('NextToken' in response):
         nextToken = response['NextToken']
-
     while(nextToken):
         response = textract.get_document_analysis(JobId=jobId, NextToken=nextToken)
         pages.append(response)
@@ -308,11 +311,12 @@ def lambda_handler(event, context):
         eprint('document name is: '+docname)
         eprint(f'content of document should eprint to table name: {tablename}')
         gDocumentName = str(docname[docname.find('/')+1:])
-        #if(pdfTextExtractionStatus == 'SUCCEEDED'):
+#        if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
         doc = Document(response)
-        #else:
-        #   eprint(f'Textract status {pdfTextExtractionStatus}.  continuing program', 30)
+#        else:
+#           eprint(f'Textract status {pdfTextExtractionStatus}.  ending program', 30)
+#           return
 
     # End logic for getting the correct map based on file name
 
