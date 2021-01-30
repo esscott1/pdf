@@ -76,11 +76,9 @@ def getJobResults(jobId):
     pages = []
     textract = boto3.client('textract')
     response = textract.get_document_analysis(JobId=jobId)
-    eprint(f'----  textract response status ---',30)
-    eprint(response['JobStatus'],30)
+    eprint(f'----  textract response status: {response["JobStatus"]} ---',20)
     if(response['JobStatus'] != "SUCCEEDED"):
-        eprint(f'----  textract response status message---',40)
-        eprint(response['StatusMessage'],40)
+        eprint(f'----  textract response status: {response["JobStatus"]} message: {response["StatusMessage"]}',40)
         return None
     pages.append(response)
     nextToken = None
@@ -290,8 +288,8 @@ def lambda_handler(event, context):
         pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
         pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
-        eprint(f'-----  sns message ---- ',20)
-        eprint(notificationMessage,20)
+        eprint(f'-----  sns message ---- ',10)
+        eprint(notificationMessage,10)
         eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
         eprint(f'----  Document Location ----')
         eprint(pdfTextExtractionDocLoc)
@@ -311,19 +309,10 @@ def lambda_handler(event, context):
         eprint('document name is: '+docname)
         eprint(f'content of document should eprint to table name: {tablename}')
         gDocumentName = str(docname[docname.find('/')+1:])
-#        if(pdfTextExtractionStatus == 'SUCCEEDED'):
         response = getJobResults(pdfTextExtractionJobId)
-        if response == None:
+        if response == None: #textract didn't return a response.
             return
         doc = Document(response)
-#        else:
-#            try:
-#                statusmessage = json.loads(notificationMessage)['StatusMessage']
-#                eprint(f'Textract status message is: {statusmessage}',30)
-#            except:
-#                eprint(f'Textract status message does not exist.  ending program', 30)
-#            finally:
-#                return
 
     # End logic for getting the correct map based on file name
 
