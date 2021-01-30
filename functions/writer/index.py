@@ -287,13 +287,15 @@ def lambda_handler(event, context):
         pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
         pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
 
+        eprint(f'-----  sns message ---- ',20)
+        eprint(notificationMessage,20)
         eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
         eprint(f'----  Document Location ----')
         eprint(pdfTextExtractionDocLoc)
         eprint(f'----  Job Tag ----')
         eprint(pdfTextExtractionJobTag)
-        eprint('----  Job Status ----',20)
-        eprint(pdfTextExtractionStatus,20)
+        eprint('----  Job Status ----',10)
+        eprint(pdfTextExtractionStatus,10)
         docname = pdfTextExtractionDocLoc['S3ObjectName']
         
         prefixName = docname[0:docname.find('/')]
