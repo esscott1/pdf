@@ -64,7 +64,9 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
     return uploadcounter
 
 def convert_tif_2_pdf(path, filename):
-
+    '''
+    returns a cleaned filename, no path, of the PDF with __tif__ at the end
+    '''
     pdfname = filename
     pdfname = pdfname[:pdfname.find('.pdf')-3]+'__tif__.pdf'
     pdfname = cleanfilename(pdfname)
@@ -84,20 +86,20 @@ def cleanfilename(name):
 def uploadtos3(path, filename, bucket, keyprefix):
 
     fname = path+'/'+filename
-    convertedfilename = filename
+    convertedfilename = cleanfilename(filename)
     foundtif = False
     if(filename.find('.tif')>0):
-        convertedfilename = convert_tif_2_pdf(path, filename)
+        tif2pdfname = convert_tif_2_pdf(path, filename)
+        fname = path+'/'+tif2pdfname
         foundtif = True
-    convertedfilename = cleanfilename(convertedfilename)
     key = convertedfilename
     if(keyprefix is not None):
         key = keyprefix+'/'+key
     if(args.dryrun is None):
         s3client = boto3.client('s3')
-        eprint(f'uploading to bucket: {bucket} with key: {key} from file: {convertedfilename}',0)
-        s3client.upload_file(Bucket=bucket, Key=key,Filename=convertedfilename)
-    eprint(f'uploaded {convertedfilename} to s3 bucket {args.bucket}',20)
+        eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
+        s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
+    eprint(f'uploaded {fname} to s3 bucket {args.bucket}',20)
 #    if(foundtif):
 #        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
 #        eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
