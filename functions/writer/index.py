@@ -306,8 +306,7 @@ def lambda_handler(event, context):
             response = getJobResults(pdfTextExtractionJobId)
             doc = Document(response)
         else:
-            eprint(f'Textract status {pdfTextExtractionStatus}.  ending program', 40)
-            return
+            eprint(f'Textract status {pdfTextExtractionStatus}.  continuing program', 30)
 
     # End logic for getting the correct map based on file name
 

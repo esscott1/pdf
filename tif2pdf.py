@@ -43,6 +43,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
     eprint(f'recursion is set to {recurse}',0)
     basepath = path
     if(recurse == False):
+        eprint(f'searching {basepath} non-recursively',0)
         for entry in os.listdir(basepath):
             if os.path.isfile(os.path.join(basepath, entry)):
                 if (('.pdf' in entry) or ('.tif' in entry)) and (startswith in entry):
@@ -50,6 +51,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
                     uploadtos3(basepath, entry, bucket, keyprefix)
                     uploadcounter =uploadcounter+ 1
     else:
+        eprint(f'searching {basepath} recursively',0)
         for r, d, f in os.walk(basepath):
             filecount = sum('.pdf' in files for files in f)
             filecounttif = sum('.tif' in files for files in f)
@@ -96,9 +98,9 @@ def uploadtos3(path, filename, bucket, keyprefix):
         eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
         s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
     eprint(f'uploaded {convertedfilename} to s3 bucket {args.bucket}',20)
-    if(foundtif):
-        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
-        eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
+#    if(foundtif):
+#        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
+#        eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
 
 eprint('--- listing files ---', 20)
 #path = str(sys.argv[1])
