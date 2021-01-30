@@ -308,11 +308,11 @@ def lambda_handler(event, context):
         eprint('document name is: '+docname)
         eprint(f'content of document should eprint to table name: {tablename}')
         gDocumentName = str(docname[docname.find('/')+1:])
-        if(pdfTextExtractionStatus == 'SUCCEEDED'):
-            response = getJobResults(pdfTextExtractionJobId)
-            doc = Document(response)
-        else:
-            eprint(f'Textract status {pdfTextExtractionStatus}.  continuing program', 30)
+        #if(pdfTextExtractionStatus == 'SUCCEEDED'):
+        response = getJobResults(pdfTextExtractionJobId)
+        doc = Document(response)
+        #else:
+        #   eprint(f'Textract status {pdfTextExtractionStatus}.  continuing program', 30)
 
     # End logic for getting the correct map based on file name
 
