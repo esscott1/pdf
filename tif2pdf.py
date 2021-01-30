@@ -100,9 +100,9 @@ def uploadtos3(path, filename, bucket, keyprefix):
         eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
         s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
     eprint(f'uploaded {fname} to s3 bucket {args.bucket}',20)
-#    if(foundtif):
-#        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
-#        eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
+    if(foundtif):
+        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
+        eprint(f'deleted PDF that was generated from Tif: {path+"/"+convertedfilename}',0)
 
 eprint('--- listing files ---', 20)
 #path = str(sys.argv[1])

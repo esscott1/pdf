@@ -78,8 +78,8 @@ def getJobResults(jobId):
     response = textract.get_document_analysis(JobId=jobId)
     eprint(f'----  textract response status ---',30)
     eprint(response['JobStatus'],30)
-    eprint(f'----  textract response status message---',30)
-    eprint(response['StatusMessage'],30)
+#    eprint(f'----  textract response status message---',30)
+#    eprint(response['StatusMessage'],30)
 
     pages.append(response)
     nextToken = None
@@ -314,8 +314,13 @@ def lambda_handler(event, context):
             response = getJobResults(pdfTextExtractionJobId)
             doc = Document(response)
         else:
-            eprint(f'Textract status {pdfTextExtractionStatus}.  ending program', 30)
-            return
+            try:
+                statusmessage = json.loads(notificationMessage)['StatusMessage']
+                eprint(f'Textract status message is: {statusmessage}')
+            except:
+                eprint(f'Textract status message does not exist}.  ending program', 30)
+            finally:
+                return
 
     # End logic for getting the correct map based on file name
 
