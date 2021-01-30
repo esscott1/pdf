@@ -318,7 +318,7 @@ def lambda_handler(event, context):
                 statusmessage = json.loads(notificationMessage)['StatusMessage']
                 eprint(f'Textract status message is: {statusmessage}')
             except:
-                eprint(f'Textract status message does not exist}.  ending program', 30)
+                eprint(f'Textract status message does not exist.  ending program', 30)
             finally:
                 return
 
