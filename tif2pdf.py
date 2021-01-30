@@ -95,12 +95,12 @@ def uploadtos3(path, filename, bucket, keyprefix):
         key = keyprefix+'/'+key
     if(args.dryrun is None):
         s3client = boto3.client('s3')
-        eprint(f'uploading to bucket: {bucket} with key: {key} from file: {fname}',0)
-        s3client.upload_file(Bucket=bucket, Key=key,Filename=fname)
+        eprint(f'uploading to bucket: {bucket} with key: {key} from file: {convertedfilename}',0)
+        s3client.upload_file(Bucket=bucket, Key=key,Filename=convertedfilename)
     eprint(f'uploaded {convertedfilename} to s3 bucket {args.bucket}',20)
-    if(foundtif):
-        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
-        eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
+#    if(foundtif):
+#        os.remove(path+'/'+convertedfilename) # removing the pdf that was created by 
+#        eprint(f'deleted PDF that was generated from Tif, filename that was deleted {path+"/"+convertedfilename}')
 
 eprint('--- listing files ---', 20)
 #path = str(sys.argv[1])
