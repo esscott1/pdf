@@ -336,7 +336,7 @@ def lambda_handler(event, context):
         eprint(f'docname type is: {type(docname)}')
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
         ssn, ca_ssn = '', ''
-
+        jsondatarecord = dictrow
         regex = re.compile('-..-')
     #   building the array of KVP
         for page in doc.pages:
@@ -357,8 +357,11 @@ def lambda_handler(event, context):
             for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
                 if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]):
                     eprint(f'looking for csv_key: {csv_key}')
-                    dictrow.update(get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page))
-#                    dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                    newvalues = get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                    jsondatarecord.update(newvalues)
+                    if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
+                        dictrow.update(newvalues)
+                        #dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
                     eprint(f'looking for csv_key: {csv_key}' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"])
                     # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
