@@ -338,7 +338,7 @@ def lambda_handler(event, context):
         eprint(f'docname type is: {type(docname)}')
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
         ssn, ca_ssn = '', ''
-        jsondatarecord = dictrow
+        jsondatarecord = dictrow.copy()
         regex = re.compile('-..-')
     #   building the array of KVP
         for page in doc.pages:
@@ -346,14 +346,7 @@ def lambda_handler(event, context):
             eprint(f'---- page {str(pageno)} ----',)
 
             lineNo = -1
-    #        for line in page.lines:
-    #            lineNo += 1
-    #            for word in line.words:  # update to read CSV and pull page number to avoid dups.
-    #                if re.search('-..-',str(word)):
-    #                    eprint(f'--- found -??- in word: {word} on line {lineNo}')
-    #                    eprint(f'the line {lineNo} is: {page.lines[lineNo]}')
-    #                    ssn = str(word)
-    #                    ca_ssn = word.confidence
+
             eprint('---- eprinting the csv_2_ocr_map again ---')
             eprint(csv_2_ocr_map)
             for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
@@ -362,7 +355,7 @@ def lambda_handler(event, context):
                     newvalues = get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                     jsondatarecord.update(newvalues)
                     if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
-                        eprint(f'Getting key {csv_key} for columns',20)
+                        eprint(f'Getting csvkey: {csv_key} for DB columns',20)
                         dictrow.update(newvalues)
                         #dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
@@ -415,6 +408,16 @@ def lambda_handler(event, context):
 #                eprint(' with confidence: '+str(field.key.confidence))
 #                eprint ('block: '+str(field.key.block))
 
+
+
+#        for line in page.lines:
+#            lineNo += 1
+#            for word in line.words:  # update to read CSV and pull page number to avoid dups.
+#                if re.search('-..-',str(word)):
+#                    eprint(f'--- found -??- in word: {word} on line {lineNo}')
+#                    eprint(f'the line {lineNo} is: {page.lines[lineNo]}')
+#                    ssn = str(word)
+#                    ca_ssn = word.confidence
 
 def convert_row_to_list(row):
     list_of_cells = [cell.text.strip() for cell in row.cells]
