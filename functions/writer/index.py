@@ -370,7 +370,7 @@ def lambda_handler(event, context):
         eprint('--- eprinting dictrow ---')
         eprint(dictrow)
         try:
-            dictrow['jsondata'] = json.dumps(dictrow, indent = 2)
+            dictrow['jsondata'] = json.dumps(jsondatarecord, indent = 2)
         except Exception as e:
             msg = f'error writing jsondata to dictrow, err: {e} on lineNo: {e.__traceback__.tb_lineno}'
             eprint(msg, 40)
