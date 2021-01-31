@@ -265,9 +265,33 @@ def get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page):
             newdata[ca_csv_key] = '0'
     return newdata
 
-def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
+def get__yesno_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     '''
     Won't work if the yes and no are split between 2 different pages.
+    '''
+    newdata = {}
+    correctField0 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
+    correctField1 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 1)
+    if(correctField0 != None and correctField1 != None):
+    #if(len(lFields1)>0):
+        correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][0]["Type"])
+        correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField1.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
+        eprint(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
+        eprint(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
+        if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
+            if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
+                newdata[csv_key] = 'YES and NO'
+            elif(correctCleanValueStr1 == 'YES'):
+                newdata[csv_key] = 'NO'
+            elif(correctCleanValueStr0 == 'YES'):
+                newdata[csv_key] = 'YES'
+            else:
+                newdata[csv_key] = ''
+    return newdata
+
+def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
+    '''
+    Deprecated...    Won't work if the yes and no are split between 2 different pages.
     '''
     correctField0 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
     correctField1 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 1)
@@ -357,11 +381,14 @@ def lambda_handler(event, context):
                     if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
                         eprint(f'Getting csvkey: {csv_key} for DB columns',20)
                         dictrow.update(newvalues)
-                        #dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
                     eprint(f'looking for csv_key: {csv_key}' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"])
                     # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
-                    dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                    newvalues = get__yesno_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                    jsondatarecord.update(newvalues)
+                    if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
+                        dictrow.update(newvalues)
+                    #dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 # creating JsonData Dictionary
 
     #    dictrow['Claimant_Social_Security_Number'] = ssn
