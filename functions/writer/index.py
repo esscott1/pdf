@@ -248,6 +248,21 @@ def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
             dictrow[ca_csv_key] = '0'
     return dictrow
 
+def get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page):
+
+    eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
+    newdata = {}
+    correctField = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
+    if(correctField != None):
+        correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
+        newdata[csv_key] = correctCleanValueStr
+        ca_csv_key = 'ca_'+csv_key
+        if(correctField != None and correctField.value != None):
+            newdata[ca_csv_key] = str(correctField.value.content[0].confidence)
+        else:
+            newdata[ca_csv_key] = '0'
+    return newdata
+
 def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
     '''
     Won't work if the yes and no are split between 2 different pages.
@@ -316,7 +331,7 @@ def lambda_handler(event, context):
 
     # End logic for getting the correct map based on file name
 
-        all_keys, all_values, pageno, dictrow = [], [], 0, {}
+        all_keys, all_values, pageno, dictrow, jsondatarecord = [], [], 0, {}, {}
         dictrow['SourceFileName'] = docname
         eprint(f'docname type is: {type(docname)}')
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
@@ -342,11 +357,14 @@ def lambda_handler(event, context):
             for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
                 if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]):
                     eprint(f'looking for csv_key: {csv_key}')
-                    dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                    dictrow.update(get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page))
+#                    dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
                     eprint(f'looking for csv_key: {csv_key}' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"])
                     # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
                     dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
+                # creating JsonData Dictionary
+
     #    dictrow['Claimant_Social_Security_Number'] = ssn
     #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
