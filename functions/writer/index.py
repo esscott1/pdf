@@ -152,8 +152,10 @@ def write_dict_to_db(mydict, connection, tablename):
         cursor.execute(sql, fieldtextlist)
         connection.commit()
         cursor.close()
+        return 0
     except Exception as e:
         eprint(f'Error writing to Database, error: {e} on lineNo {e.__traceback__.tb_lineno}',40)
+        return -1
 
 def CleanDate(dateFieldValue):
     datestring = str(dateFieldValue)
@@ -360,6 +362,7 @@ def lambda_handler(event, context):
                     newvalues = get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                     jsondatarecord.update(newvalues)
                     if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
+                        eprint(f'Getting key {csv_key} for columns',20)
                         dictrow.update(newvalues)
                         #dictrow = process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page)
                 if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
@@ -386,8 +389,11 @@ def lambda_handler(event, context):
         for dictionary in all_values:
             eprint('writing this to DB')
             eprint(dictionary)
-            write_dict_to_db(dictionary, connection, tablename)
-            eprint("successfully wrote OCR data for document: "+docname, 20)
+            code = write_dict_to_db(dictionary, connection, tablename)
+            if(code >=0):
+                eprint("successfully wrote OCR data for document: "+docname, 20)
+            else:
+                eprint("error writing OCR data for document: "+docname, 40)
     except Exception as e:
         tberror =traceback.print_exc()
         emsg = f'error thrown {e} from line no {e.__traceback__.tb_lineno}'

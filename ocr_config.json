@@ -35,6 +35,7 @@
     {
 		"db_csv_2_ocr_map_elect":
 		{
+			"net claimant_id":{"Type":"Form", "JsonDataOnly": "true", "ocr":[{"ocr_key":"Net Amount Due","PageNo":[1,2],"TopPos":1,"Type":"String"}]},
 			"claimant_id":{"Type":"Form", "ocr":[{"ocr_key":"Claimant ID","PageNo":[1,2],"TopPos":1,"Type":"String"}]},
 			"lump_sum":{"Type":"Form", "ocr":[{"ocr_key":"LUMP SUM PAYMENT","PageNo":[1,2],"TopPos":1,"Type":"Selection"}]},
 			"structured":{"Type":"Form", "ocr":[{"ocr_key":"STRUCTURED SETTLEMENT ANNUITY","PageNo":[1,2],"TopPos":1,"Type":"Selection"}]},
