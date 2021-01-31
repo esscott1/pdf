@@ -387,8 +387,8 @@ def lambda_handler(event, context):
     #    save_ocr_to_bucket(all_values, 'testeric')
         connection = get_connection()
         for dictionary in all_values:
-            eprint('writing this to DB')
-            eprint(dictionary)
+            eprint('writing this to DB', 20)
+            eprint(dictionary, 20)
             code = write_dict_to_db(dictionary, connection, tablename)
             if(code >=0):
                 eprint("successfully wrote OCR data for document: "+docname, 20)
