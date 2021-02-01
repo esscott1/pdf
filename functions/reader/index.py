@@ -53,7 +53,7 @@ def lambda_handler(event, context):
                     'Name': key
                 }
             },
-            JobTag=jobkey + '_Job',
+            JobTag=jobkey[0:46] + '_Job',
             FeatureTypes=[
                 'FORMS'
             ],
