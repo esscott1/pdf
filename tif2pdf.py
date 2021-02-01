@@ -11,10 +11,12 @@ parser.add_argument('-r', '--recursive', default='false', choices=['true', 'fals
 parser.add_argument('-b','--bucket', default='textract-uploadbucket-bas6dcsjr2d2', help='the name of the s3 bucket to send files to.  {optional} Default is set consistent with OCR system')
 parser.add_argument('-f','--folder', default='', help='folder in the s3 bucket to copy the files to.')
 parser.add_argument('-s','--startswith', default='', help='finds files where the name starts with the string provided' )
+parser.add_argument('-l','--limit', type=int, help='an integer that will limit the number of files processed.')
 parser.add_argument('--verbose', action='store_const', const=0, help='sets the output logging level')
 parser.add_argument('--silent', action='store_const', const=50, help='sets the output logging level')
 parser.add_argument('--version', action='version', version='Version 2.0')
 parser.add_argument('--dryrun', action='store_const', const=100, help='will find files but NOT upload to S3 for processing')
+
 args = parser.parse_args()
 
 
@@ -50,7 +52,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
                     eprint(basepath+'/'+entry, 0)
                     uploadtos3(basepath, entry, bucket, keyprefix)
                     uploadcounter =uploadcounter+ 1
-                    if(uploadcounter >= 30):
+                    if(args.limit is not None and args.limit <= uploadcounter):
                         return uploadcounter
     else:
         eprint(f'searching {basepath} recursively',0)
@@ -63,7 +65,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
                     eprint(f'asking to upload {r}/{file}',0)
                     uploadtos3(r, file, bucket, keyprefix)
                     uploadcounter = uploadcounter+ 1
-                    if(uploadcounter >= 30):
+                    if(args.limit is not None and args.limit <= uploadcounter):
                         return uploadcounter
     return uploadcounter
 
