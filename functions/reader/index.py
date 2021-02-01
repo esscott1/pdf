@@ -22,7 +22,7 @@ def publishSNS(workbook):
         response= snsclient.publish(
             TopicArn='arn:aws:sns:us-west-2:021025786029:ARCHERClaimantSNSTopic',
             Message=str(workbook),
-            Subject='SNS message from Lambda')
+            Subject='OCR Read Error')
         print(f'--- published sns message ---')
         print(response)
     except Exception as e:
@@ -40,7 +40,7 @@ def lambda_handler(event, context):
     jobkey = jobkey.replace(',','_')
     snsrolearn = os.environ['SNSROLEARN']
     snstopicarn = os.environ['SNSTOPIC']
-    print(f'Bucket: {bucket} | key: {key} | jobkey: {jobkey} | RoleARN: {snsrolearn} | SNSTopicARN: {snstopicarn}')
+    print(f'Bucket: {bucket} | key: {key} | jobkey: {jobkey[0:46]} | RoleARN: {snsrolearn} | SNSTopicARN: {snstopicarn}')
 
     if 'pdf' in str(key):
         print('---- found a pdf file ---')
@@ -66,6 +66,7 @@ def lambda_handler(event, context):
         except Exception as e:
             print(e)
             print('Error getting object {} from bucket {} with JobTag {}_Job'.format(key, bucket, jobkey))
+            publishSNS(f'error submitting document {key} to textract')
             raise e
     else:
         print('--- did not find PDF file ---')
