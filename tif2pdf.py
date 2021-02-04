@@ -86,6 +86,9 @@ def convert_tif_2_pdf(path, filename):
 def cleanfilename(name):
     result = name.replace(' ','_')
     result = result.replace(',','-')
+    result = result.replace('(','-')
+    result = result.replace(')','-')
+    result = result.replace("'","")
     return result
 
 

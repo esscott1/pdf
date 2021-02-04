@@ -209,7 +209,7 @@ def CleanSelectionFieldValueToStr(value, valueType):
     if(value != None):
         if(str(valueType) == 'Selection'):
             result = 'NO'
-            eprint(f'value passed into clean method is {value}')
+            eprint(f'value passed into clean method is {value}',10)
             if(str(value) == 'SELECTED'):
                 result = 'YES'
         elif(str(valueType) == 'Date'):
@@ -218,17 +218,19 @@ def CleanSelectionFieldValueToStr(value, valueType):
             result = FormatSSN(value)
         else:
             result = str(value)
+    else:
+        eprint(f'value passed into clean method is None', 10)
     return result
 
 def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     result = None
     es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][itemNo]['ocr_key']) in str(x.key) and  pageno in csv_2_ocr_map[csv_key]['ocr'][itemNo]['PageNo'] ,page.form.fields) 
     lFields = list(es)
-    eprint(f"i found {str(len(lFields))} field objects")
+    eprint(f"i found {str(len(lFields))} field objects",10)
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
         if(tpos <= len(lFields)):
-            eprint(f'looking for Top position: {tpos}')  #  BUG NEED TO FIX.
+            eprint(f'looking for Top position: {tpos}',10)  #  BUG NEED TO FIX.
             # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
             sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
             result = sorted_field[csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']-1]
@@ -236,23 +238,9 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
             eprint(f'trying to find a Top Pos {tpos} when only {len(lFields)} field objects found', 30)
     return result
 
-def process_ocr_form(csv_2_ocr_map, csv_key, dictrow, pageno, page):
-
-    eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
-    correctField = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
-    if(correctField != None):
-        correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
-        dictrow[csv_key] = correctCleanValueStr
-        ca_csv_key = 'ca_'+csv_key
-        if(correctField != None and correctField.value != None):
-            dictrow[ca_csv_key] = str(correctField.value.content[0].confidence)
-        else:
-            dictrow[ca_csv_key] = '0'
-    return dictrow
-
 def get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page):
 
-    eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
+    #eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
     newdata = {}
     correctField = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
     if(correctField != None):

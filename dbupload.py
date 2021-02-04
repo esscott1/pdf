@@ -3,6 +3,13 @@ import boto3
 import os
 import pg8000
 import csv
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-f','--file', required=True, help='path and file name or csv to upload')
+parser.add_argument('-t','--table', required=True, help='table name to upload csv file to')
+
 
 def get_connection():
     """
@@ -47,13 +54,12 @@ def write_dict_to_db(mydict, connection):
     Write dictionary to the table name provided in the SAM deployment statement as lambda environment variable.
     """
 #    DBTable = os.environ.get('TableName')
-    DBTable = 'ca_existing'
-
+    DBTable = 'qsfelection_actual'
     placeholders = ', '.join(['%s'] * len(mydict))
     columns = ', '.join(mydict.keys())
     sql = "INSERT INTO %s ( %s ) VALUES ( %s )" % (DBTable, columns, placeholders)
 
-    fieldtextlist = []#
+    fieldtextlist = []
     fieldvaluelist =  list(mydict.values())
     for fieldvalue in fieldvaluelist:
         fieldtextlist.append(str(fieldvalue))
@@ -69,7 +75,7 @@ def write_dict_to_db(mydict, connection):
 def csv_to_dict():
     allvalues = []
 #    dict={}
-    with open('testaddress2.csv', 'r') as csvfile:
+    with open('election1.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             dict={}
@@ -77,12 +83,12 @@ def csv_to_dict():
 #            print('archerid is: '+archer_id+'and the type is: '+str(type(archer_id)))
 
             dict['archer_id']=archer_id.replace(u'\xef\xbb\xbf',u'')
-            dict['address']=row[1]
-            dict['city']=row[2]
-            dict['state']=row[3]
-            dict['zip']=row[4]
-            dict['ssn']=row[5]
-            dict['dob']=row[6]
+            dict['first_name']=row[1]
+            dict['last_name']=row[2]
+            dict['election_chosen']=row[3]
+#            dict['zip']=row[4]
+#            dict['ssn']=row[5]
+#            dict['dob']=row[6]
 #            print(f', '.join(dict.keys()))
             allvalues.append(dict)
 #        print(allvalues)
@@ -93,7 +99,11 @@ connect = get_connection()
 data = csv_to_dict()
 icounter = 1
 idata = len(data)
+jsondata = {}
 for rowdata in data:
-    write_dict_to_db(rowdata,connect)
+    jsondata["jsondata"] = json.dumps(rowdata.copy(), indent =2 )
+    jsondata["archer_id"] = rowdata["archer_id"]
+    write_dict_to_db(jsondata,connect)
+    #write_dict_to_db(rowdata,connect)
     print(f'uploaded {icounter} of {idata}')
     icounter += 1
