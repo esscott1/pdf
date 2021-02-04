@@ -230,7 +230,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     eprint(f"i found {str(len(lFields))} field objects",10)
     if(len(lFields)>1):
         for x in  lFields:
-            print(f'found  field key name: {str(x.key)}')
+            print(f'found  field key name: {str(x.key)}',10)
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
         if(tpos <= len(lFields)):
@@ -238,6 +238,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
             # could add check to ensure the number returned is equal or more than the TopPos looking for.  else error will occur.
             sorted_field = sorted(lFields, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
             result = sorted_field[csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']-1]
+            eprint(f'the field key for result is {str(result.key)}')
         else:
             eprint(f'trying to find a Top Pos {tpos} when only {len(lFields)} field objects found', 30)
     return result
