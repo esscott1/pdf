@@ -218,6 +218,7 @@ def CleanSelectionFieldValueToStr(value, valueType):
             result = FormatSSN(value)
         else:
             result = str(value)
+        eprint(f'value after clean is {result}')
     else:
         eprint(f'value passed into clean method is None', 10)
     return result

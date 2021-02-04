@@ -44,6 +44,7 @@
 		"db_csv_2_ocr_map_llnl":
 		{
 			"is_alive":{"Type":"Form", "JsonDataOnly": "true","ocr":[{"ocr_key":"Yes","PageNo":[1],"TopPos":1,"Type":"String"}]},
+			"email":{"Type":"Form", "JsonDataOnly": "true","ocr":[{"ocr_key":"Email","PageNo":[1],"TopPos":1,"Type":"String"}]},
 			"is_address_correct":{"Type":"Form", "JsonDataOnly": "true","ocr":[{"ocr_key":"I confirm that the name and address","PageNo":[1],"TopPos":1,"Type":"Selection"}]}
 		},
 		"db_csv_2_ocr_map_elect":
