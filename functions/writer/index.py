@@ -315,8 +315,10 @@ def lambda_handler(event, context):
     print(f'Debugging level is set to: {debug}')
     print(f'SNS notification level set to: {snsnotify} ')
     try:
+
         notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
-        
+        pdfResultType = json.loads(notificationMessage)['ResultType']
+        eprint(f'Textract event result: {pdfResultType}',20)
         pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
         pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
         pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
