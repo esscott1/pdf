@@ -39,7 +39,7 @@ def eprint(msg, sev=10, sendsns=True):
     global debug
     if(type(msg) == str):
         msg = "Doc name is: "+gDocumentName +" msg is: "+msg
-    if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug'}:
+    if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'verbose'}:
         print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
         debug = 'debug'
     loglevel = 10 if debug == 'debug' else 20 if debug == 'info' else 30 if debug == 'warning' else 40 if debug == 'error' else 50 if debug == 'critical' else 0
@@ -228,6 +228,9 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     es = filter(lambda x: str(csv_2_ocr_map[csv_key]['ocr'][itemNo]['ocr_key']) in str(x.key) and  pageno in csv_2_ocr_map[csv_key]['ocr'][itemNo]['PageNo'] ,page.form.fields) 
     lFields = list(es)
     eprint(f"i found {str(len(lFields))} field objects",10)
+    if(len(lFields)>1):
+        for x in  lFields:
+            print(f'found  field key name: {str(x.key)}')
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
         if(tpos <= len(lFields)):
@@ -348,7 +351,7 @@ def lambda_handler(event, context):
 
         all_keys, all_values, pageno, dictrow, jsondatarecord = [], [], 0, {}, {}
         dictrow['SourceFileName'] = docname
-        eprint(f'docname type is: {type(docname)}')
+        eprint(f'docname type is: {type(docname)}',0)
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
         ssn, ca_ssn = '', ''
         jsondatarecord = dictrow.copy()
@@ -360,8 +363,8 @@ def lambda_handler(event, context):
 
             lineNo = -1
 
-            eprint('---- eprinting the csv_2_ocr_map again ---')
-            eprint(csv_2_ocr_map)
+            eprint('---- eprinting the csv_2_ocr_map again ---',0)
+            eprint(csv_2_ocr_map,0)
             for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
                 if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]):
                     eprint(f'looking for csv_key: {csv_key}')
