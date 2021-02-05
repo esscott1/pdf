@@ -6,6 +6,7 @@ import re
 import traceback
 import os
 import img2pdf
+import boto3
 
 csv_headers = ['Primary Attorney',
 'HTX ARCHER ID',
@@ -398,7 +399,16 @@ if('qssf' in dname):
     print('the name starts with the default')
 
 
+print('')
+print('')
+print('')
+print('----  reading config from S3 ----')
 
+s3 = boto3.client('s3')
+response = s3.get_object(Bucket = 'archer-ocr-doc-bucket', Key='ocr_config.json')
+content = response['Body']
+ocr_config_json = json.loads(content.read())
+print(ocr_config_json)
 
 #print('---- testing date of birth ----')
 #dob = '01 12611952'
