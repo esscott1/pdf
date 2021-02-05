@@ -317,7 +317,9 @@ def lambda_handler(event, context):
     try:
 
         notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
-        pdfResultType = json.loads(notificationMessage)['ResultType']
+        pdfResultType = "does not exist"
+        if('ResultType' in event and event['ResultType'] !=""):
+            pdfResultType = event['ResultType']
         eprint(f'Textract event result: {pdfResultType}',20)
         pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
         pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
