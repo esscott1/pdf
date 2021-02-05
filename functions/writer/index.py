@@ -398,6 +398,11 @@ def lambda_handler(event, context):
         except Exception as e:
             msg = f'error writing jsondata to dictrow, err: {e} on lineNo: {e.__traceback__.tb_lineno}'
             eprint(msg, 40)
+        try:
+            dictrow['textract_response'] = json.dumps(response, indent = 2)
+        except Exception as e:
+            msg = f'error writing textract_response to dictrow, err: {e} on lineNo: {e.__traceback__.tb_lineno}'
+            eprint(msg, 40)
         #dictrow['jsondata'] = json_object
         all_values.append(dictrow)
 
