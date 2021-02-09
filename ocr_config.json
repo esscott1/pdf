@@ -3,6 +3,13 @@
 	"snsnotification":"warning",
 	"s3_prefix_table_map":
 	{
+		"flint1": {
+			"table": "flint_claimant",
+			"filename_ocrmap":
+			{
+				"Flint":"db_csv_2_ocr_map_flint1"
+			}
+		},
 		"dallas":{
 			"table":"dallas_test",
 			"filename_ocrmap":
@@ -41,56 +48,226 @@
 	
     "ocr_maps":
     {
-			"db_csv_2_ocr_map_llnl": {
-				"is_alive": {
-					"Type": "Form",
-					"JsonDataOnly": "true",
-					"ocr": [
-						{
-							"ocr_key": "Yes",
-							"PageNo": [ 1 ],
-							"TopPos": 1,
-							"Type": "String"
-						}
-					]
-				},
-				"email": {
-					"Type": "Form",
-					"JsonDataOnly": "true",
-					"ocr": [
-						{
-							"ocr_key": "Email",
-							"PageNo": [ 1 ],
-							"TopPos": 2,
-							"Type": "String"
-						}
-					]
-				},
-				"address_change": {
-					"Type": "Form",
-					"JsonDataOnly": "true",
-					"ocr": [
-						{
-							"ocr_key": "Change my address",
-							"PageNo": [ 1 ],
-							"TopPos": 1,
-							"Type": "Selection"
-						}
-					]
-				},
-				"is_address_correct": {
-					"Type": "Form",
-					"JsonDataOnly": "true",
-					"ocr": [
-						{
-							"ocr_key": "I confirm that the name and address",
-							"PageNo": [ 1 ],
-							"TopPos": 1,
-							"Type": "Selection"
-						}
-					]
-				}
+		"db_csv_2_ocr_map_flint1": {
+			"last_name": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Last",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
 			},
+			"first_name": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "First",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"ssn": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Social Security Number",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"address_1": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Street/P.O. ",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"city_1": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "City",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"state_1": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "State",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"zip_1": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Zip",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"address_1_from": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "From",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"address_1_to": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "To",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			}
+		},
+		"db_csv_2_ocr_map_llnl": {
+			"ssn": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Social Security Number",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"cell_phone": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Cell Phone",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"home_phone": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Home Phone",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"additional_phone": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Additional Phone",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"is_alive": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Yes",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"email": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Email Address",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"prefered_contact_method": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Email",
+						"PageNo": [ 1 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"address_change": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Change my address",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			},
+			"is_address_correct": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "I confirm that the name and address",
+						"PageNo": [ 1 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			}
+		},
 		"db_csv_2_ocr_map_elect":
 		{
 			"net_amount_due":{"Type":"Form", "JsonDataOnly": "true", "ocr":[{"ocr_key":"Net Amount Due","PageNo":[1,2],"TopPos":1,"Type":"String"}]},
