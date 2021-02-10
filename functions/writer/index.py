@@ -449,11 +449,30 @@ class OCRProcessor:
 
         return data
 
+    def getForm_Form(self, field_list, ocr_map, csv_key):
+        return self.get_correct_field(field_list, ocr_map, csv_key, 0)
+
     def getCorrectField(self, field_list, ocr_map, csv_key):
         field_type = ocr_map[csv_key]["Type"]
         method_name = 'getForm_'+str(field_type)
         method = getattr(self, method_name, lambda: "Invalid Type in Config")
         return method(field_list,ocr_map, csv_key)
+
+def get_correct_field(self, field_list, ocr_map, csv_key, itemNo):
+        correct_field, correct_field_value, correct_field_confidence= 'Not Found', 'Not Found', 0
+        #print(f'length of ocr field in ocr map for {csv_key} is: {len(ocr_map[csv_key]["ocr"])}')
+        #print(f'field list count is: {len(field_list)}')
+        if(len(ocr_map[csv_key]["ocr"]) == 1):
+            tPos = ocr_map[csv_key]['ocr'][itemNo]["TopPos"]
+            if(len(field_list)==0 or len(field_list)< tPos):
+                return None, None, None
+            else:
+                sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
+                correct_field = sorted_fields[tPos-1]
+                correct_field_value = str(correct_field.value)
+                if(correct_field.value is not None):
+                    correct_field_confidence = correct_field.value.confidence
+            return str(correct_field.key), str(correct_field_value), str(correct_field_confidence)
 
 #    eprint(dictrow)
 #    eprintSections(doc)
