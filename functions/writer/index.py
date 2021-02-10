@@ -431,7 +431,6 @@ class OCRProcessor:
 
     def getDocValues(self, response, ocr_map):
         data, metadata = {}, {}
-        response = self._ocrResults
         doc = Document(response)
         pageno = 0
         for page in doc.pages:
@@ -445,9 +444,9 @@ class OCRProcessor:
                 field_list = list(matching_fields)
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
-                    print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
                     data[csv_key] = sCorrect_field_value
-                    print('')
+                    #print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
+
         return data
 
     def getCorrectField(self, field_list, ocr_map, csv_key):
