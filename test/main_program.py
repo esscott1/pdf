@@ -6,10 +6,11 @@ from trp import Document
 testOcr = TestOCR()
 response = testOcr.ocrResults()
 doc = Document(response)
-searchvalue = 'Home Phone:'
+searchvalue = 'I confirm that'
 
-onefieldsearch = 'Home Phone:'
-#for page in doc.pages:
+onefieldsearch = 'Yes'
+pageno = 0
+
 page = doc.pages[0]
 es = filter(lambda x: searchvalue in str(x.key), page.form.fields)
 lFields = list(es)
