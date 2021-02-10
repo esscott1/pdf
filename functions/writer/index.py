@@ -437,7 +437,7 @@ class OCRProcessor:
             pageno = pageno + 1
             ocr_form = page.form
             #ocr_form = doc.pages[1].form
-            ocr_map = self.getOcrMap()
+            #ocr_map = self.getOcrMap()
             for csv_key in ocr_map:
                 matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
