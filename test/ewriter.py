@@ -36,6 +36,7 @@ class TestOCR:
         return 'none', 'none'
 
     def getDocValues(self):
+        data, metadata, ocrResult = {}, {}, None
         response = self._ocrResults
         doc = Document(response)
         pageno = 0
@@ -49,21 +50,14 @@ class TestOCR:
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
                 field_list = list(matching_fields)
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
-                #sCorrect_field_key, sCorrect_field_value = 'none','none'
-                #if(len(field_list)>0):
-                #    sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
-                #    position = 0
-                #    if(len(field_list)>= ocr_map[csv_key]['ocr'][0]["TopPos"]):
-                #        position = ocr_map[csv_key]['ocr'][0]["TopPos"] - 1
-                #    correct_field = sorted_fields[position]
-                #    sCorrect_field_key = correct_field.key
-                #    sCorrect_field_value = str(correct_field.value)
-                #else:
-                #    print(f'should log that did not find an expected field')
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
                     print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
+                    data[csv_key] = sCorrect_field_value
                     print('')
+        return data
 
+
+        
     def getForm_Form(self, field_list, ocr_map, csv_key):
         return self.get_correct_field(field_list, ocr_map, csv_key, 0)
 

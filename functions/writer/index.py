@@ -230,7 +230,7 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     eprint(f"i found {str(len(lFields))} field objects",10)
     if(len(lFields)>1):
         for x in  lFields:
-            print(f'found  field key name: {str(x.key)}',10)
+            eprint(f'found  field key name: {str(x.key)}',10)
     if(len(lFields)>0):
         tpos = csv_2_ocr_map[csv_key]['ocr'][itemNo]['TopPos']
         if(tpos <= len(lFields)):
@@ -351,6 +351,9 @@ def lambda_handler(event, context):
         if response == None: #textract didn't return a response.
             return
         doc = Document(response)
+        ocrProcessor = OCRProcessor()
+        docdata = ocrProcessor.getDocValues(response, csv_2_ocr_map)
+        print(f'---  length of docjson is {len(docdata)}')
 
     # End logic for getting the correct map based on file name
 
@@ -422,8 +425,36 @@ def lambda_handler(event, context):
         eprint(emsg, 50)
 
 
+class OCRProcessor:
+    def __init__(self) -> None:
+        pass
 
+    def getDocValues(self, response, ocr_map):
+        data, metadata = {}, {}
+        response = self._ocrResults
+        doc = Document(response)
+        pageno = 0
+        for page in doc.pages:
+            pageno = pageno + 1
+            ocr_form = page.form
+            #ocr_form = doc.pages[1].form
+            ocr_map = self.getOcrMap()
+            for csv_key in ocr_map:
+                matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 
+                pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
+                field_list = list(matching_fields)
+                sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
+                if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
+                    print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
+                    data[csv_key] = sCorrect_field_value
+                    print('')
+        return data
 
+    def getCorrectField(self, field_list, ocr_map, csv_key):
+        field_type = ocr_map[csv_key]["Type"]
+        method_name = 'getForm_'+str(field_type)
+        method = getattr(self, method_name, lambda: "Invalid Type in Config")
+        return method(field_list,ocr_map, csv_key)
 
 #    eprint(dictrow)
 #    eprintSections(doc)
@@ -448,9 +479,7 @@ def lambda_handler(event, context):
 #                    ssn = str(word)
 #                    ca_ssn = word.confidence
 
-def convert_row_to_list(row):
-    list_of_cells = [cell.text.strip() for cell in row.cells]
-    return list_of_cells
+
 
 
 

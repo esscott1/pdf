@@ -409,7 +409,14 @@ response = s3.get_object(Bucket = 'archer-ocr-doc-bucket', Key='ocr_config.json'
 content = response['Body']
 ocr_config_json = json.loads(content.read())
 print(ocr_config_json)
+print('')
+print('')
 
+testme = ocr_config_json
+if(testme == ocr_config_json):
+    print('match')
+else:
+    print('not equal')
 #print('---- testing date of birth ----')
 #dob = '01 12611952'
 #print(type(dob))

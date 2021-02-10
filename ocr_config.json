@@ -49,30 +49,8 @@
     "ocr_maps":
     {
 		"db_csv_2_ocr_map_flint1": {
-			"last_name": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Last",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"first_name": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "First",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
+			"last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"ssn": {
 				"Type": "Form",
 				"JsonDataOnly": "true",
@@ -128,7 +106,7 @@
 					{
 						"ocr_key": "Zip",
 						"PageNo": [ 2 ],
-						"TopPos": 2,
+						"TopPos": 1,
 						"Type": "String"
 					}
 				]
@@ -153,10 +131,284 @@
 						"ocr_key": "To",
 						"PageNo": [ 2 ],
 						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"address_2": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Street/P.O. ",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"city_2": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "City",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"state_2": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "State",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"zip_2": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Zip",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"address_2_from": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "From",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"address_2_to": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "To",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "String"
+					}
+				]
+			},
+			"address_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 2 ],	"TopPos": 3,"Type": "String"}]},
+			"city_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"state_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"zip_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"address_3_from": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "From",
+						"PageNo": [ 2 ],
+						"TopPos": 3,
+						"Type": "String"
+					}
+				]
+			},
+			"address_3_to": {"Type": "Form","JsonDataOnly": "true", "ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"phone": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Phone",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"alt_phone": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Alt. Phone",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"email": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Email",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "String"
+					}
+				]
+			},
+			"phone_mobile": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Mobile",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
 						"Type": "Selection"
 					}
 				]
-			}
+			},
+			"phone_work": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Work",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			},
+			"phone_home": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Home",
+						"PageNo": [ 2 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			},
+			"alt_phone_mobile": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Mobile",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "Selection"
+					}
+				]
+			},
+			"alt_phone_work": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Work",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "Selection"
+					}
+				]
+			},
+			"alt_phone_home": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "Home",
+						"PageNo": [ 2 ],
+						"TopPos": 2,
+						"Type": "Selection"
+					}
+				]
+			},
+			"on_behalf_of_yes": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "YES",
+						"PageNo": [ 3 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			},
+			"on_behalf_of_no": {
+				"Type": "Form",
+				"JsonDataOnly": "true",
+				"ocr": [
+					{
+						"ocr_key": "NO",
+						"PageNo": [ 3 ],
+						"TopPos": 1,
+						"Type": "Selection"
+					}
+				]
+			},
+			"rep_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_address": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 3 ],	"TopPos": 1,"Type": "String"}]},
+			"rep_city": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_state": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_zip": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Social Security","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Date of Birth","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_parent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Parent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_spouse": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Spouse","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_stepparent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "StepParent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultchild": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Child","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultsibling": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Sibling","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultaunt": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Aunt","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultuncle": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Uncle","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_grandparent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Grandparent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_legalguardian": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Legal Guardian","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_estateadmin": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Estate Administrator","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_other": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Other","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"}]},
+			"rep_altphone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Alt. Phone","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"}]},
+			"rep_email": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Email","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"	}]},
+			"attorny_yes": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "YES","PageNo": [ 4 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"attorny_no": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "NO","PageNo": [ 4 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"att_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_street": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_city": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_state": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_zip": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"signature_date": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "DATE","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"signature_print_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 4 ],"TopPos": 2,"Type": "String"}]},
+			"signature_print_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 4 ],"TopPos": 2,"Type": "String"}]},
+			"dis_individual_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Individual's Name","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_individual_gender": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Individual's Gender","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_address": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street Address","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_individual_dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Individual's Date of","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_city": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_state": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_zip": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip Code","PageNo": [ 5 ],"TopPos": 1,"Type": "String"}]},
+			"dis_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 5 ],"TopPos": 1,	"Type": "String"}]},
+			"dis_signature": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Signature of Individual o","PageNo": [ 6 ],"TopPos": 1,"Type": "String"}]},
+			"dis_signature_date": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Date","PageNo": [ 6 ],"TopPos": 2,"Type": "String"}]},
+			"dis_signature_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Name of Individual or Legal Representative","PageNo": [ 6 ],"TopPos": 2,"Type": "String"}]},
+			"dis_rep_relationship": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Legal Representative","PageNo": [ 6 ],"TopPos": 2,"Type": "String"}]}
+
+			
+			
+
+
+
+
 		},
 		"db_csv_2_ocr_map_llnl": {
 			"ssn": {
