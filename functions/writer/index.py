@@ -361,46 +361,17 @@ def lambda_handler(event, context):
         dictrow['SourceFileName'] = docname
         eprint(f'docname type is: {type(docname)}',0)
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
+        dictrow['jsondata'] = docdata
         ssn, ca_ssn = '', ''
         jsondatarecord = dictrow.copy()
         regex = re.compile('-..-')
     #   building the array of KVP
-        for page in doc.pages:
-            pageno = pageno + 1
-            eprint(f'---- page {str(pageno)} ----',)
-
-            lineNo = -1
-
-            eprint('---- eprinting the csv_2_ocr_map again ---',0)
-            eprint(csv_2_ocr_map,0)
-            for csv_key in csv_2_ocr_map:    # Getting the keys to build up a row
-                if(csv_2_ocr_map[csv_key]["Type"] == 'Form' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"]):
-                    eprint(f'looking for csv_key: {csv_key}')
-                    newvalues = get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-                    jsondatarecord.update(newvalues)
-                    if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
-                        eprint(f'Getting csvkey: {csv_key} for DB columns',20)
-                        dictrow.update(newvalues)
-                if(csv_2_ocr_map[csv_key]["Type"] == 'YesNo'):
-                    eprint(f'looking for csv_key: {csv_key}' and pageno in csv_2_ocr_map[csv_key]["ocr"][0]["PageNo"])
-                    # method below doesn't work if yes / no boxes are split between pages, so only looking at first object in array.  should enhance
-                    newvalues = get__yesno_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-                    jsondatarecord.update(newvalues)
-                    if("JsonDataOnly" not in csv_2_ocr_map[csv_key] or csv_2_ocr_map[csv_key]["JsonDataOnly"] != 'true'):
-                        dictrow.update(newvalues)
-                    #dictrow = process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page)
-                # creating JsonData Dictionary
-
     #    dictrow['Claimant_Social_Security_Number'] = ssn
     #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
-        eprint('--- eprinting dictrow ---')
-        eprint(dictrow)
-        try:
-            dictrow['jsondata'] = json.dumps(jsondatarecord, indent = 2)
-        except Exception as e:
-            msg = f'error writing jsondata to dictrow, err: {e} on lineNo: {e.__traceback__.tb_lineno}'
-            eprint(msg, 40)
+        eprint('--- eprinting dictrow ---', 0)
+        eprint(dictrow, 0)
+
         try:
             dictrow['textract_response'] = json.dumps(response, indent = 2)
         except Exception as e:
