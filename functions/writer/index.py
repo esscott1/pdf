@@ -409,7 +409,7 @@ class OCRProcessor:
         pass
 
     def getDocValues(self, response, ocr_map):
-        data, metadata, ocrResult, count_not_found, field_count = {}, {}, None, 0, 0
+        data, metadata, ocrResult, count_not_found, field_count, poor_confidence_count = {}, {}, None, 0, 0,0
         doc = Document(response)
         pageno = 0
         for page in doc.pages:
@@ -427,8 +427,11 @@ class OCRProcessor:
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
                         count_not_found += 1 
+                    if(correct_value_confidence < .8):
+                        poor_confidence_count += 1
         fp = (field_count - count_not_found) / field_count 
         metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': field_count-count_not_found,'found_percentage': fp }
+        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (field_count - poor_confidence_count) / field_count}
         return data, metadata
 
     def getForm_Form(self, field_list, ocr_map, csv_key):
@@ -447,14 +450,14 @@ class OCRProcessor:
         if(len(ocr_map[csv_key]["ocr"]) == 1):
             tPos = ocr_map[csv_key]['ocr'][itemNo]["TopPos"]
             if(len(field_list)==0 or len(field_list)< tPos):
-                return 'Not_Found', 'Not_Found', 'Not_Found'
+                return 'Not_Found', 'Not_Found', 0
             else:
                 sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correct_field = sorted_fields[tPos-1]
                 correct_field_value = str(correct_field.value)
                 if(correct_field.value is not None):
                     correct_field_confidence = correct_field.value.confidence
-            return str(correct_field.key), str(correct_field_value), str(correct_field_confidence)
+            return str(correct_field.key), str(correct_field_value), correct_field_confidence
 
 #    eprint(dictrow)
 #    eprintSections(doc)
