@@ -429,6 +429,7 @@ class OCRProcessor:
                         count_not_found += 1 
                     if(correct_value_confidence < .8):
                         poor_confidence_count += 1
+                        print(f'{csv_key} has a poor confidence of {correct_value_confidence}  count is {poor_confidence_count}')
         found_fields = field_count-count_not_found
         fp = found_fields / field_count 
         metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': found_fields,'found_percentage': fp }
