@@ -361,11 +361,18 @@ def lambda_handler(event, context):
         dictrow['SourceFileName'] = docname
         eprint(f'docname type is: {type(docname)}',0)
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
-        dictrow['jsondata'] = docdata
+        dictrow['jsondata'] = json.dumps(docdata, indent = 2)
         ssn, ca_ssn = '', ''
         jsondatarecord = dictrow.copy()
         regex = re.compile('-..-')
     #   building the array of KVP
+        for page in doc.pages:
+            pageno = pageno + 1
+            eprint(f'---- page {str(pageno)} ----',0)
+
+            eprint('---- eprinting the csv_2_ocr_map again ---',0)
+            eprint(csv_2_ocr_map,0)
+
     #    dictrow['Claimant_Social_Security_Number'] = ssn
     #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
 
