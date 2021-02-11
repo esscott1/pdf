@@ -427,7 +427,7 @@ class OCRProcessor:
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
                         count_not_found += 1 
-                    if(correct_value_confidence < .8):
+                    if(correct_value_confidence < 80 and correct_value_confidence > 0):
                         poor_confidence_count += 1
                         print(f'{csv_key} has a poor confidence of {correct_value_confidence}  count is {poor_confidence_count}')
         found_fields = field_count-count_not_found
