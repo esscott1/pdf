@@ -1,0 +1,24 @@
+ref
+https://medium.com/@sivakumarvadivelu/querying-json-with-postgresql-9e72f808bdda
+
+select json_object_keys(jsondata -> 'last_name') from flint_claimant
+where sourcefilename = 'flint1/Flint_-_OCR_Test_2.pdf'
+
+select json_object_keys(jsondata) from flint_claimant
+where sourcefilename = 'flint1/Flint_-_OCR_Test_2.pdf'
+
+select json_each(jsondata) from flint_claimant
+
+select 
+	jsondata_data.key ID, 
+	jsondata -> jsondata_data.key::text ->> 'confidence' Confidence
+from flint_claimant, json_each_text(flint_claimant.jsondata) as jsondata_data
+
+select json_each_text(flint_claimant.jsondata)
+from flint_claimant
+
+select 
+	jsondata_data.key ID, 
+	jsondata -> jsondata_data.key::text ->> 'confidence' Confidence
+from flint_claimant, json_each_text(flint_claimant.jsondata) as jsondata_data
+where (jsondata -> jsondata_data.key::text ->> 'confidence')::numeric > 0

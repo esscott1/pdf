@@ -57,12 +57,15 @@ class TestOCR:
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
                         count_not_found += 1 
-                    if(correct_value_confidence < .8):
-                        poor_confidence_count += 1
+                    else:
+                        if(correct_value_confidence < 80 and correct_value_confidence > 0):
+                            poor_confidence_count += 1
                     print('')
-        fp = (field_count - count_not_found) / field_count 
-        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': field_count-count_not_found,'found_percentage': fp }
-        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (field_count - poor_confidence_count) / field_count}
+        found_fields = field_count-count_not_found
+        fp = found_fields / field_count 
+        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': found_fields,'found_percentage': fp }
+
+        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (found_fields - poor_confidence_count) / found_fields}
         return data, metadata
 
 
@@ -107,7 +110,7 @@ class TestOCR:
                 if(cf_value_1 == 'SELECTED'):
                     sOcrKey, sOcrValue, OcrConfidence = cf_key_1, cf_value_1, cf_value_ca_1
             else:
-                return "Not Found", "Not Found", "Not Found"
+                return "Not_Found", "Not_Found", "Not_Found"
             yes_field = cf_key_1 if str(ocr_map[csv_key]['ocr'][0]['ocr_key']).upper() == 'YES' else cf_key_2 if str(ocr_map[csv_key]['ocr'][1]['ocr_key']).upper() == 'YES' else None
             if(yes_field is None):
                 return  "Bad Config", "Bad Config", "Bad Config"

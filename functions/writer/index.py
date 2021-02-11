@@ -429,10 +429,12 @@ class OCRProcessor:
                         count_not_found += 1 
                     if(correct_value_confidence < .8):
                         poor_confidence_count += 1
-        fp = (field_count - count_not_found) / field_count 
-        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': field_count-count_not_found,'found_percentage': fp }
-        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (field_count - poor_confidence_count) / field_count}
+        found_fields = field_count-count_not_found
+        fp = found_fields / field_count 
+        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': found_fields,'found_percentage': fp }
+        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (found_fields - poor_confidence_count) / found_fields}
         return data, metadata
+
 
     def getForm_Form(self, field_list, ocr_map, csv_key):
         return self.get_correct_field(field_list, ocr_map, csv_key, 0)
