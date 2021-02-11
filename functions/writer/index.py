@@ -458,7 +458,7 @@ class OCRProcessor:
         method = getattr(self, method_name, lambda: "Invalid Type in Config")
         return method(field_list,ocr_map, csv_key)
 
-def get_correct_field(self, field_list, ocr_map, csv_key, itemNo):
+    def get_correct_field(self, field_list, ocr_map, csv_key, itemNo):
         correct_field, correct_field_value, correct_field_confidence= 'Not Found', 'Not Found', 0
         #print(f'length of ocr field in ocr map for {csv_key} is: {len(ocr_map[csv_key]["ocr"])}')
         #print(f'field list count is: {len(field_list)}')
