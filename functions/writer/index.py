@@ -422,7 +422,8 @@ class OCRProcessor:
                 field_list = list(matching_fields)
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
-                    data[csv_key] = sCorrect_field_value
+                    data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
+                    #data[csv_key] = sCorrect_field_value
                     #print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
 
         return data
@@ -443,7 +444,7 @@ class OCRProcessor:
         if(len(ocr_map[csv_key]["ocr"]) == 1):
             tPos = ocr_map[csv_key]['ocr'][itemNo]["TopPos"]
             if(len(field_list)==0 or len(field_list)< tPos):
-                return None, None, None
+                return 'Not Found', 'Not Found', 'Not Found'
             else:
                 sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correct_field = sorted_fields[tPos-1]

@@ -50,204 +50,31 @@
     {
 		"db_csv_2_ocr_map_flint1": {
 			"last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"middle_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Middle","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
-			"ssn": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Social Security Number",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"address_1": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Street/P.O. ",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"city_1": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "City",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"state_1": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "State",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"zip_1": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Zip",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"address_1_from": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "From",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"address_1_to": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "To",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"address_2": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Street/P.O. ",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "String"
-					}
-				]
-			},
-			"city_2": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "City",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "String"
-					}
-				]
-			},
-			"state_2": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "State",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "String"
-					}
-				]
-			},
-			"zip_2": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Zip",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "String"
-					}
-				]
-			},
-			"address_2_from": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "From",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "String"
-					}
-				]
-			},
-			"address_2_to": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "To",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "String"
-					}
-				]
-			},
+			"ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Social Security Number","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"apt_suite_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"city_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"state_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"zip_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1_to": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"apt_suite_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"city_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{	"ocr_key": "City","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"state_2": {"Type": "Form",	"JsonDataOnly": "true","ocr": [{"ocr_key": "State",	"PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"zip_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],	"TopPos": 2,"Type": "String"}]},
+			"address_2_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"address_2_to": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
 			"address_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 2 ],	"TopPos": 3,"Type": "String"}]},
 			"city_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
 			"state_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
 			"zip_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
-			"address_3_from": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "From",
-						"PageNo": [ 2 ],
-						"TopPos": 3,
-						"Type": "String"
-					}
-				]
-			},
+			"address_3_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
 			"address_3_to": {"Type": "Form","JsonDataOnly": "true", "ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
-			"phone": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Phone",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"alt_phone": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Alt. Phone",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
+			"phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"alt_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Alt. Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"email": {
 				"Type": "Form",
 				"JsonDataOnly": "true",
@@ -320,42 +147,9 @@
 					}
 				]
 			},
-			"alt_phone_home": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Home",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "Selection"
-					}
-				]
-			},
-			"on_behalf_of_yes": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "YES",
-						"PageNo": [ 3 ],
-						"TopPos": 1,
-						"Type": "Selection"
-					}
-				]
-			},
-			"on_behalf_of_no": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "NO",
-						"PageNo": [ 3 ],
-						"TopPos": 1,
-						"Type": "Selection"
-					}
-				]
-			},
+			"alt_phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"on_behalf_of_yes": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "YES","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},
+			"on_behalf_of_no": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "NO","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},
 			"rep_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
 			"rep_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
 			"rep_address": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 3 ],	"TopPos": 1,"Type": "String"}]},

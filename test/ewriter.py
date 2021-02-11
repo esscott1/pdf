@@ -51,8 +51,9 @@ class TestOCR:
                 field_list = list(matching_fields)
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
-                    print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
-                    data[csv_key] = sCorrect_field_value
+                    print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
+                    #data[csv_key] = sCorrect_field_value
+                    data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     print('')
         return data
 
@@ -63,13 +64,13 @@ class TestOCR:
 
 
     def get_correct_field(self, field_list, ocr_map, csv_key, itemNo):
-        correct_field, correct_field_value, correct_field_confidence= 'Not Found', 'Not Found', 0
+        correct_field, correct_field_value, correct_field_confidence= 'Not_Found', 'Not_Found', 0
         #print(f'length of ocr field in ocr map for {csv_key} is: {len(ocr_map[csv_key]["ocr"])}')
         #print(f'field list count is: {len(field_list)}')
         if(len(ocr_map[csv_key]["ocr"]) == 1):
             tPos = ocr_map[csv_key]['ocr'][itemNo]["TopPos"]
             if(len(field_list)==0 or len(field_list)< tPos):
-                return None, None, None
+                return 'Not Found', 'Not Found', 'Not Found'
             else:
                 sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correct_field = sorted_fields[tPos-1]
