@@ -17,15 +17,7 @@
 				"LYGDAA":"db_csv_2_ocr_map_lygdaa"
 			}
 		},
-		"dbj": {
-			"table": "ca_packet",
-			"filename_ocrmap":
-			{
-				"ENROLL":"db_csv_2_ocr_map_enroll",
-				"RELFULL": "csv_2_ocr_map_relfull",
-				"AFFT":"db_csv_2_ocr_map_afft"
-				
-			}
+		"dbj": {"table": "ca_packet","filename_ocrmap":	{"ENROLL":"db_csv_2_ocr_map_enroll","RELFULL": "csv_2_ocr_map_relfull",	"AFFT":"db_csv_2_ocr_map_afft"}
 		},
 		"llnl": {
 			"table": "llnl_class_member",
@@ -75,78 +67,12 @@
 			"address_3_to": {"Type": "Form","JsonDataOnly": "true", "ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
 			"phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"alt_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Alt. Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
-			"email": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Email",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "String"
-					}
-				]
-			},
-			"phone_mobile": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Mobile",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "Selection"
-					}
-				]
-			},
-			"phone_work": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Work",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "Selection"
-					}
-				]
-			},
-			"phone_home": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Home",
-						"PageNo": [ 2 ],
-						"TopPos": 1,
-						"Type": "Selection"
-					}
-				]
-			},
-			"alt_phone_mobile": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Mobile",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "Selection"
-					}
-				]
-			},
-			"alt_phone_work": {
-				"Type": "Form",
-				"JsonDataOnly": "true",
-				"ocr": [
-					{
-						"ocr_key": "Work",
-						"PageNo": [ 2 ],
-						"TopPos": 2,
-						"Type": "Selection"
-					}
-				]
-			},
+			"email": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Email","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [	{"ocr_key": "Mobile","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"}]},
+			"phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"	}]},
+			"phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"	}]},
+			"alt_phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Mobile","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"alt_phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
 			"alt_phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
 			"on_behalf_of_yes": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "YES","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},
 			"on_behalf_of_no": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "NO","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},

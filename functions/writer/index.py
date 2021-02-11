@@ -352,7 +352,7 @@ def lambda_handler(event, context):
             return
         doc = Document(response)
         ocrProcessor = OCRProcessor()
-        docdata = ocrProcessor.getDocValues(response, csv_2_ocr_map)
+        docdata, ocr_metadata = ocrProcessor.getDocValues(response, csv_2_ocr_map)
         print(f'---  length of docjson is {len(docdata)}')
 
     # End logic for getting the correct map based on file name
@@ -362,6 +362,7 @@ def lambda_handler(event, context):
         eprint(f'docname type is: {type(docname)}',0)
         dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
         dictrow['jsondata'] = json.dumps(docdata, indent = 2)
+        dictrow['ocr_metadata'] = json.dumps(ocr_metadata, indent = 2)
         ssn, ca_ssn = '', ''
         jsondatarecord = dictrow.copy()
         regex = re.compile('-..-')
@@ -408,7 +409,7 @@ class OCRProcessor:
         pass
 
     def getDocValues(self, response, ocr_map):
-        data, metadata = {}, {}
+        data, metadata, ocrResult, count_not_found, field_count = {}, {}, None, 0, 0
         doc = Document(response)
         pageno = 0
         for page in doc.pages:
@@ -417,15 +418,17 @@ class OCRProcessor:
             #ocr_form = doc.pages[1].form
             #ocr_map = self.getOcrMap()
             for csv_key in ocr_map:
+                field_count += 1
                 matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
                 field_list = list(matching_fields)
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
-                    #data[csv_key] = sCorrect_field_value
-                    #print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} on page: {pageno}')
-
+                    if(sCorrect_field_value == 'Not_Found'):
+                        count_not_found += 1 
+        fp = (field_count - count_not_found) / field_count 
+        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': field_count-count_not_found,'found_percentage': fp }
         return data
 
     def getForm_Form(self, field_list, ocr_map, csv_key):
@@ -444,7 +447,7 @@ class OCRProcessor:
         if(len(ocr_map[csv_key]["ocr"]) == 1):
             tPos = ocr_map[csv_key]['ocr'][itemNo]["TopPos"]
             if(len(field_list)==0 or len(field_list)< tPos):
-                return 'Not Found', 'Not Found', 'Not Found'
+                return 'Not_Found', 'Not_Found', 'Not_Found'
             else:
                 sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correct_field = sorted_fields[tPos-1]

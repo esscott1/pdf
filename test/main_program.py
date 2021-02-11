@@ -39,11 +39,14 @@ print('')
 print('')
 print('') """
 
-docjson = testOcr.getDocValues()
+docjson, metadata = testOcr.getDocValues()
 print('')
 print('---  Json data for document')
 print('')
 print (docjson)
 print('')
+print('---  meta data for document')
+print('')
+print (metadata)
 print(f'length of docjson is: {len(docjson)}')
 

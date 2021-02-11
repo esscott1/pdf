@@ -36,7 +36,7 @@ class TestOCR:
         return 'none', 'none'
 
     def getDocValues(self):
-        data, metadata, ocrResult = {}, {}, None
+        data, metadata, ocrResult, count_not_found, field_count = {}, {}, None, 0, 0
         response = self._ocrResults
         doc = Document(response)
         pageno = 0
@@ -50,12 +50,17 @@ class TestOCR:
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
                 field_list = list(matching_fields)
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
-                if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
+                if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ): # clumsy logic to verify i've got the correct field form the correct page. should not need based on filter
+                    field_count += 1
                     print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
                     #data[csv_key] = sCorrect_field_value
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
+                    if(sCorrect_field_value == 'Not_Found'):
+                        count_not_found += 1 
                     print('')
-        return data
+        fp = (field_count - count_not_found) / field_count 
+        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': field_count-count_not_found,'found_percentage': fp }
+        return data, metadata
 
 
         
@@ -70,7 +75,7 @@ class TestOCR:
         if(len(ocr_map[csv_key]["ocr"]) == 1):
             tPos = ocr_map[csv_key]['ocr'][itemNo]["TopPos"]
             if(len(field_list)==0 or len(field_list)< tPos):
-                return 'Not Found', 'Not Found', 'Not Found'
+                return 'Not_Found', 'Not_Found', 'Not_Found'
             else:
                 sorted_fields = sorted(field_list, key=lambda x: x.key.geometry.boundingBox.top, reverse=False)
                 correct_field = sorted_fields[tPos-1]
