@@ -21,4 +21,6 @@ select
 	jsondata_data.key ID, 
 	jsondata -> jsondata_data.key::text ->> 'confidence' Confidence
 from flint_claimant, json_each_text(flint_claimant.jsondata) as jsondata_data
-where (jsondata -> jsondata_data.key::text ->> 'confidence')::numeric > 0
+where  sourcefilename = 'flint1/Flint_-_OCR_Test_1_test.pdf'
+and (jsondata -> jsondata_data.key::text ->> 'confidence')::numeric > 0
+and (jsondata -> jsondata_data.key::text ->> 'confidence')::numeric < 80

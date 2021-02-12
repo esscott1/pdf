@@ -12,7 +12,7 @@ class TestOCR:
 
     def __init__(self):
         self.color = 'blue'
-        with open('FlintApiResultsGui.json', 'rb') as f:
+        with open('apiResponse3.json', 'rb') as f:
             result = json.load(f)
         self._ocrResults = result
 
@@ -52,7 +52,7 @@ class TestOCR:
                 sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ): # clumsy logic to verify i've got the correct field form the correct page. should not need based on filter
                     field_count += 1
-                    #print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
+                    print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
                     #data[csv_key] = sCorrect_field_value
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):

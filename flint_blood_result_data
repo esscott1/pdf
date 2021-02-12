@@ -1,0 +1,16 @@
+SELECT flint_claimant.sourcefilename,
+    (flint_claimant.jsondata -> 'first_name'::text) ->> 'value'::text AS first_name,
+    (flint_claimant.jsondata -> 'last_name'::text) ->> 'value'::text AS last_name,
+    (flint_claimant.jsondata -> 'email'::text) ->> 'value'::text AS email,
+    (flint_claimant.jsondata -> 'dis_individual_name'::text) ->> 'value'::text AS individual_name,
+    (flint_claimant.jsondata -> 'dis_address'::text) ->> 'value'::text AS street_address,
+    (flint_claimant.jsondata -> 'dis_city'::text) ->> 'value'::text AS city,
+    (flint_claimant.jsondata -> 'dis_state'::text) ->> 'value'::text AS state,
+    (flint_claimant.jsondata -> 'dis_zip'::text) ->> 'value'::text AS zip_code,
+	(flint_claimant.jsondata -> 'dis_individual_gender'::text) ->> 'value'::text AS individual_gender,
+	(flint_claimant.jsondata -> 'dis_individual_dob'::text) ->> 'value'::text AS individual_date_of_birth,
+    (flint_claimant.jsondata -> 'dis_phone'::text) ->> 'value'::text AS phone,
+    (flint_claimant.jsondata -> 'dis_expiry_date'::text) ->> 'value'::text AS date_expiry,
+	(flint_claimant.jsondata -> 'dis_rep_relationship'::text) ->> 'value'::text AS reps_relation_to_individual
+   FROM flint_claimant;
+

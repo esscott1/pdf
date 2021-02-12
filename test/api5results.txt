@@ -1,0 +1,230 @@
+{
+    "last_name": {
+        "value": "SMAL",
+        "confidence": 60.000003814697266
+    },
+    "middle_name": {
+        "value": "E",
+        "confidence": 83
+    },
+    "first_name": {
+        "value": "Sally",
+        "confidence": 87.5
+    },
+    "ssn": {
+        "value": "Bate of Birth of Registrant I R 3 45 n 6 8 11/5/1966 (Month/Day/Year)",
+        "confidence": 49
+    },
+    "address_1": {
+        "value": "12345 Manstreet",
+        "confidence": 70.5
+    },
+    "apt_suite_1": {
+        "value": "None",
+        "confidence": 0
+    },
+    "city_1": {
+        "value": "Phut",
+        "confidence": 84
+    },
+    "state_1": {
+        "value": "MP",
+        "confidence": 86
+    },
+    "zip_1": {
+        "value": "45092",
+        "confidence": 66.5
+    },
+    "address_1_from": {
+        "value": "Augustzi,1993",
+        "confidence": 44
+    },
+    "address_1_to": {
+        "value": "Now",
+        "confidence": 76
+    },
+    "address_2": {
+        "value": "None",
+        "confidence": 0
+    },
+    "apt_suite_2": {
+        "value": "None",
+        "confidence": 0
+    },
+    "city_2": {
+        "value": "None",
+        "confidence": 0
+    },
+    "state_2": {
+        "value": "None",
+        "confidence": 0
+    },
+    "zip_2": {
+        "value": "None",
+        "confidence": 0
+    },
+    "address_2_from": {
+        "value": "None",
+        "confidence": 0
+    },
+    "address_2_to": {
+        "value": "None",
+        "confidence": 0
+    },
+    "address_3": {
+        "value": "None",
+        "confidence": 0
+    },
+    "city_3": {
+        "value": "None",
+        "confidence": 0
+    },
+    "state_3": {
+        "value": "None",
+        "confidence": 0
+    },
+    "zip_3": {
+        "value": "None",
+        "confidence": 0
+    },
+    "address_3_from": {
+        "value": "None",
+        "confidence": 0
+    },
+    "address_3_to": {
+        "value": "None",
+        "confidence": 0
+    },
+    "phone": {
+        "value": "2086 60-6317",
+        "confidence": 68.5
+    },
+    "alt_phone": {
+        "value": "None",
+        "confidence": 0
+    },
+    "email": {
+        "value": "Manijuley pcCnotmail.com",
+        "confidence": 55
+    },
+    "phone_mobile": {
+        "value": "SELECTED",
+        "confidence": 98
+    },
+    "phone_work": {
+        "value": "NOT_SELECTED",
+        "confidence": 96.5
+    },
+    "phone_home": {
+        "value": "NOT_SELECTED",
+        "confidence": 96.5
+    },
+    "alt_phone_mobile": {
+        "value": "NOT_SELECTED",
+        "confidence": 99
+    },
+    "alt_phone_work": {
+        "value": "NOT_SELECTED",
+        "confidence": 94
+    },
+    "alt_phone_home": {
+        "value": "NOT_SELECTED",
+        "confidence": 95
+    },
+    "on_behalf_of_yes": {
+        "value": "NOT_SELECTED",
+        "confidence": 90
+    },
+    "on_behalf_of_no": {
+        "value": "SELECTED",
+        "confidence": 89.5
+    },
+    "rep_last_name": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_first_name": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_address": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_city": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_state": {
+        "value": "NOT_SELECTED",
+        "confidence": 87.5
+    },
+    "rep_zip": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_ssn": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_dob": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_parent": {
+        "value": "NOT_SELECTED",
+        "confidence": 90.5
+    },
+    "rep_spouse": {
+        "value": "NOT_SELECTED",
+        "confidence": 90.5
+    },
+    "rep_stepparent": {
+        "value": "NOT_SELECTED",
+        "confidence": 90.5
+    },
+    "rep_adultchild": {
+        "value": "NOT_SELECTED",
+        "confidence": 91.5
+    },
+    "rep_adultsibling": {
+        "value": "NOT_SELECTED",
+        "confidence": 88.5
+    },
+    "rep_adultaunt": {
+        "value": "NOT_SELECTED",
+        "confidence": 94
+    },
+    "rep_adultuncle": {
+        "value": "NOT_SELECTED",
+        "confidence": 88
+    },
+    "rep_grandparent": {
+        "value": "NOT_SELECTED",
+        "confidence": 92
+    },
+    "rep_legalguardian": {
+        "value": "NOT_SELECTED",
+        "confidence": 66
+    },
+    "rep_estateadmin": {
+        "value": "NOT_SELECTED",
+        "confidence": 87.5
+    },
+    "rep_other": {
+        "value": "NOT_SELECTED",
+        "confidence": 66
+    },
+    "rep_phone": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_altphone": {
+        "value": "Not_Found",
+        "confidence": 0
+    },
+    "rep_email": {
+        "value": "Not_Found",
+        "confidence": 0
+    }
+}
