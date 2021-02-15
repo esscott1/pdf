@@ -340,7 +340,8 @@ def lambda_handler(event, context):
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}')
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
-        cleanse_rule = configDict["cleanse_rules"][prefixName]
+        cleanse_rule_name = configDict["s3_prefix_table_map"][prefixName]["cleanse_rules"]
+        cleanse_rule = configDict["cleanse_rules"][cleanse_rule_name]
         eprint(f'---- table name from config Dict is: {tablename} ----')
 
         csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)

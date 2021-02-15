@@ -46,9 +46,9 @@ class TestOCR:
         content = response['Body']
         ocr_config_json = json.loads(content.read())
         ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        cleanes_rule = ocr_config_json['cleanse_rules']['flint1']
+        cleanse_rule = ocr_config_json['cleanse_rules']['flint1']
         #print(cleanes_rule)
-        return ocrmap, cleanes_rule
+        return ocrmap, cleanse_rule
 
 
     def getValueByKey(self, ocrkey, pageno):
