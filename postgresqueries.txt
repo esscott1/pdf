@@ -1,6 +1,10 @@
 ref
 https://medium.com/@sivakumarvadivelu/querying-json-with-postgresql-9e72f808bdda
 
+
+
+
+
 select json_object_keys(jsondata -> 'last_name') from flint_claimant
 where sourcefilename = 'flint1/Flint_-_OCR_Test_2.pdf'
 

@@ -5,6 +5,7 @@
 	{
 		"flint1": {
 			"table": "flint_claimant",
+			"cleanse_rules":["flint1"],
 			"filename_ocrmap":
 			{
 				"Flint":"db_csv_2_ocr_map_flint1"
@@ -36,8 +37,24 @@
 			}
 		}
 	},
-	
-	
+	"cleanse_rules":
+	{
+		"flint1":{
+			"ssn":{
+				"replace":[
+					{"this":"/","with": "1"},
+					{"this":" ","with": ""},
+					{"this":".","with": ""},
+					{"this":"-","with": ""}],
+				"insert":[
+					{"this":"-", "at": 5},
+					{"this":"-", "at": 3}
+				]
+			}
+			
+		}
+	},
+
     "ocr_maps":
     {
 		"db_csv_2_ocr_map_flint1": {
@@ -48,7 +65,7 @@
 			"last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"middle_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Middle","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
-			"ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Social Security Number","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Social Security Number","PageNo": [ 2 ],"TopPos": 1,"Type": "ssn"}]},
 			"dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Date of Birth of Registrant","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"address_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
 			"apt_suite_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
@@ -89,7 +106,7 @@
 			"rep_city": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
 			"rep_state": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 3 ],"TopPos": 2,"Type": "String"}]},
 			"rep_zip": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
-			"rep_ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Social Security","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Social Security","PageNo": [ 3 ],"TopPos": 1,"Type": "ssn"}]},
 			"rep_dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Date of Birth","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
 			"rep_parent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Parent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
 			"rep_spouse": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Spouse","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},

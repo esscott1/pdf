@@ -8,11 +8,34 @@ from dateutil.parser import parse
 import re
 import traceback
 
+class e:
+    def __init__(self) -> None:
+        pass
+        
+        
+    def print (msg, sev=10, sendsns=True):
+        '''
+        default is debug or notset unless correctly specified in config
+        sev options are: critical: 50 | error: 40 | warning: 30 | info: 20 | debug: 10 | verbose: 0 
+        '''
+        debug = 'debug'
+        #if(type(msg) == str):
+        #    msg = "Doc name is: "+gDocumentName +" msg is: "+msg
+        if debug.lower() not in {'critical', 'error', 'warning', 'info', 'debug', 'verbose'}:
+            print(f'debug in config file set to something other than "critical", "error", "warning", "info" or "debug" therefore the setting will be "debug".')
+            debug = 'debug'
+        loglevel = 10 if debug == 'debug' else 20 if debug == 'info' else 30 if debug == 'warning' else 40 if debug == 'error' else 50 if debug == 'critical' else 0
+        if(sev >= loglevel):
+            print(msg)
+        #if(sendsns):
+        #    writetosnstopic(msg, sev)
+
+
 class TestOCR:
 
     def __init__(self):
         self.color = 'blue'
-        with open('apiResponse3.json', 'rb') as f:
+        with open('apiResponse_opt.json', 'rb') as f:
             result = json.load(f)
         self._ocrResults = result
 
@@ -23,7 +46,8 @@ class TestOCR:
         content = response['Body']
         ocr_config_json = json.loads(content.read())
         ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        return ocrmap
+        cleanes_rule = ocr_config_json['cleanse_rules']['flint1']
+        return ocrmap, cleanes_rule
 
 
     def getValueByKey(self, ocrkey, pageno):
@@ -44,13 +68,16 @@ class TestOCR:
             pageno = pageno + 1
             ocr_form = page.form
             #ocr_form = doc.pages[1].form
-            ocr_map = self.getOcrMap()
+            ocr_map, cleanse_rule = self.getOcrMap()
+            e.print(cleanse_rule)
             for csv_key in ocr_map:
                 matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
                 field_list = list(matching_fields)
-                sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
+
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ): # clumsy logic to verify i've got the correct field form the correct page. should not need based on filter
+                    sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
+                    sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
                     field_count += 1
                     print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
                     #data[csv_key] = sCorrect_field_value
@@ -68,12 +95,7 @@ class TestOCR:
         return data, metadata
 
 
-        
-    def getForm_Form(self, field_list, ocr_map, csv_key):
-        return self.get_correct_field(field_list, ocr_map, csv_key, 0)
-
-
-    def get_correct_field(self, field_list, ocr_map, csv_key, itemNo):
+    def getForm_Form(self, field_list, ocr_map, csv_key, itemNo = 0):
         correct_field, correct_field_value, correct_field_confidence= 'Not_Found', 'Not_Found', 0
         #print(f'length of ocr field in ocr map for {csv_key} is: {len(ocr_map[csv_key]["ocr"])}')
         #print(f'field list count is: {len(field_list)}')
@@ -116,13 +138,63 @@ class TestOCR:
             if (yes_field == cf_key_1):
                 return  "Bad Config", "Bad Config", "Bad Config" #  need to work on this function
             return  "Bad Config", "Bad Config", "Bad Config"
+    
 
+
+    def format_string(self, cleanse_rule, value):
+        return value
+
+    def format_ssn(self, cleanse_rule, value):
+        ssn = str(value)
+        replaceRule = cleanse_rule['replace']
+        insertRule = cleanse_rule['insert']
+        print(f'ssn value before formating: {ssn}')
+        if(ssn is not 'Not_Found' or ssn is not 'None'):
+            if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
+                for rule in replaceRule:
+                    print(f'replace {rule["this"]} for {rule["with"]}')
+                    ssn = ssn.replace(rule["this"],rule["with"])
+#                ssn = ssn.replace('/', '1')
+#                ssn = ssn.replace('.', '')
+#                ssn = ssn.replace(' ', '')
+#                ssn = ssn.replace('-', '')
+                print(f'ssn after replace periods is {ssn}')
+                print(f'length of ssn: {len(ssn)}')
+                if(len(ssn) == 9):
+                    for insert in insertRule:
+                        ssn = ssn[:insert['at']] + insert['this'] + ssn[insert['at']:]
+                    #ssn = ssn[:5] + '-' + ssn[5:]
+                    #ssn = ssn[:3] + '-' + ssn[3:]
+                else:
+                    ssn = str(value)
+            else:
+                print('SSN was in correct format')
+            print(f'ssn after cleaning is: {ssn}')
+        return ssn
+    
+    def format_date(self, cleanse_rule, value):
+        return value
+    
+    def format_selection(self, cleanse_rule, value):
+        return value
+
+
+
+    def formatDataType(self, cleanse_rule, data_type, value):
+        format_method_name = 'format_'+str(data_type).lower()
+        format_method = getattr(self,format_method_name, lambda c, d ,v: "Invalid type, not method")
+        print(f'****  Data type we are formating is {str(data_type)}')
+        return format_method(cleanse_rule['ssn'], value)
 
     def getCorrectField(self, field_list, ocr_map, csv_key):
         field_type = ocr_map[csv_key]["Type"]
         method_name = 'getForm_'+str(field_type)
-        method = getattr(self, method_name, lambda: "Invalid Type in Config")
-        return method(field_list,ocr_map, csv_key)
+        method = getattr(self, method_name, lambda f, o ,c: "Invalid Type in Config")
+        sKey, sValue, confidence = method(field_list,ocr_map, csv_key)
+        if(str(ocr_map[csv_key]['ocr'][0]['Type']) == 'ssn'):
+            print(f'******  found SSN on key {csv_key} ********')
+        #sValue = self.formatDataType(sValue, str(ocr_map[csv_key]['ocr'][0]['Type']))
+        return sKey,sValue, confidence
 
 
 

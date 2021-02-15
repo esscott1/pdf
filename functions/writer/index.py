@@ -340,6 +340,7 @@ def lambda_handler(event, context):
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}')
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
+        cleanse_rule = configDict["cleanse_rules"][prefixName]
         eprint(f'---- table name from config Dict is: {tablename} ----')
 
         csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
@@ -352,7 +353,7 @@ def lambda_handler(event, context):
             return
         doc = Document(response)
         ocrProcessor = OCRProcessor()
-        docdata, ocr_metadata = ocrProcessor.getDocValues(response, csv_2_ocr_map)
+        docdata, ocr_metadata = ocrProcessor.getDocValues(response, csv_2_ocr_map, cleanse_rule)
         print(f'---  length of docjson is {len(docdata)}')
 
     # End logic for getting the correct map based on file name
@@ -403,12 +404,18 @@ def lambda_handler(event, context):
         emsg = f'error thrown {e} from line no {e.__traceback__.tb_lineno}'
         eprint(emsg, 50)
 
+class e:
+    def __init__(self) -> None:
+        pass
+
+    def print(msg):
+        print(msg)
 
 class OCRProcessor:
     def __init__(self) -> None:
         pass
 
-    def getDocValues(self, response, ocr_map):
+    def getDocValues(self, response, ocr_map, cleanse_rule):
         data, metadata, ocrResult, count_not_found, field_count, poor_confidence_count = {}, {}, None, 0, 0,0
         doc = Document(response)
         pageno = 0
@@ -421,8 +428,10 @@ class OCRProcessor:
                 matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
                 field_list = list(matching_fields)
-                sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
+                #sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
+                    sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
+                    sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
                     field_count += 1
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
@@ -437,16 +446,49 @@ class OCRProcessor:
         return data, metadata
 
 
-    def getForm_Form(self, field_list, ocr_map, csv_key):
-        return self.get_correct_field(field_list, ocr_map, csv_key, 0)
+    def formatDataType(self, cleanse_rule, data_type, value):
+        format_method_name = 'format_'+str(data_type).lower()
+        format_method = getattr(self,format_method_name, lambda c, d ,v: "Invalid type, not method")
+        #print(f'****  Data type we are formating is {str(data_type)}')
+        return format_method(cleanse_rule['ssn'], value)
 
+    def format_string(self, cleanse_rule, value):
+        return value
+
+    def format_ssn(self, cleanse_rule, value):
+        ssn = str(value)
+        replaceRule = cleanse_rule['replace']
+        insertRule = cleanse_rule['insert']
+        #print(f'ssn value before formating: {ssn}',0)
+        if(ssn is not 'Not_Found' or ssn is not 'None'):
+            if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
+                for rule in replaceRule:
+                    print(f'replace {rule["this"]} for {rule["with"]}')
+                    ssn = ssn.replace(rule["this"],rule["with"])
+                #print(f'ssn after replace periods is {ssn}',0)
+                #print(f'length of ssn: {len(ssn)}',0)
+                if(len(ssn) == 9):
+                    for insert in insertRule:
+                        ssn = ssn[:insert['at']] + insert['this'] + ssn[insert['at']:]
+                else:
+                    ssn = str(value)
+            #else:
+                #print('SSN was in correct format',0)
+            #print(f'ssn after cleaning is: {ssn}',0)
+        return ssn
+    
+    def format_date(self, cleanse_rule, value):
+        return value
+    
+    def format_selection(self, cleanse_rule, value):
+        return value
     def getCorrectField(self, field_list, ocr_map, csv_key):
         field_type = ocr_map[csv_key]["Type"]
         method_name = 'getForm_'+str(field_type)
         method = getattr(self, method_name, lambda: "Invalid Type in Config")
         return method(field_list,ocr_map, csv_key)
 
-    def get_correct_field(self, field_list, ocr_map, csv_key, itemNo):
+    def getForm_Form(self, field_list, ocr_map, csv_key, itemNo = 0):
         correct_field, correct_field_value, correct_field_confidence= 'Not Found', 'Not Found', 0
         #print(f'length of ocr field in ocr map for {csv_key} is: {len(ocr_map[csv_key]["ocr"])}')
         #print(f'field list count is: {len(field_list)}')
