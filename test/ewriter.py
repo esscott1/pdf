@@ -47,6 +47,7 @@ class TestOCR:
         ocr_config_json = json.loads(content.read())
         ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
         cleanes_rule = ocr_config_json['cleanse_rules']['flint1']
+        #print(cleanes_rule)
         return ocrmap, cleanes_rule
 
 
@@ -69,7 +70,7 @@ class TestOCR:
             ocr_form = page.form
             #ocr_form = doc.pages[1].form
             ocr_map, cleanse_rule = self.getOcrMap()
-            e.print(cleanse_rule)
+            #e.print(cleanse_rule)
             for csv_key in ocr_map:
                 matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 
                 pageno in ocr_map[csv_key]['ocr'][0]['PageNo'] , ocr_form.fields)
@@ -138,53 +139,30 @@ class TestOCR:
             if (yes_field == cf_key_1):
                 return  "Bad Config", "Bad Config", "Bad Config" #  need to work on this function
             return  "Bad Config", "Bad Config", "Bad Config"
-    
 
 
-    def format_string(self, cleanse_rule, value):
-        return value
-
-    def format_ssn(self, cleanse_rule, value):
-        ssn = str(value)
+    def formatDataType(self, rule_set, data_type, value):
+        sValue = str(value)
+        cleanse_rule = rule_set.get(str(data_type), None)
+        if(cleanse_rule is None):
+            return value
         replaceRule = cleanse_rule['replace']
         insertRule = cleanse_rule['insert']
-        print(f'ssn value before formating: {ssn}')
-        if(ssn is not 'Not_Found' or ssn is not 'None'):
-            if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
+        rex = cleanse_rule['regex']
+        targetlength = cleanse_rule['length']
+        if(sValue is not 'Not_Found' or sValue is not 'None'):
+            if(sValue != None and re.compile(str(rex)).match(sValue) == None):
                 for rule in replaceRule:
-                    print(f'replace {rule["this"]} for {rule["with"]}')
-                    ssn = ssn.replace(rule["this"],rule["with"])
-#                ssn = ssn.replace('/', '1')
-#                ssn = ssn.replace('.', '')
-#                ssn = ssn.replace(' ', '')
-#                ssn = ssn.replace('-', '')
-                print(f'ssn after replace periods is {ssn}')
-                print(f'length of ssn: {len(ssn)}')
-                if(len(ssn) == 9):
+                    #print(f'replace {rule["this"]} for {rule["with"]}')
+                    sValue = sValue.replace(rule["this"],rule["with"])
+                #print(f'{data_type} after replace periods is {sValue}')
+                #print(f'length of {data_type}: {len(sValue)}')
+                if(str(len(sValue)) == str(targetlength)):
                     for insert in insertRule:
-                        ssn = ssn[:insert['at']] + insert['this'] + ssn[insert['at']:]
-                    #ssn = ssn[:5] + '-' + ssn[5:]
-                    #ssn = ssn[:3] + '-' + ssn[3:]
-                else:
-                    ssn = str(value)
-            else:
-                print('SSN was in correct format')
-            print(f'ssn after cleaning is: {ssn}')
-        return ssn
-    
-    def format_date(self, cleanse_rule, value):
-        return value
-    
-    def format_selection(self, cleanse_rule, value):
-        return value
+                        sValue = sValue[:insert['at']] + insert['this'] + sValue[insert['at']:]
+        return sValue
 
 
-
-    def formatDataType(self, cleanse_rule, data_type, value):
-        format_method_name = 'format_'+str(data_type).lower()
-        format_method = getattr(self,format_method_name, lambda c, d ,v: "Invalid type, not method")
-        print(f'****  Data type we are formating is {str(data_type)}')
-        return format_method(cleanse_rule['ssn'], value)
 
     def getCorrectField(self, field_list, ocr_map, csv_key):
         field_type = ocr_map[csv_key]["Type"]

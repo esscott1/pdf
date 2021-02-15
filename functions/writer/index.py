@@ -446,42 +446,28 @@ class OCRProcessor:
         return data, metadata
 
 
-    def formatDataType(self, cleanse_rule, data_type, value):
-        format_method_name = 'format_'+str(data_type).lower()
-        format_method = getattr(self,format_method_name, lambda c, d ,v: "Invalid type, not method")
-        #print(f'****  Data type we are formating is {str(data_type)}')
-        return format_method(cleanse_rule['ssn'], value)
-
-    def format_string(self, cleanse_rule, value):
-        return value
-
-    def format_ssn(self, cleanse_rule, value):
-        ssn = str(value)
+    def formatDataType(self, rule_set, data_type, value):
+        sValue = str(value)
+        cleanse_rule = rule_set.get(str(data_type), None)
+        if(cleanse_rule is None):
+            return value
         replaceRule = cleanse_rule['replace']
         insertRule = cleanse_rule['insert']
-        #print(f'ssn value before formating: {ssn}',0)
-        if(ssn is not 'Not_Found' or ssn is not 'None'):
-            if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
+        rex = cleanse_rule['regex']
+        targetlength = cleanse_rule['length']
+        if(sValue is not 'Not_Found' or sValue is not 'None'):
+            if(sValue != None and re.compile(str(rex)).match(sValue) == None):
                 for rule in replaceRule:
-                    print(f'replace {rule["this"]} for {rule["with"]}')
-                    ssn = ssn.replace(rule["this"],rule["with"])
-                #print(f'ssn after replace periods is {ssn}',0)
-                #print(f'length of ssn: {len(ssn)}',0)
-                if(len(ssn) == 9):
+                    #print(f'replace {rule["this"]} for {rule["with"]}')
+                    sValue = sValue.replace(rule["this"],rule["with"])
+                #print(f'{data_type} after replace periods is {sValue}')
+                #print(f'length of {data_type}: {len(sValue)}')
+                if(str(len(sValue)) == str(targetlength)):
                     for insert in insertRule:
-                        ssn = ssn[:insert['at']] + insert['this'] + ssn[insert['at']:]
-                else:
-                    ssn = str(value)
-            #else:
-                #print('SSN was in correct format',0)
-            #print(f'ssn after cleaning is: {ssn}',0)
-        return ssn
-    
-    def format_date(self, cleanse_rule, value):
-        return value
-    
-    def format_selection(self, cleanse_rule, value):
-        return value
+                        sValue = sValue[:insert['at']] + insert['this'] + sValue[insert['at']:]
+        return sValue
+
+
     def getCorrectField(self, field_list, ocr_map, csv_key):
         field_type = ocr_map[csv_key]["Type"]
         method_name = 'getForm_'+str(field_type)
