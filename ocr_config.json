@@ -5,7 +5,7 @@
 	{
 		"flint1": {
 			"table": "flint_claimant",
-			"cleanse_rules":["flint1"],
+			"cleanse_rules": "flint1",
 			"filename_ocrmap":
 			{
 				"Flint":"db_csv_2_ocr_map_flint1"

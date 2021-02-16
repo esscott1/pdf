@@ -47,8 +47,9 @@ class TestOCR:
         ocr_config_json = json.loads(content.read())
         ocrmap = ocr_config_json.get("ocr_maps", {}).get("db_csv_2_ocr_map_flint1", {})
        # ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        cleanse_rule_name = ocr_config_json.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})[0]
-        cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(cleanse_rule_name,{})
+        cleanse_rule_name = ocr_config_json.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
+        print(f'cleanse_rule_name is: {cleanse_rule_name}')
+        cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
         #print(cleanes_rule)
         return ocrmap, cleanse_rule
 
@@ -80,7 +81,8 @@ class TestOCR:
 
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ): # clumsy logic to verify i've got the correct field form the correct page. should not need based on filter
                     sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
-                    sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
+                    if(cleanse_rule != None):
+                        sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
                     #field_count += 1
                     print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
                     #data[csv_key] = sCorrect_field_value

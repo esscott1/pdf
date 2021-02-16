@@ -239,8 +239,8 @@ def lambda_handler(event, context):
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}')
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
-        cleanse_rule_name = configDict.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})[0]
-        cleanse_rule = configDict.get('cleanse_rules',{}).get(cleanse_rule_name,{})
+        cleanse_rule_name = configDict.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
+        cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
         eprint(f'---- table name from config Dict is: {tablename} ----')
 
         csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
@@ -274,10 +274,6 @@ def lambda_handler(event, context):
 
             eprint('---- eprinting the csv_2_ocr_map again ---',0)
             eprint(csv_2_ocr_map,0)
-
-    #    dictrow['Claimant_Social_Security_Number'] = ssn
-    #    dictrow['ca_Claimant_Social_Security_Number'] = ca_ssn
-
         eprint('--- eprinting dictrow ---', 0)
         eprint(dictrow, 0)
 
@@ -315,7 +311,7 @@ class OCRProcessor:
     def __init__(self) -> None:
         pass
 
-    def getDocValues(self, response, ocr_map, cleanse_rule):
+    def getDocValues(self, response, ocr_map, cleanse_rule = None):
         data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
         doc = Document(response)
         pageno = 0
@@ -331,7 +327,8 @@ class OCRProcessor:
                 #sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
                     sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
-                    sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
+                    if(cleanse_rule != None):
+                        sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
                         count_not_found += 1 
