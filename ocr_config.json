@@ -20,9 +20,9 @@
 		},
 		"dallas":{
 			"table":"dallas_test",
-			"filename_ocrmap":
+			"form_info":
 			{
-				"LYGDAA":"db_csv_2_ocr_map_lygdaa"
+				"LYGDAA": { "ocr_map":"db_csv_2_ocr_map_lygdaa"
 			}
 		},
 		"dbj": {"table": "ca_packet",
@@ -45,18 +45,18 @@
 				"num_first_char": 11
 			},
 			"table": "llnl_class_member",
-			"filename_ocrmap":
+			"form_info":
 			{
-				"SINUCA":"db_csv_2_ocr_map_llnl"
+				"SINUCA":{ "ocr_map":"db_csv_2_ocr_map_llnl"}
 				
 			}
 		},
 		"qsfelection":
 		{
 			"table": "qsfelection",
-			"filename_ocrmap":
+			"form_info":
 			{
-				"MOSAMB":"db_csv_2_ocr_map_elect"
+				"MOSAMB": { "ocr_map": "db_csv_2_ocr_map_elect"
 			}
 		}
 	},

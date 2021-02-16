@@ -35,11 +35,12 @@ class TestOCR:
 
     def __init__(self):
         self.color = 'blue'
-        with open('apiResponse_opt.json', 'rb') as f:
+        with open('apiResponse_sin.json', 'rb') as f:
             result = json.load(f)
         self._ocrResults = result
-        self._prefixName = 'flint1'
-        self._docname = 'flint1/Flint_opt_good_test2.pdf'
+        self._prefixName = 'llnl'
+        self._docname = 'llnl/SINUCA10087-CMDF--202002171204.pdf'
+
 
     @property
     def prefixName(self):
@@ -67,8 +68,8 @@ class TestOCR:
                 omap = configDict["docket_info"][self._prefixName]["form_info"][snippet]["ocr_map"]
                 #print(f'map should by {configDict["ocr_maps"][omap]}')
                 ocrmap = configDict["ocr_maps"][omap]
-                cleanse_rule_name = configDict["docket_info"][self._prefixName]["form_info"][snippet]["cleanse_rules"]
-                cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+                cleanse_rule_name = configDict["docket_info"][self._prefixName]["form_info"][snippet].get("cleanse_rules",None)
+                cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{}) if cleanse_rule_name != None else {}
                 print(f'Cleanse rule name is {cleanse_rule_name}')
                 #print(f'Cleanse rule is {cleanse_rule}')
 
