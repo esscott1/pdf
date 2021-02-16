@@ -125,7 +125,8 @@ def get_connection():
         eprint (msg, 40)
         return None
 
-def get_Docname_JobId(event, notificationMessage):
+def get_Docname_JobId(event):
+    notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
     pdfResultType = "does not exist"
     if('ResultType' in event and event['ResultType'] !=""):
         pdfResultType = event['ResultType']
@@ -194,7 +195,10 @@ def CleanDate(dateFieldValue):
     return cleanDateResult
 
 def get_csv_2_ocr_map(docname,configDict, prefixName):
-    # logic for getting the correct map based on file name
+    '''
+    logic for getting the correct map based on file name place in the s3 folder which coorosponds to a docket
+    supports multiple different forms by name with different maps per docket to be stored in same s3 folder
+    '''
     result = {}
     for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
         if(str(docname).find(snippet) > -1):
@@ -231,65 +235,52 @@ def lambda_handler(event, context):
     If the Status is SUCCEEDED then create a dict of the values and write those to the RDS database.
     """
     global gDocumentName
+    all_values, dictrow  = [], {}
     configDict = read_config()
     print(f'Debugging level is set to: {debug}')
     print(f'SNS notification level set to: {snsnotify} ')
     try:
+        docname, pdfTextExtractionJobId = get_Docname_JobId(event)
+        gDocumentName = str(docname[docname.find('/')+1:])
+        eprint('document name is: '+docname,10)
 
-        notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
-        docname, pdfTextExtractionJobId = get_Docname_JobId(event, notificationMessage)
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}',10)
+        
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
+        eprint(f'---- table name from config Dict is: {tablename} ----',0)
+
         cleanse_rule_name = configDict.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
         cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
-        
-        eprint(f'---- table name from config Dict is: {tablename} ----',0)
 
         csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
         eprint(csv_2_ocr_map,0)
-        eprint('document name is: '+docname,10)
-        eprint(f'content of document should eprint to table name: {tablename}',10)
-        gDocumentName = str(docname[docname.find('/')+1:])
+
         response = getJobResults(pdfTextExtractionJobId)
         if response == None: #textract didn't return a response.
+            eprint(f'Textract did not return info for JobID: {pdfTextExtractionJobId}',40)
             return
-        doc = Document(response)
+        #doc = Document(response)
         ocrProcessor = OCRProcessor()
         docdata, ocr_metadata = ocrProcessor.getDocValues(response, csv_2_ocr_map, cleanse_rule)
-        print(f'---  length of docjson is {len(docdata)}')
+        eprint(f'---  length of docjson is {len(docdata)}',0)
 
-    # End logic for getting the correct map based on file name
-
-        all_keys, all_values, pageno, dictrow, jsondatarecord = [], [], 0, {}, {}
-        dictrow['SourceFileName'] = docname
-        eprint(f'docname type is: {type(docname)}',0)
-        offset = configDict["s3_prefix_table_map"][prefixName].get('archer_id',{}).get('num_first_char',-1)
-        if(offset > 0):
-            dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+(offset+1)]
-        else:
-            dictrow['archer_id'] = 'None'
         dictrow['jsondata'] = json.dumps(docdata, indent = 2)
         dictrow['ocr_metadata'] = json.dumps(ocr_metadata, indent = 2)
-        ssn, ca_ssn = '', ''
-        jsondatarecord = dictrow.copy()
-        regex = re.compile('-..-')
-    #   building the array of KVP
-        for page in doc.pages:
-            pageno = pageno + 1
-            eprint(f'---- page {str(pageno)} ----',0)
-
-            eprint('---- eprinting the csv_2_ocr_map again ---',0)
-            eprint(csv_2_ocr_map,0)
-        eprint('--- eprinting dictrow ---', 0)
-        eprint(dictrow, 0)
 
         try:
             dictrow['textract_response'] = json.dumps(response, indent = 2)
         except Exception as e:
             msg = f'error writing textract_response to dictrow, err: {e} on lineNo: {e.__traceback__.tb_lineno}'
             eprint(msg, 40)
-        #dictrow['jsondata'] = json_object
+        dictrow['SourceFileName'] = docname
+
+        offset = configDict["s3_prefix_table_map"][prefixName].get('archer_id',{}).get('num_first_char',-1)
+        if(offset > 0):
+            dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+(offset+1)]
+        else:
+            dictrow['archer_id'] = 'None'
+
         all_values.append(dictrow)
 
     #    save_ocr_to_bucket(all_values, 'testeric')
