@@ -35,7 +35,7 @@ class TestOCR:
 
     def __init__(self):
         self.color = 'blue'
-        with open('apiResponse_opt.json', 'rb') as f:
+        with open('apiResponse_sin.json', 'rb') as f:
             result = json.load(f)
         self._ocrResults = result
 
@@ -48,9 +48,12 @@ class TestOCR:
         ocrmap = ocr_config_json.get("ocr_maps", {}).get("db_csv_2_ocr_map_flint1", {})
        # ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
         cleanse_rule_name = ocr_config_json.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
-        print(f'cleanse_rule_name is: {cleanse_rule_name}')
+        print(f'cleanse_rule_name is: {str(cleanse_rule_name)}')
         cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+        print(f'clease rule is:{cleanse_rule}')
         #print(cleanes_rule)
+        offset = ocr_config_json["s3_prefix_table_map"]['llnl'].get('archer_id',{}).get('num_first_char',-1)
+        print(f'Offset is: {offset}')
         return ocrmap, cleanse_rule
 
 
@@ -68,6 +71,7 @@ class TestOCR:
         response = self._ocrResults
         doc = Document(response)
         pageno = 0
+        
         for page in doc.pages:
             pageno = pageno + 1
             ocr_form = page.form
@@ -94,6 +98,7 @@ class TestOCR:
                         if(correct_value_confidence < 80 and correct_value_confidence > 0):
                             poor_confidence_count += 1
                     #print('')
+
         fp = count_found / len(ocr_map)  if len(ocr_map) !=0 else 0
         read_percent = (count_found - poor_confidence_count) / count_found if count_found !=0 else 0
         metadata["search_quality"] = {'expected_fields': len(ocr_map), 'found_fields': count_found,'found_percentage': fp }

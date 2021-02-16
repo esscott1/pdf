@@ -4,6 +4,7 @@
 	"s3_prefix_table_map":
 	{
 		"flint1": {
+
 			"table": "flint_claimant",
 			"cleanse_rules": "flint1",
 			"filename_ocrmap":
@@ -21,6 +22,9 @@
 		"dbj": {"table": "ca_packet","filename_ocrmap":	{"ENROLL":"db_csv_2_ocr_map_enroll","RELFULL": "csv_2_ocr_map_relfull",	"AFFT":"db_csv_2_ocr_map_afft"}
 		},
 		"llnl": {
+			"archer_id":{
+				"num_first_char": 11
+			},
 			"table": "llnl_class_member",
 			"filename_ocrmap":
 			{

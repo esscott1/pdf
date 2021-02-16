@@ -241,6 +241,7 @@ def lambda_handler(event, context):
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
         cleanse_rule_name = configDict.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
         cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+        
         eprint(f'---- table name from config Dict is: {tablename} ----')
 
         csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
@@ -261,7 +262,11 @@ def lambda_handler(event, context):
         all_keys, all_values, pageno, dictrow, jsondatarecord = [], [], 0, {}, {}
         dictrow['SourceFileName'] = docname
         eprint(f'docname type is: {type(docname)}',0)
-        dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+12]
+        offset = configDict["s3_prefix_table_map"][prefixName].get('archer_id',{}).get('num_first_char',-1)
+        if(offset > 0):
+            dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+(offset+1)]
+        else:
+            dictrow['archer_id'] = 'None'
         dictrow['jsondata'] = json.dumps(docdata, indent = 2)
         dictrow['ocr_metadata'] = json.dumps(ocr_metadata, indent = 2)
         ssn, ca_ssn = '', ''
