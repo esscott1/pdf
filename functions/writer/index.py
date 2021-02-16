@@ -125,6 +125,27 @@ def get_connection():
         eprint (msg, 40)
         return None
 
+def get_Docname_JobId(event, notificationMessage):
+    pdfResultType = "does not exist"
+    if('ResultType' in event and event['ResultType'] !=""):
+        pdfResultType = event['ResultType']
+    eprint(f'Textract event result: {pdfResultType}',20)
+    pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
+    pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
+    pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
+    pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
+
+    eprint(f'-----  sns message ---- ',10)
+    eprint(notificationMessage,10)
+    eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
+    eprint(f'----  Document Location ----')
+    eprint(pdfTextExtractionDocLoc)
+    eprint(f'----  Job Tag ----')
+    eprint(pdfTextExtractionJobTag)
+    eprint('----  Job Status ----',10)
+    eprint(pdfTextExtractionStatus,10)
+    docname = pdfTextExtractionDocLoc['S3ObjectName']
+    return docname, pdfTextExtractionJobId
 
 def write_dict_to_db(mydict, connection, tablename):
     """
@@ -216,38 +237,19 @@ def lambda_handler(event, context):
     try:
 
         notificationMessage = json.loads(json.dumps(event))['Records'][0]['Sns']['Message']
-        pdfResultType = "does not exist"
-        if('ResultType' in event and event['ResultType'] !=""):
-            pdfResultType = event['ResultType']
-        eprint(f'Textract event result: {pdfResultType}',20)
-        pdfTextExtractionStatus = json.loads(notificationMessage)['Status']
-        pdfTextExtractionJobTag = json.loads(notificationMessage)['JobTag']
-        pdfTextExtractionJobId = json.loads(notificationMessage)['JobId']
-        pdfTextExtractionDocLoc = json.loads(notificationMessage)['DocumentLocation']
-
-        eprint(f'-----  sns message ---- ',10)
-        eprint(notificationMessage,10)
-        eprint(pdfTextExtractionJobTag + ' : ' + pdfTextExtractionStatus)
-        eprint(f'----  Document Location ----')
-        eprint(pdfTextExtractionDocLoc)
-        eprint(f'----  Job Tag ----')
-        eprint(pdfTextExtractionJobTag)
-        eprint('----  Job Status ----',10)
-        eprint(pdfTextExtractionStatus,10)
-        docname = pdfTextExtractionDocLoc['S3ObjectName']
-        
+        docname, pdfTextExtractionJobId = get_Docname_JobId(event, notificationMessage)
         prefixName = docname[0:docname.find('/')]
-        eprint(f'prefix name is {prefixName}')
+        eprint(f'prefix name is {prefixName}',10)
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
         cleanse_rule_name = configDict.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
         cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
         
-        eprint(f'---- table name from config Dict is: {tablename} ----')
+        eprint(f'---- table name from config Dict is: {tablename} ----',0)
 
         csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
-        eprint(csv_2_ocr_map)
-        eprint('document name is: '+docname)
-        eprint(f'content of document should eprint to table name: {tablename}')
+        eprint(csv_2_ocr_map,0)
+        eprint('document name is: '+docname,10)
+        eprint(f'content of document should eprint to table name: {tablename}',10)
         gDocumentName = str(docname[docname.find('/')+1:])
         response = getJobResults(pdfTextExtractionJobId)
         if response == None: #textract didn't return a response.
