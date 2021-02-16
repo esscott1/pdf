@@ -45,9 +45,10 @@ class TestOCR:
         response = s3.get_object(Bucket = 'archer-ocr-doc-bucket', Key='ocr_config.json')
         content = response['Body']
         ocr_config_json = json.loads(content.read())
-        ocrmap = ocr_config_json.get("ocr_maps1", {}).get("db_csv_2_ocr_map_flint1", {})
+        ocrmap = ocr_config_json.get("ocr_maps", {}).get("db_csv_2_ocr_map_flint1", {})
        # ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get('flint1',{})
+        cleanse_rule_name = ocr_config_json.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})[0]
+        cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(cleanse_rule_name,{})
         #print(cleanes_rule)
         return ocrmap, cleanse_rule
 
@@ -91,7 +92,6 @@ class TestOCR:
                         if(correct_value_confidence < 80 and correct_value_confidence > 0):
                             poor_confidence_count += 1
                     #print('')
-
         fp = count_found / len(ocr_map)  if len(ocr_map) !=0 else 0
         read_percent = (count_found - poor_confidence_count) / count_found if count_found !=0 else 0
         metadata["search_quality"] = {'expected_fields': len(ocr_map), 'found_fields': count_found,'found_percentage': fp }
