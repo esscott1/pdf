@@ -125,9 +125,6 @@ def get_connection():
         eprint (msg, 40)
         return None
 
-'''
-Returns a dictionanry of KVP that are in the json config file
-'''
 
 def write_dict_to_db(mydict, connection, tablename):
     """
@@ -242,7 +239,7 @@ def lambda_handler(event, context):
         prefixName = docname[0:docname.find('/')]
         eprint(f'prefix name is {prefixName}')
         tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
-        cleanse_rule_name = configDict["s3_prefix_table_map"][prefixName]["cleanse_rules"]
+        cleanse_rule_name = configDict["s3_prefix_table_map"][prefixName]["cleanse_rules"][0]
         cleanse_rule = configDict["cleanse_rules"][cleanse_rule_name]
         eprint(f'---- table name from config Dict is: {tablename} ----')
 
