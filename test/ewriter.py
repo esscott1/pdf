@@ -35,25 +35,43 @@ class TestOCR:
 
     def __init__(self):
         self.color = 'blue'
-        with open('apiResponse_sin.json', 'rb') as f:
+        with open('apiResponse_opt.json', 'rb') as f:
             result = json.load(f)
         self._ocrResults = result
+        self._prefixName = 'flint1'
+        self._docname = 'flint1/Flint_opt_good_test2.pdf'
 
-    @staticmethod
-    def getOcrMap():
+    @property
+    def prefixName(self):
+        return self._prefixName
+
+    def getOcrMap(self):
         s3 = boto3.client('s3')
         response = s3.get_object(Bucket = 'archer-ocr-doc-bucket', Key='ocr_config.json')
         content = response['Body']
         ocr_config_json = json.loads(content.read())
-        ocrmap = ocr_config_json.get("ocr_maps", {}).get("db_csv_2_ocr_map_flint1", {})
+        configDict = ocr_config_json.copy()
+        #ocrmap = ocr_config_json.get("ocr_maps", {}).get("db_csv_2_ocr_map_flint1", {})
        # ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        cleanse_rule_name = ocr_config_json.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
-        print(f'cleanse_rule_name is: {str(cleanse_rule_name)}')
-        cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
-        print(f'clease rule is:{cleanse_rule}')
+        #cleanse_rule_name = configDict.get("docket_info",{}).get("flint1",{}).get("cleanse_rules",{})
+        #print(f'cleanse_rule_name is: {str(cleanse_rule_name)}')
+        #cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+        #print(f'clease rule is:{cleanse_rule}')
         #print(cleanes_rule)
-        offset = ocr_config_json["s3_prefix_table_map"]['llnl'].get('archer_id',{}).get('num_first_char',-1)
-        print(f'Offset is: {offset}')
+        #offset = ocr_config_json["docket_info"]['llnl'].get('archer_id',{}).get('num_first_char',-1)
+        #print(f'Offset is: {offset}')
+
+        for snippet in configDict["docket_info"][self._prefixName]["form_info"]:
+            if(str(self._docname).find(snippet) > -1):
+                print(f'map should be {configDict["docket_info"][self._prefixName]["form_info"][snippet]["ocr_map"]}')
+                omap = configDict["docket_info"][self._prefixName]["form_info"][snippet]["ocr_map"]
+                #print(f'map should by {configDict["ocr_maps"][omap]}')
+                ocrmap = configDict["ocr_maps"][omap]
+                cleanse_rule_name = configDict["docket_info"][self._prefixName]["form_info"][snippet]["cleanse_rules"]
+                cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+                print(f'Cleanse rule name is {cleanse_rule_name}')
+                #print(f'Cleanse rule is {cleanse_rule}')
+
         return ocrmap, cleanse_rule
 
 
@@ -71,12 +89,12 @@ class TestOCR:
         response = self._ocrResults
         doc = Document(response)
         pageno = 0
-        
+        ocr_map, cleanse_rule = self.getOcrMap()
         for page in doc.pages:
             pageno = pageno + 1
             ocr_form = page.form
             #ocr_form = doc.pages[1].form
-            ocr_map, cleanse_rule = self.getOcrMap()
+
             #e.print(cleanse_rule)
             for csv_key in ocr_map:
                 matching_fields = filter(lambda x: ocr_map[csv_key]['ocr'][0]['ocr_key'].lower() in str(x.key).lower() and 

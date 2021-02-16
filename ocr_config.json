@@ -1,9 +1,15 @@
 {
 	"logginglevel":"info",
 	"snsnotification":"warning",
-	"s3_prefix_table_map":
+	"docket_info":
 	{
 		"flint1": {
+			"form_info":{
+				"Flint": {
+					"ocr_map":"db_csv_2_ocr_map_flint1",
+					"cleanse_rules":"flint1"
+				}
+			},
 
 			"table": "flint_claimant",
 			"cleanse_rules": "flint1",
@@ -19,7 +25,20 @@
 				"LYGDAA":"db_csv_2_ocr_map_lygdaa"
 			}
 		},
-		"dbj": {"table": "ca_packet","filename_ocrmap":	{"ENROLL":"db_csv_2_ocr_map_enroll","RELFULL": "csv_2_ocr_map_relfull",	"AFFT":"db_csv_2_ocr_map_afft"}
+		"dbj": {"table": "ca_packet",
+			"form_info":
+			{
+				"ENROLL": { "ocr_map": "db_csv_2_ocr_map_enroll",
+						"cleanse_rules": "dbj1"},
+				"RELFULL": { "ocr_map": "csv_2_ocr_map_relfull",
+						"cleanse_rules": "dbj1"},
+				"AFFT": { "ocr_map": "db_csv_2_ocr_map_afft",
+						"cleanse_rules": "dbj1"},
+
+				"filename_ocrmap":	
+				{"ENROLL":"db_csv_2_ocr_map_enroll","RELFULL": "csv_2_ocr_map_relfull",	"AFFT":"db_csv_2_ocr_map_afft"}
+			}
+
 		},
 		"llnl": {
 			"archer_id":{

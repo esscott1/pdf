@@ -194,19 +194,23 @@ def CleanDate(dateFieldValue):
     #pulling confidence but not using.. might want to use to help determine the appropriate date to return
     return cleanDateResult
 
-def get_csv_2_ocr_map(docname,configDict, prefixName):
+def get_ocr_map_and_cleanse_rules(docname,configDict, prefixName):
     '''
     logic for getting the correct map based on file name place in the s3 folder which coorosponds to a docket
     supports multiple different forms by name with different maps per docket to be stored in same s3 folder
     '''
-    result = {}
-    for snippet in configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"]:
+    ocrmap, cleanse_rule = {}, {}
+    for snippet in configDict["docket_info"][prefixName]["form_info"]:
         if(str(docname).find(snippet) > -1):
-            eprint(f'map should be {configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]}',0)
-            omap = configDict["s3_prefix_table_map"][prefixName]["filename_ocrmap"][snippet]
+            eprint(f'map should be {configDict["docket_info"][prefixName]["form_info"][snippet]["ocr_map"]}',0)
+            omap = configDict["docket_info"][prefixName]["form_info"][snippet]["ocr_map"]
             eprint(f'map should by {configDict["ocr_maps"][omap]}',0)
-            result = configDict["ocr_maps"][omap]
-    return result
+            ocrmap = configDict["ocr_maps"][omap]
+            cleanse_rule_name = configDict["docket_info"][prefixName]["form_info"][snippet]["cleanse_rules"]
+            cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+            eprint(f'cleanse rule name is: {cleanse_rule_name}',10)
+            eprint(f'cleanse rule is: {cleanse_rule}',0)
+    return ocrmap, cleanse_rule
 
 
 def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
@@ -244,16 +248,16 @@ def lambda_handler(event, context):
         gDocumentName = str(docname[docname.find('/')+1:])
         eprint('document name is: '+docname,10)
 
-        prefixName = docname[0:docname.find('/')]
+        prefixName = docname[0:docname.find('/')]  # prefix represents the tort
         eprint(f'prefix name is {prefixName}',10)
         
-        tablename = configDict["s3_prefix_table_map"][prefixName]["table"]
+        tablename = configDict["docket_info"][prefixName]["table"]
         eprint(f'---- table name from config Dict is: {tablename} ----',0)
 
-        cleanse_rule_name = configDict.get("s3_prefix_table_map",{}).get("flint1",{}).get("cleanse_rules",{})
-        cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
+        #cleanse_rule_name = configDict.get("docket_info",{}).get("flint1",{}).get("cleanse_rules",{})
+        #cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
 
-        csv_2_ocr_map = get_csv_2_ocr_map(docname, configDict, prefixName)
+        csv_2_ocr_map, cleanse_rule = get_ocr_map_and_cleanse_rules(docname, configDict, prefixName)
         eprint(csv_2_ocr_map,0)
 
         response = getJobResults(pdfTextExtractionJobId)
@@ -275,7 +279,7 @@ def lambda_handler(event, context):
             eprint(msg, 40)
         dictrow['SourceFileName'] = docname
 
-        offset = configDict["s3_prefix_table_map"][prefixName].get('archer_id',{}).get('num_first_char',-1)
+        offset = configDict["docket_info"][prefixName].get('archer_id',{}).get('num_first_char',-1)
         if(offset > 0):
             dictrow['archer_id'] = docname[docname.find('/')+1:docname.find('/')+(offset+1)]
         else:
