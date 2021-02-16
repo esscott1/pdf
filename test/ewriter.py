@@ -45,8 +45,9 @@ class TestOCR:
         response = s3.get_object(Bucket = 'archer-ocr-doc-bucket', Key='ocr_config.json')
         content = response['Body']
         ocr_config_json = json.loads(content.read())
-        ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        cleanse_rule = ocr_config_json['cleanse_rules']['flint1']
+        ocrmap = ocr_config_json.get("ocr_maps1", {}).get("db_csv_2_ocr_map_flint1", {})
+       # ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
+        cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get('flint1',{})
         #print(cleanes_rule)
         return ocrmap, cleanse_rule
 
@@ -61,7 +62,7 @@ class TestOCR:
         return 'none', 'none'
 
     def getDocValues(self):
-        data, metadata, ocrResult, count_not_found, field_count, poor_confidence_count = {}, {}, None, 0, 0,0
+        data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
         response = self._ocrResults
         doc = Document(response)
         pageno = 0
@@ -79,20 +80,22 @@ class TestOCR:
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ): # clumsy logic to verify i've got the correct field form the correct page. should not need based on filter
                     sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                     sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
-                    field_count += 1
+                    #field_count += 1
                     print(f'csv key: {csv_key}  Ocr_key: {sCorrect_field_key} with value: {sCorrect_field_value} Conf: {correct_value_confidence} on page: {pageno}')
                     #data[csv_key] = sCorrect_field_value
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
                         count_not_found += 1 
                     else:
+                        count_found += 1
                         if(correct_value_confidence < 80 and correct_value_confidence > 0):
                             poor_confidence_count += 1
                     #print('')
-        found_fields = field_count-count_not_found
-        fp = found_fields / field_count 
-        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': found_fields,'found_percentage': fp }
-        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (found_fields - poor_confidence_count) / found_fields}
+
+        fp = count_found / len(ocr_map)  if len(ocr_map) !=0 else 0
+        read_percent = (count_found - poor_confidence_count) / count_found if count_found !=0 else 0
+        metadata["search_quality"] = {'expected_fields': len(ocr_map), 'found_fields': count_found,'found_percentage': fp }
+        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': read_percent}
         return data, metadata
 
 

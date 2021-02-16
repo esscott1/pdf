@@ -186,42 +186,6 @@ def get_csv_2_ocr_map(docname,configDict, prefixName):
             result = configDict["ocr_maps"][omap]
     return result
 
-def FormatSSN(value):
-    ssn = str(value)
-    if(ssn != None and re.compile('[0-9]{3}-[0-9]{2}-[0-9]{4}').match(ssn) == None):
-        ssn = ssn.replace('.', '')
-        ssn = ssn.replace(' ', '')
-        ssn = ssn.replace('-', '')
-        eprint(f'ssn after replace periods is {ssn}',10)
-        eprint(f'length of ssn: {len(ssn)}',10)
-        if(len(ssn) == 9):
-            ssn = ssn[:5] + '-' + ssn[5:]
-            ssn = ssn[:3] + '-' + ssn[3:]
-        else:
-            ssn = str(value)
-    else:
-        eprint('SSN was in correct format',10)
-    eprint(f'ssn after cleaning is: {ssn}',10)
-    return ssn
-
-def CleanSelectionFieldValueToStr(value, valueType):
-    result = ''
-    if(value != None):
-        if(str(valueType) == 'Selection'):
-            result = 'NO'
-            eprint(f'value passed into clean method is {value}',10)
-            if(str(value) == 'SELECTED'):
-                result = 'YES'
-        elif(str(valueType) == 'Date'):
-            result = CleanDate(value)
-        elif(str(valueType) == 'SSN'):
-            result = FormatSSN(value)
-        else:
-            result = str(value)
-        eprint(f'value after clean is {result}')
-    else:
-        eprint(f'value passed into clean method is None', 10)
-    return result
 
 def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
     result = None
@@ -242,68 +206,6 @@ def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
         else:
             eprint(f'trying to find a Top Pos {tpos} when only {len(lFields)} field objects found', 30)
     return result
-
-def get_form_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page):
-
-    #eprint(f'in the process_ocr_form method csv_2_ocr_map is {csv_2_ocr_map}')
-    newdata = {}
-    correctField = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
-    if(correctField != None):
-        correctCleanValueStr = CleanSelectionFieldValueToStr(correctField.value, csv_2_ocr_map[csv_key]['ocr'][0]['Type'])
-        newdata[csv_key] = correctCleanValueStr
-        ca_csv_key = 'ca_'+csv_key
-        if(correctField != None and correctField.value != None):
-            newdata[ca_csv_key] = str(correctField.value.content[0].confidence)
-        else:
-            newdata[ca_csv_key] = '0'
-    return newdata
-
-def get__yesno_kvp(csv_2_ocr_map, csv_key, dictrow, pageno, page):
-    '''
-    Won't work if the yes and no are split between 2 different pages.
-    '''
-    newdata = {}
-    correctField0 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
-    correctField1 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 1)
-    if(correctField0 != None and correctField1 != None):
-    #if(len(lFields1)>0):
-        correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][0]["Type"])
-        correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField1.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
-        eprint(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
-        eprint(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
-        if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
-            if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
-                newdata[csv_key] = 'YES and NO'
-            elif(correctCleanValueStr1 == 'YES'):
-                newdata[csv_key] = 'NO'
-            elif(correctCleanValueStr0 == 'YES'):
-                newdata[csv_key] = 'YES'
-            else:
-                newdata[csv_key] = ''
-    return newdata
-
-def process_ocr_yesno(csv_2_ocr_map, csv_key, dictrow, pageno, page):
-    '''
-    Deprecated...    Won't work if the yes and no are split between 2 different pages.
-    '''
-    correctField0 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 0)
-    correctField1 = get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, 1)
-    if(correctField0 != None and correctField1 != None):
-    #if(len(lFields1)>0):
-        correctCleanValueStr0 = CleanSelectionFieldValueToStr(correctField0.value,csv_2_ocr_map[csv_key]['ocr'][0]["Type"])
-        correctCleanValueStr1 = CleanSelectionFieldValueToStr(correctField1.value,csv_2_ocr_map[csv_key]['ocr'][1]["Type"])
-        eprint(f'for csv_key: {csv_key} the correctCleanValueStr0 is: {correctCleanValueStr0}')
-        eprint(f'for csv_key: {csv_key} the correctCleanValueStr1 is: {correctCleanValueStr1}')
-        if(str(csv_2_ocr_map[csv_key]['ocr'][0]['ocr_key']) == 'YES'): # know that index 0 is for YES and index 1 is for NO
-            if(correctCleanValueStr0 == 'YES' and correctCleanValueStr1 == 'YES'):
-                dictrow[csv_key] = 'YES and NO'
-            elif(correctCleanValueStr1 == 'YES'):
-                dictrow[csv_key] = 'NO'
-            elif(correctCleanValueStr0 == 'YES'):
-                dictrow[csv_key] = 'YES'
-            else:
-                dictrow[csv_key] = ''
-    return dictrow
 
 def lambda_handler(event, context):
     """
@@ -417,7 +319,7 @@ class OCRProcessor:
         pass
 
     def getDocValues(self, response, ocr_map, cleanse_rule):
-        data, metadata, ocrResult, count_not_found, field_count, poor_confidence_count = {}, {}, None, 0, 0,0
+        data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
         doc = Document(response)
         pageno = 0
         for page in doc.pages:
@@ -433,17 +335,18 @@ class OCRProcessor:
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
                     sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                     sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
-                    field_count += 1
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):
                         count_not_found += 1 
-                    if(correct_value_confidence < 80 and correct_value_confidence > 0):
-                        poor_confidence_count += 1
-                        print(f'{csv_key} has a poor confidence of {correct_value_confidence}  count is {poor_confidence_count}')
-        found_fields = field_count-count_not_found
-        fp = found_fields / field_count 
-        metadata["search_quality"] = {'expected_fields': field_count, 'found_fields': found_fields,'found_percentage': fp }
-        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': (found_fields - poor_confidence_count) / found_fields}
+                    else:
+                        count_found += 1
+                        if(correct_value_confidence < 80 and correct_value_confidence > 0):
+                            poor_confidence_count += 1
+                        #print(f'{csv_key} has a poor confidence of {correct_value_confidence}  count is {poor_confidence_count}')
+        fp = count_found / len(ocr_map)  if len(ocr_map) !=0 else 0
+        read_percent = (count_found - poor_confidence_count) / count_found if count_found !=0 else 0
+        metadata["search_quality"] = {'expected_fields': len(ocr_map), 'found_fields': count_found,'found_percentage': fp }
+        metadata["read_quality"] = {'count_less_than_80_percent': poor_confidence_count, 'high_quality_read_percent': read_percent}
         return data, metadata
 
 
