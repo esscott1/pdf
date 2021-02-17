@@ -4,28 +4,24 @@
 	"docket_info":
 	{
 		"flint1": {
+			"table": "flint_claimant",
 			"form_info":{
 				"Flint": {
-					"ocr_map":"db_csv_2_ocr_map_flint1",
-					"cleanse_rules":"flint1"
-				}
-			},
-
-			"table": "flint_claimant",
-			"cleanse_rules": "flint1",
-			"filename_ocrmap":
-			{
-				"Flint":"db_csv_2_ocr_map_flint1"
+					"ocr_map":"db_csv_2_ocr_map_flint1", "cleanse_rules":"flint1"}
 			}
 		},
 		"dallas":{
 			"table":"dallas_test",
 			"form_info":
 			{
-				"LYGDAA": { "ocr_map":"db_csv_2_ocr_map_lygdaa"
+				"LYGDAA": { "ocr_map":"db_csv_2_ocr_map_lygdaa"}
 			}
 		},
-		"dbj": {"table": "ca_packet",
+		"dbj": {
+			"archer_id":{
+				"num_first_char": 11
+			},
+			"table": "ocr_data",
 			"form_info":
 			{
 				"ENROLL": { "ocr_map": "db_csv_2_ocr_map_enroll",
@@ -33,12 +29,8 @@
 				"RELFULL": { "ocr_map": "csv_2_ocr_map_relfull",
 						"cleanse_rules": "dbj1"},
 				"AFFT": { "ocr_map": "db_csv_2_ocr_map_afft",
-						"cleanse_rules": "dbj1"},
-
-				"filename_ocrmap":	
-				{"ENROLL":"db_csv_2_ocr_map_enroll","RELFULL": "csv_2_ocr_map_relfull",	"AFFT":"db_csv_2_ocr_map_afft"}
+						"cleanse_rules": "dbj1"}
 			}
-
 		},
 		"llnl": {
 			"archer_id":{
@@ -48,7 +40,6 @@
 			"form_info":
 			{
 				"SINUCA":{ "ocr_map":"db_csv_2_ocr_map_llnl"}
-				
 			}
 		},
 		"qsfelection":
@@ -56,10 +47,11 @@
 			"table": "qsfelection",
 			"form_info":
 			{
-				"MOSAMB": { "ocr_map": "db_csv_2_ocr_map_elect"
+				"MOSAMB": { "ocr_map": "db_csv_2_ocr_map_elect"}
 			}
 		}
 	},
+
 	"cleanse_rules":
 	{
 		"flint1":{
