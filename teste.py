@@ -417,6 +417,15 @@ if(testme == ocr_config_json):
     print('match')
 else:
     print('not equal')
+
+
+
+config = 'REGISTRANT inFORMATION'
+ocr_text = [0,'2. REGISTRANT INFORMATION']
+if config.lower() in ocr_text[1].lower():
+    print('found it')
+else:
+    print('not found')
 #print('---- testing date of birth ----')
 #dob = '01 12611952'
 #print(type(dob))

@@ -329,7 +329,7 @@ class OCRProcessor:
                 #sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
                 if(pageno == ocr_map[csv_key]['ocr'][0]['PageNo'][0] ):
                     sCorrect_field_key, sCorrect_field_value, correct_value_confidence = self.getCorrectField(field_list,ocr_map,csv_key)
-                    if(cleanse_rule != None):
+                    if(cleanse_rule != None and sCorrect_field_value != 'Not_Found'):
                         sCorrect_field_value = self.formatDataType(cleanse_rule, ocr_map[csv_key]['ocr'][0]['Type'], sCorrect_field_value)
                     data[csv_key] = {'value': sCorrect_field_value, 'confidence': correct_value_confidence}
                     if(sCorrect_field_value == 'Not_Found'):

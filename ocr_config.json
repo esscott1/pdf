@@ -52,6 +52,52 @@
 		}
 	},
 
+	"doc_definition":
+	{
+		"flint1":{
+			"documents":
+			{
+				"registration":[
+					{
+						"text":"Flint Water Settlement Registration Form",
+						"page_no": 1
+					},
+					{
+						"text":"REGISTRANT INFORMATION",
+						"page_no": 2
+					},
+					{
+						"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
+						"page_no": 3
+					},
+					{
+						"text":"ATTORNEY INFORMATION",
+						"page_no": 4
+					}
+				],
+				"blood_test":[
+					{
+						"text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
+						"page_no": 1
+					},
+					{
+						"text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
+						"page_no": 2
+						
+					}
+				],
+				"driver_license":[
+					{
+						"text":"DRIVER LICENSE",
+						"page_no":1
+
+					}
+				]
+
+			}
+		}
+	},
+
 	"cleanse_rules":
 	{
 		"flint1":{
