@@ -52,3 +52,7 @@ print('')
 #print(f'--- lines with Social Security in it -- ')
 testOcr.getPageMap()
 
+#conn = testOcr.get_connection()
+#ocr_result = testOcr.read_db(conn)
+#print(ocr_result)
+

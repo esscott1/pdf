@@ -1,5 +1,6 @@
 import json
 import boto3
+import pg8000
 import os
 from numpy.lib.type_check import _nan_to_num_dispatcher
 import pg8000
@@ -170,7 +171,8 @@ class TestOCR:
         the source page number and the target page number of the key form name 
         '''
         data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
-        response = self._ocrResults
+        #response = self._ocrResults
+        response = self.read_db(self.get_connection())
         doc = Document(response)
         page_rewrite_map = {}
         pages_map = []
@@ -350,8 +352,69 @@ class TestOCR:
 
 
 
+    def get_connection(self):
+        """
+        Method to establish the connection to RDS using IAM Role based authentication.
+        """
+        try:
+            print ('Connecting to database')
+            client = boto3.client('rds')
+            DBEndPoint = 'ddhgkdwsopbt3a.c3bquq8vfcla.us-west-2.rds.amazonaws.com' #os.environ.get('DBEndPoint')
+            DatabaseName = 'InvoiceDB' #os.environ.get('DatabaseName')
+            DBUserName = 'lvthillo' #os.environ.get('DBUserName')
+            # Generates an auth token used to connect to a db with IAM credentials.
+            print (f'trying to get password with auth token for endpoint: {DBEndPoint}')
+            password = 'notsupersecret' #client.generate_db_auth_token(DBHostname=DBEndPoint, Port=5432, DBUsername=DBUserName)
+            print (f'connecting to: {DatabaseName}')
+            print (f'connecting as: {DBUserName}')
+            print (f'connecting with pw: {password}')
+            # Establishes the connection with the server using the token generated as password
+            conn = pg8000.connect(
+                host=DBEndPoint,
+                user=DBUserName,
+                database=DatabaseName,
+                password=password,
+                ssl={'sslmode': 'verify-full', 'sslrootcert': 'rds-ca-2015-root.pem'},
+            )
+            print ("Succesful connection!")
+            return conn
+        except Exception as e:
+            msg = f'DB connection error: {e} on lineNo: {e.__traceback__.tb_lineno}'
+            print (msg, 40)
+            return None
+    
+    def read_db(self, connection):
+        sql = "SELECT sourcefilename, textract_response from flint_claimant where sourcefilename = %s"
+        try:
+            cursor = connection.cursor()
+            value = 'flint1/Flint_OCR_Test_Big.pdf'
+            fieldlist = []
+            fieldlist.append(str(value))
+            cursor.execute(sql, fieldlist)
+            print("the number of rows: ",cursor.rowcount)
+            row = cursor.fetchone()
+            result = row[1]
+            while row is not None:
+                print(row[0])
+                row = cursor.fetchone()
+            cursor.close()
+            return result
+        except Exception as e:
+            print(e)
+            return -1
 
 
+    def write_to_db(self, connection,tablename='combined_flint'):
+        sql = "INSERT INTO combined_flint (sourcefilename) VALUES (somethingtxt) "
+        try:
+            cursor = connection.cursor()
+            cursor.execute('''INSERT INTO combined_flint(sourcefilename) VALUES ('something')''')
+            connection.commit()
+            cursor.close()
+            return 0
+        except Exception as e:
+            print(e)
+            return -1
 
 
 

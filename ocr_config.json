@@ -3,6 +3,13 @@
 	"snsnotification":"warning",
 	"docket_info":
 	{
+		"combined_flint": {
+			"table": "combined_flint",
+			"form_info":{
+				"Flint": {
+					"ocr_map":"db_csv_2_ocr_map_flint1", "cleanse_rules":"flint1"}
+			}
+		},
 		"flint1": {
 			"table": "flint_claimant",
 			"form_info":{

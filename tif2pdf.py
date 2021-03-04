@@ -12,6 +12,7 @@ parser.add_argument('-b','--bucket', default='textract-uploadbucket-bas6dcsjr2d2
 parser.add_argument('-f','--folder', default='', help='folder in the s3 bucket to copy the files to.')
 parser.add_argument('-s','--startswith', default='', help='finds files where the name starts with the string provided' )
 parser.add_argument('-l','--limit', type=int, help='an integer that will limit the number of files processed.')
+parser.add_argument('-t', '--target', help='none s3 bucket target location to copy files to' )
 parser.add_argument('--verbose', action='store_const', const=0, help='sets the output logging level')
 parser.add_argument('--silent', action='store_const', const=50, help='sets the output logging level')
 parser.add_argument('--version', action='version', version='Version 2.0')
@@ -89,6 +90,7 @@ def cleanfilename(name):
     result = result.replace('(','-')
     result = result.replace(')','-')
     result = result.replace("'","")
+    result = result.replace("+","_")
     return result
 
 
@@ -125,6 +127,7 @@ def uploadtos3(path, filename, bucket, keyprefix):
 
 
 eprint('--- listing files ---', 20)
+eprint(f'--- target is {args.target} ---', 20)
 #path = str(sys.argv[1])
 #recurse = str(sys.argv[2])
 #print (f'passed in arguement {path}')
