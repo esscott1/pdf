@@ -48,6 +48,7 @@ class TestOCR:
         self._ocrResults = result
         #self._prefixName = 'llnl'
         #self._docname = 'llnl/SINUCA10087-CMDF--202002171204.pdf'
+        self._docketName = 'combined_flint'
         self._prefixName = 'flint1'
         self._docname = 'flint1/Flint_opt_good_test2.pdf'
 
@@ -56,8 +57,9 @@ class TestOCR:
     def prefixName(self):
         return self._prefixName
 
-    def getOcrMap(self):
-        with open(os.path.join(os.pardir, "ocr_config.json")) as f:
+    def getOcrMap(self, formName = 'registration', docketName = 'combined_flint'):
+        config_file = 'ocr_config_new.json'
+        with open(os.path.join(os.pardir, config_file)) as f:
             ocr_config_json = json.load(f)
 
         #s3 = boto3.client('s3')
@@ -76,8 +78,19 @@ class TestOCR:
         #print(f'Offset is: {offset}')
         ocrmap, cleanse_rule = {},{}
 
+        doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
+        doc_definition = configDict["doc_definition"].get(doc_def_Name,{}) 
 
-        for snippet in configDict["docket_info"][self._prefixName]["form_info"]:
+        ocrmapName = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("ocr_map")
+        ocrmap = configDict["ocr_maps"].get(ocrmapName,{})
+        
+        cleanse_rules_Name = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
+        cleanse_rule = configDict["cleanse_rules"].get(cleanse_rules_Name,{})
+
+        print(doc_definition)
+        return ocrmap, cleanse_rule, doc_definition
+                
+        for snippet in configDict["docket_info"].get(self._docketName,{})["form_info"]:
 
             if(str(self._docname).find(snippet) > -1):
                 #print(f'map should be {configDict["docket_info"][self._prefixName]["form_info"][snippet]["ocr_map"]}')
@@ -90,9 +103,6 @@ class TestOCR:
                 doc_definition = ocr_config_json.get('doc_definition',{}).get(self._prefixName,{}) if self._prefixName != None else {}
                 #print(f'Cleanse rule name is {cleanse_rule_name}')
                 #print(f'Cleanse rule is {cleanse_rule}')
-
-        return ocrmap, cleanse_rule, doc_definition
-
 
     def getValueByKey(self, ocrkey, pageno):
 
@@ -163,29 +173,28 @@ class TestOCR:
         return result
 
 
-
-
     def getPageMap(self):
         '''
         returns a dictionary of lists that have the form name as key and the list contains
         the source page number and the target page number of the key form name 
         '''
         data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
-        #response = self._ocrResults
+        # response = self._ocrResults
         response = self.read_db(self.get_connection())
         doc = Document(response)
         page_rewrite_map = {}
         pages_map = []
         ocr_map, cleanse_rule, doc_definition = self.getOcrMap()
-        #print(doc_definition)
         print()
-        form_names = list(doc_definition.get('documents',{}).keys())
+        print('------------- doc_defintion from getOcrMap')
+        print(doc_definition)
+        print()
+        form_names = list(doc_definition.get('forms',{}).keys())
         #print(f'form name is: {form_name[0]}')
         for form in form_names:
             source_2_target_map = []
             pageno = 0
-            print(f'form name is: {form}')
-            pages_map = list(doc_definition.get('documents',{}).get(form,{}))
+            pages_map = list(doc_definition.get('forms',{}).get(form,{}).get('pages',{}))
             for form_page_definition in pages_map:
                 search_text = form_page_definition['text']
                 target_page = form_page_definition['page_no']
@@ -202,17 +211,18 @@ class TestOCR:
 
         support_doc_dict = self.addRemainingPages(len(doc.pages),page_rewrite_map)
         page_rewrite_map.update(support_doc_dict)
-        self.splitPDF(page_rewrite_map)
+        #self.splitPDF(page_rewrite_map)
         print(page_rewrite_map)
 
         return page_rewrite_map
 
-    def splitPDF(self, page_rewrite_map):
-        input_file = "C:/src/egit/pdf/test/Flint_OCR_Test_Big.pdf"
+    def splitPDF(self, input_file):
+        #input_file = "C:/src/egit/pdf/test/Flint_OCR_Test_Big.pdf"
+        page_rewrite_map = self.getPageMap()
         reader_input = PdfReader(input_file)
         for targetform in page_rewrite_map:
             writer_output = PdfWriter()
-            output_file = "C:/src/egit/pdf/test/Flint_big_"+str(targetform)+".pdf"
+            output_file = "C:/src/egit/pdf/test/split/Flint_big_"+str(targetform)+".pdf"
             print(f'sorted map for form:  {targetform}')
             sorted_source_2_target_map = sorted(page_rewrite_map[targetform], key=lambda x: x[0])
             print(sorted_source_2_target_map)
@@ -395,7 +405,7 @@ class TestOCR:
             row = cursor.fetchone()
             result = row[1]
             while row is not None:
-                print(row[0])
+                #print(row[0])
                 row = cursor.fetchone()
             cursor.close()
             return result

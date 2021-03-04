@@ -3,6 +3,7 @@ import img2pdf
 import boto3
 import sys
 import argparse
+from shutil import copyfile
 
 uploadcounter = 0
 parser = argparse.ArgumentParser()
@@ -93,6 +94,8 @@ def cleanfilename(name):
     result = result.replace("+","_")
     return result
 
+def copyto(path,filename,target):
+    return 0
 
 def uploadtos3(path, filename, bucket, keyprefix):
 

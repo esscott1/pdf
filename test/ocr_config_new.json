@@ -4,6 +4,8 @@
 	"docket_info":
 	{
 		"combined_flint": {
+			"doc_definition": "combined_flint",
+			"s3prefix": "combined_flint",
 			"table": "combined_flint",
 			"form_info":{
 				"Flint": {
@@ -11,6 +13,8 @@
 			}
 		},
 		"flint1": {
+			"doc_definition": "flint1",
+			"s3prefix": "flint1",
 			"table": "flint_claimant",
 			"form_info":{
 				"Flint": {
@@ -18,6 +22,7 @@
 			}
 		},
 		"dallas":{
+			"s3prefix": "dallas",
 			"table":"dallas_test",
 			"form_info":
 			{
@@ -25,6 +30,7 @@
 			}
 		},
 		"dbj": {
+			"s3prefix":"dbj",
 			"archer_id":{
 				"num_first_char": 11
 			},
@@ -40,6 +46,7 @@
 			}
 		},
 		"llnl": {
+			"s3prefix": "llnl",
 			"archer_id":{
 				"num_first_char": 11
 			},
@@ -51,6 +58,7 @@
 		},
 		"qsfelection":
 		{
+			"s3prefix": "qsfelection",
 			"table": "qsfelection",
 			"form_info":
 			{
@@ -62,46 +70,65 @@
 	"doc_definition":
 	{
 		"combined_flint":{
-			"documents":
+			"forms":
 			{
-				"registration":[
-					{
-						"text":"Flint Water Settlement Registration Form",
-						"page_no": 1
-					},
-					{
-						"text":"REGISTRANT INFORMATION",
-						"page_no": 2
-					},
-					{
-						"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
-						"page_no": 3
-					},
-					{
-						"text":"ATTORNEY INFORMATION",
-						"page_no": 4
-					}
-				],
-				"blood_test":[
-					{
-						"text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
-						"page_no": 1
-					},
-					{
-						"text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
-						"page_no": 2
-						
-					}
-				],
-				"driver_license":[
-					{
-						"text":"DRIVER LICENSE",
-						"page_no":1
+				"registration":
+				{
+                    "doc_name_contains": "REG",
+					"ocr_map":"db_csv_2_ocr_map_flint1",
+					"cleanse_rules":"flint1",
+					"pages":
+						[
+							{
+								"text":"Flint Water Settlement Registration Form",
+								"page_no": 1
+							},
+							{
+								"text":"REGISTRANT INFORMATION",
+								"page_no": 2
+							},
+							{
+								"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
+								"page_no": 3
+							},
+							{
+								"text":"ATTORNEY INFORMATION",
+								"page_no": 4
+							}
+						]
+			},
+				"blood_test":
+                {
+                    "doc_name_contains": "BLOOD",
+                    "ocr_map":"db_csv_2_ocr_map_flint1",
+					"cleanse_rules":"flint1",
+                    "pages":
+                    [
+                        {
+                            "text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
+                            "page_no": 1
+                        },
+                        {
+                            "text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
+                            "page_no": 2
+                            
+                        }
+                    ]
+                },
+				"driver_license":{
+                    "doc_name_contains": "DRIVER",
+                    "ocr_map":"db_csv_2_ocr_map_flint1",
+                    "cleanse_rules":"flint1",
+                    "pages": [
+                        {
+                            "text":"DRIVER LICENSE",
+                            "page_no":1
 
-					}
-				]
+                        }
+				    ]   
 
-			}
+			    }
+            }
 		},
 		"flint1":{
 			"documents":
@@ -166,6 +193,7 @@
 			
 		}
 	},
+
 
     "ocr_maps":
     {

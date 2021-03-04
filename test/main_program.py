@@ -50,7 +50,12 @@ print('')
 #print (metadata)
 #print(f'length of docjson is: {len(docjson)}')
 #print(f'--- lines with Social Security in it -- ')
-testOcr.getPageMap()
+
+#testOcr.getOcrMap()
+
+#map = testOcr.getPageMap()
+
+testOcr.splitPDF("C:/src/egit/pdf/test/Flint_OCR_Test_Big.pdf")
 
 #conn = testOcr.get_connection()
 #ocr_result = testOcr.read_db(conn)

@@ -4,6 +4,8 @@
 	"docket_info":
 	{
 		"combined_flint": {
+			"doc_definition": "combined_flint",
+			"s3prefix": "combined_flint",
 			"table": "combined_flint",
 			"form_info":{
 				"Flint": {
@@ -11,6 +13,8 @@
 			}
 		},
 		"flint1": {
+			"doc_definition": "flint1",
+			"s3prefix": "flint1",
 			"table": "flint_claimant",
 			"form_info":{
 				"Flint": {
@@ -18,6 +22,7 @@
 			}
 		},
 		"dallas":{
+			"s3prefix": "dallas",
 			"table":"dallas_test",
 			"form_info":
 			{
@@ -25,6 +30,7 @@
 			}
 		},
 		"dbj": {
+			"s3prefix":"dbj",
 			"archer_id":{
 				"num_first_char": 11
 			},
@@ -40,6 +46,7 @@
 			}
 		},
 		"llnl": {
+			"s3prefix": "llnl",
 			"archer_id":{
 				"num_first_char": 11
 			},
@@ -51,6 +58,7 @@
 		},
 		"qsfelection":
 		{
+			"s3prefix": "qsfelection",
 			"table": "qsfelection",
 			"form_info":
 			{
@@ -62,46 +70,65 @@
 	"doc_definition":
 	{
 		"combined_flint":{
-			"documents":
+			"forms":
 			{
-				"registration":[
-					{
-						"text":"Flint Water Settlement Registration Form",
-						"page_no": 1
-					},
-					{
-						"text":"REGISTRANT INFORMATION",
-						"page_no": 2
-					},
-					{
-						"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
-						"page_no": 3
-					},
-					{
-						"text":"ATTORNEY INFORMATION",
-						"page_no": 4
-					}
-				],
-				"blood_test":[
-					{
-						"text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
-						"page_no": 1
-					},
-					{
-						"text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
-						"page_no": 2
-						
-					}
-				],
-				"driver_license":[
-					{
-						"text":"DRIVER LICENSE",
-						"page_no":1
+				"registration":
+				{
+                    "doc_name_contains": "REG",
+					"ocr_map":"db_csv_2_ocr_map_flint_reg",
+					"cleanse_rules":"flint1",
+					"pages":
+						[
+							{
+								"text":"Flint Water Settlement Registration Form",
+								"page_no": 1
+							},
+							{
+								"text":"REGISTRANT INFORMATION",
+								"page_no": 2
+							},
+							{
+								"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
+								"page_no": 3
+							},
+							{
+								"text":"ATTORNEY INFORMATION",
+								"page_no": 4
+							}
+						]
+			    },
+				"blood_test":
+                {
+                    "doc_name_contains": "BLOOD",
+                    "ocr_map":"db_csv_2_ocr_map_flint1",
+					"cleanse_rules":"flint1",
+                    "pages":
+                    [
+                        {
+                            "text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
+                            "page_no": 1
+                        },
+                        {
+                            "text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
+                            "page_no": 2
+                            
+                        }
+                    ]
+                },
+				"driver_license":{
+                    "doc_name_contains": "DRIVER",
+                    "ocr_map":"db_csv_2_ocr_map_flint1",
+                    "cleanse_rules":"flint1",
+                    "pages": [
+                        {
+                            "text":"DRIVER LICENSE",
+                            "page_no":1
 
-					}
-				]
+                        }
+				    ]   
 
-			}
+			    }
+            }
 		},
 		"flint1":{
 			"documents":
@@ -167,8 +194,102 @@
 		}
 	},
 
+
     "ocr_maps":
     {
+        "db_csv_2_ocr_map_flint_reg":{
+			"owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or lived in a residence served","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"business_owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or operated a business","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"exposed": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant was exposed to water","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"diagnosed": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "During the period April 25","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"middle_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Middle","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Social Security Number","PageNo": [ 2 ],"TopPos": 1,"Type": "ssn"}]},
+			"dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Date of Birth of Registrant","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"apt_suite_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"city_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"state_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"zip_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1_to": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"apt_suite_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"city_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{	"ocr_key": "City","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"state_2": {"Type": "Form",	"JsonDataOnly": "true","ocr": [{"ocr_key": "State",	"PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"zip_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],	"TopPos": 2,"Type": "String"}]},
+			"address_2_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"address_2_to": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"address_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 2 ],	"TopPos": 3,"Type": "String"}]},
+			"apt_suite_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"city_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"state_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"zip_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"address_3_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"address_3_to": {"Type": "Form","JsonDataOnly": "true", "ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"alt_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Alt. Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"email": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Email","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [	{"ocr_key": "Mobile","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"}]},
+			"phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"	}]},
+			"phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"	}]},
+			"alt_phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Mobile","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"alt_phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"alt_phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"on_behalf_of_yes": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "YES","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},
+			"on_behalf_of_no": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "NO","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},
+			"rep_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_middle_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Middle","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_address": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 3 ],	"TopPos": 1,"Type": "String"}]},
+			"rep_city": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_state": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 3 ],"TopPos": 2,"Type": "String"}]},
+			"rep_zip": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Social Security","PageNo": [ 3 ],"TopPos": 1,"Type": "ssn"}]},
+			"rep_dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Representative's Date of Birth","PageNo": [ 3 ],"TopPos": 1,"Type": "String"}]},
+			"rep_parent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Parent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_spouse": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Spouse","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_stepparent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "StepParent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultchild": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Child","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultsibling": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Sibling","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultaunt": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Aunt","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_adultuncle": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Adult Uncle","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_grandparent": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Grandparent","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_legalguardian": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Legal Guardian","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_estateadmin": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Estate Administrator","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"dod": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "(Month/Day/Year)","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"}]},
+			"rep_other": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Other","PageNo": [ 3 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"rep_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"}]},
+			"rep_phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [	{"ocr_key": "Mobile","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"}]},
+			"rep_phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"	}]},
+			"rep_phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 3 ],"TopPos": 1,"Type": "Selection"	}]},
+			"rep_alt_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Alt. Phone","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"}]},
+			"rep_alt_phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [	{"ocr_key": "Mobile","PageNo": [ 3 ],"TopPos": 2,"Type": "Selection"}]},
+			"rep_alt_phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 3 ],"TopPos": 2,"Type": "Selection"	}]},
+			"rep_alt_phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 3 ],"TopPos": 2,"Type": "Selection"	}]},
+			"rep_email": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Email","PageNo": [ 3 ],"TopPos": 1,	"Type": "String"	}]},
+			"attorney_yes": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "YES","PageNo": [ 4 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"attorney_no": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "NO","PageNo": [ 4 ],"TopPos": 1,	"Type": "Selection"	}]},
+			"att_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_firm_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Law Firm","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_street": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_city": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_state": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_zip": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"att_email": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Email","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"signed_form": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "This completed and signed Registration","PageNo": [ 4 ],"TopPos": 1,	"Type": "String"}]},
+			"provided_id": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Copy of identification document","PageNo": [ 4 ],"TopPos": 1,	"Type": "String"}]},
+			"required_documents": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Any documents required","PageNo": [ 4 ],"TopPos": 1,	"Type": "String"}]},
+			"signature_date": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "DATE","PageNo": [ 4 ],"TopPos": 1,"Type": "String"}]},
+			"signature_print_last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 4 ],"TopPos": 2,"Type": "String"}]},
+			"signature_print_first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 4 ],"TopPos": 2,"Type": "String"}]}
+
+
+
+        },
 		"db_csv_2_ocr_map_flint1": {
 			"owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or lived in a residence served","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
 			"business_owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or operated a business","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
