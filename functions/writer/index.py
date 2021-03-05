@@ -214,22 +214,10 @@ def get_ocr_map_and_cleanse_rules(docname,configDict, prefixName):
     
     cleanse_rules_Name = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
     cleanse_rule = configDict["cleanse_rules"].get(cleanse_rules_Name,{})
-
+    eprint(f'-----  ocrmap ----',10)
+    eprint(ocrmap,10)
     return ocrmap, cleanse_rule
 
-
-    ocrmap, cleanse_rule = {}, {}
-    for snippet in configDict["docket_info"][prefixName]["form_info"]:
-        if(str(docname).find(snippet) > -1):
-            eprint(f'map should be {configDict["docket_info"][prefixName]["form_info"][snippet]["ocr_map"]}',0)
-            omap = configDict["docket_info"][prefixName]["form_info"][snippet]["ocr_map"]
-            eprint(f'map should by {configDict["ocr_maps"][omap]}',0)
-            ocrmap = configDict["ocr_maps"][omap]
-            cleanse_rule_name = configDict["docket_info"][prefixName]["form_info"][snippet].get("cleanse_rules",None)
-            cleanse_rule = configDict.get('cleanse_rules',{}).get(str(cleanse_rule_name),{}) if cleanse_rule_name != None else {}
-            eprint(f'cleanse rule name is: {cleanse_rule_name}',10)
-            eprint(f'cleanse rule is: {cleanse_rule}',0)
-    return ocrmap, cleanse_rule
 
 
 def get_correct_field(csv_2_ocr_map, csv_key, dictrow, pageno, page, itemNo):
