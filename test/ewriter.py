@@ -57,7 +57,7 @@ class TestOCR:
     def prefixName(self):
         return self._prefixName
 
-    def getOcrMap(self, formName = 'registration', docketName = 'combined_flint'):
+    def getConfigInfo(self, formName = 'registration', prefixName = 'combined_flint', docname = 'flint_REG_somthing.pdf'):
         config_file = 'ocr_config_new.json'
         with open(os.path.join(os.pardir, config_file)) as f:
             ocr_config_json = json.load(f)
@@ -67,16 +67,19 @@ class TestOCR:
         #content = response['Body']
         #ocr_config_json = json.loads(content.read())
         configDict = ocr_config_json.copy()
-        #ocrmap = ocr_config_json.get("ocr_maps", {}).get("db_csv_2_ocr_map_flint1", {})
-       # ocrmap = ocr_config_json['ocr_maps']['db_csv_2_ocr_map_flint1']
-        #cleanse_rule_name = configDict.get("docket_info",{}).get("flint1",{}).get("cleanse_rules",{})
-        #print(f'cleanse_rule_name is: {str(cleanse_rule_name)}')
-        #cleanse_rule = ocr_config_json.get('cleanse_rules',{}).get(str(cleanse_rule_name),{})
-        #print(f'clease rule is:{cleanse_rule}')
-        #print(cleanes_rule)
-        #offset = ocr_config_json["docket_info"]['llnl'].get('archer_id',{}).get('num_first_char',-1)
-        #print(f'Offset is: {offset}')
+
         ocrmap, cleanse_rule = {},{}
+        for docket_name, docket_def in configDict["docket_info"].items():
+            if(docket_def['s3prefix'] == prefixName):
+                docketName = docket_name
+
+        #print('---------------  forms ---------------')
+        #print(configDict["doc_definition"].get(docketName,{}).get('forms',{}).items())
+        for form_name, form_def in configDict["doc_definition"].get(docketName,{}).get('forms',{}).items():
+            print(f'{form_def["doc_name_contains"]}')
+            if(form_def['doc_name_contains'] in docname):
+                print(f'form name is: {form_name}')
+                print(f'form def is: {form_def}')
 
         doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
         doc_definition = configDict["doc_definition"].get(doc_def_Name,{}) 
@@ -87,7 +90,7 @@ class TestOCR:
         cleanse_rules_Name = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
         cleanse_rule = configDict["cleanse_rules"].get(cleanse_rules_Name,{})
 
-        print(doc_definition)
+        #print(doc_definition)
         return ocrmap, cleanse_rule, doc_definition
                 
         for snippet in configDict["docket_info"].get(self._docketName,{})["form_info"]:
@@ -142,14 +145,14 @@ class TestOCR:
             for line in page_lines:
                 if search_text.lower() in str(line[1].lower()):
                     page_found_in.append(pageno)
-                    #print(f'-- found {search_text} in {line[1]} --')
+                    print(f'-- found {search_text} in {line[1]} on page: {pageno}--')
         return page_found_in
 
     def addRemainingPages(self, sourcePageCount, page_rewrite_map):
         found_pages = []
         result = {}
         source_list = [*range(1,sourcePageCount+1,1)]
-        print(f'source list: {source_list}')
+        #print(f'source list: {source_list}')
         for source_page_no in range(sourcePageCount):
             for form in page_rewrite_map:
                 for map in page_rewrite_map[form]:
@@ -157,43 +160,45 @@ class TestOCR:
                     #res = any(source_page_no in map for map in  page_rewrite_map[form])
                     #if(res):
                         found_pages.append(source_page_no)
-        print(f'found source pages: {found_pages}')
+        #print(f'found source pages: {found_pages}')
         not_found_pages = np.setdiff1d(source_list,found_pages)
         print(f'source page numbers not assigned: {not_found_pages}')
         i = 0
 
         for unassigned_page in not_found_pages:
             i +=1
-            print(unassigned_page)
+            #print(unassigned_page)
             if('supporting_docs' not in result):
                 result["supporting_docs"] = [[unassigned_page,i]]
             else:
                 result["supporting_docs"].append([unassigned_page,i])
-        print(f'result: {result}')
+        #print(f'result: {result}')
         return result
 
 
-    def getPageMap(self):
+    def getPageMap(self, ocrResponse, doc_definition):
         '''
         returns a dictionary of lists that have the form name as key and the list contains
         the source page number and the target page number of the key form name 
         '''
         data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
         # response = self._ocrResults
-        response = self.read_db(self.get_connection())
+        #response = self.read_db(self.get_connection())
+        response = ocrResponse
         doc = Document(response)
         page_rewrite_map = {}
         pages_map = []
-        ocr_map, cleanse_rule, doc_definition = self.getOcrMap()
+        #ocr_map, cleanse_rule, doc_definition = self.getOcrMap()
         print()
-        print('------------- doc_defintion from getOcrMap')
-        print(doc_definition)
+        #print('------------- doc_defintion from getOcrMap')
+        #print(doc_definition)
         print()
         form_names = list(doc_definition.get('forms',{}).keys())
         #print(f'form name is: {form_name[0]}')
         for form in form_names:
             source_2_target_map = []
             pageno = 0
+            form_type_name = doc_definition.get('forms',{}).get(form,{}).get('doc_name_contains','badconfig')
             pages_map = list(doc_definition.get('forms',{}).get(form,{}).get('pages',{}))
             for form_page_definition in pages_map:
                 search_text = form_page_definition['text']
@@ -203,11 +208,11 @@ class TestOCR:
                 #if(len(found_in_page)>1): #  2 or more of same form in PDF.
                 for form_number in range(len(found_in_page)):
                     #source_2_target_map.append([found_in_page[form_number],target_page])
-                    if(form+str(form_number) not in page_rewrite_map):
-                        page_rewrite_map[form+str(form_number)] = [[found_in_page[form_number],target_page] ]
+                    if(form_type_name+'_'+str(form_number) not in page_rewrite_map):
+                        page_rewrite_map[form_type_name+'_'+str(form_number)] = [[found_in_page[form_number],target_page] ]
                     else:
                         #print(f'appending {[found_in_page[form_number],target_page]}')
-                        page_rewrite_map[form+str(form_number)].append([found_in_page[form_number],target_page] )
+                        page_rewrite_map[form_type_name+'_'+str(form_number)].append([found_in_page[form_number],target_page] )
 
         support_doc_dict = self.addRemainingPages(len(doc.pages),page_rewrite_map)
         page_rewrite_map.update(support_doc_dict)
@@ -216,25 +221,54 @@ class TestOCR:
 
         return page_rewrite_map
 
-    def splitPDF(self, input_file):
+    def splitPDF(self, sourcePath, input_file_name, targetPath, s3Prefex):
         #input_file = "C:/src/egit/pdf/test/Flint_OCR_Test_Big.pdf"
-        page_rewrite_map = self.getPageMap()
-        reader_input = PdfReader(input_file)
+        configDict = self.getConfigDict()
+        docket_name = self.getDocket_Name(s3Prefex, configDict)
+        doc_definition = self.getDoc_Definition(docket_name, configDict)
+        ocrResponse = self.read_db(self.get_connection(),input_file_name )
+        if ocrResponse == -1:
+            return
+        ocrmap, cleanse_rule, doc_defintion = self.getConfigInfo()
+
+        page_rewrite_map = self.getPageMap(ocrResponse, doc_defintion)
+        reader_input = PdfReader(sourcePath+'/'+input_file_name)
         for targetform in page_rewrite_map:
             writer_output = PdfWriter()
-            output_file = "C:/src/egit/pdf/test/split/Flint_big_"+str(targetform)+".pdf"
-            print(f'sorted map for form:  {targetform}')
+            output_file_name = input_file_name.replace('RELFULL',str(targetform).upper())
+            output_file = targetPath+'/'+output_file_name
+            #output_file = "C:/src/egit/pdf/test/split/Flint_big_"+str(targetform)+".pdf"
+            #print(f'sorted map for form:  {targetform}')
             sorted_source_2_target_map = sorted(page_rewrite_map[targetform], key=lambda x: x[0])
-            print(sorted_source_2_target_map)
+            #print(sorted_source_2_target_map)
 
             for map in sorted_source_2_target_map:
                 writer_output.addPage(reader_input.pages[map[0]-1])
-            print(f'writing to file: {output_file} with {sorted_source_2_target_map}')
+            #print(f'writing to file: {output_file} with {sorted_source_2_target_map}')
             writer_output.write(output_file)
         #for current_page in range(len(reader_input.pages)):
         #        writer_output.addpage(reader_input.pages[source_page_no])
 
 
+    def getDocket_Name(self, s3Prefix, configDict):
+        result = ''
+        for docket_name, docket_def in configDict["docket_info"].items():
+            if(docket_def['s3prefix'] == s3Prefix):
+                result = docket_name
+        return result
+                
+    def getConfigDict(self):
+        result = {}
+        config_file = 'ocr_config_new.json'
+        with open(os.path.join(os.pardir, config_file)) as f:
+            result = json.load(f) 
+        return result
+
+    def getDoc_Definition(self, docketName, configDict):
+        result = {}
+        doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
+        result = configDict["doc_definition"].get(doc_def_Name,{}) 
+        return result
 
     def getDocValues(self):
         data, metadata, ocrResult, count_not_found, count_found, poor_confidence_count = {}, {}, None, 0, 0,0
@@ -367,17 +401,18 @@ class TestOCR:
         Method to establish the connection to RDS using IAM Role based authentication.
         """
         try:
+            print()
             print ('Connecting to database')
             client = boto3.client('rds')
             DBEndPoint = 'ddhgkdwsopbt3a.c3bquq8vfcla.us-west-2.rds.amazonaws.com' #os.environ.get('DBEndPoint')
             DatabaseName = 'InvoiceDB' #os.environ.get('DatabaseName')
             DBUserName = 'lvthillo' #os.environ.get('DBUserName')
             # Generates an auth token used to connect to a db with IAM credentials.
-            print (f'trying to get password with auth token for endpoint: {DBEndPoint}')
+            #print (f'trying to get password with auth token for endpoint: {DBEndPoint}')
             password = 'notsupersecret' #client.generate_db_auth_token(DBHostname=DBEndPoint, Port=5432, DBUsername=DBUserName)
-            print (f'connecting to: {DatabaseName}')
-            print (f'connecting as: {DBUserName}')
-            print (f'connecting with pw: {password}')
+            #print (f'connecting to: {DatabaseName}')
+            #print (f'connecting as: {DBUserName}')
+            #print (f'connecting with pw: {password}')
             # Establishes the connection with the server using the token generated as password
             conn = pg8000.connect(
                 host=DBEndPoint,
@@ -393,15 +428,20 @@ class TestOCR:
             print (msg, 40)
             return None
     
-    def read_db(self, connection):
-        sql = "SELECT sourcefilename, textract_response from flint_claimant where sourcefilename = %s"
+    def read_db(self, connection, filename):
+        sql = "SELECT sourcefilename, textract_response from combined_flint where sourcefilename like %s"
         try:
             cursor = connection.cursor()
-            value = 'flint1/Flint_OCR_Test_Big.pdf'
+            value = filename
             fieldlist = []
-            fieldlist.append(str(value))
+            fieldlist.append('%'+str(value))
+            #print(sql)
+            #print(fieldlist)
             cursor.execute(sql, fieldlist)
-            print("the number of rows: ",cursor.rowcount)
+            #print("the number of rows: ",cursor.rowcount)
+            if cursor.rowcount == 0:
+                print(f'***************  warning, no ocr-result found for file {filename} *****')
+                return -1
             row = cursor.fetchone()
             result = row[1]
             while row is not None:

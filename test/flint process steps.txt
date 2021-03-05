@@ -1,0 +1,8 @@
+ecopy.py - to clean the file names
+
+tif2pdf.py - to copy clean files to S3 for OCR reading and storing in DB
+
+
+main_program.py
+
+compare.py to compare what is local vs what is on server

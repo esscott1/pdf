@@ -1,5 +1,6 @@
 from ewriter import TestOCR
 from trp import Document
+import os
 
 
 #TestOCR.find(TestOCR,'Email')
@@ -54,10 +55,15 @@ print('')
 #testOcr.getOcrMap()
 
 #map = testOcr.getPageMap()
-
-testOcr.splitPDF("C:/src/egit/pdf/test/Flint_OCR_Test_Big.pdf")
+basepath = 'C:/src/egit/pdf/test/bug'
+for entry in os.listdir(basepath):
+        if os.path.isfile(os.path.join(basepath, entry)):
+                print()
+                print(basepath+'/'+entry)
+                testOcr.splitPDF(basepath,entry,basepath+'/split',"combined_flint")
+#testOcr.splitPDF("C:/src/egit/pdf/test","Flint_OCR_RELFULL_Test_Big.pdf","C:/src/egit/pdf/test/split","combined_flint")
 
 #conn = testOcr.get_connection()
-#ocr_result = testOcr.read_db(conn)
+#ocr_result = testOcr.read_db(conn, 'Flint_OCR_RELFULL_Test_Big.pdf')
 #print(ocr_result)
 

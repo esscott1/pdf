@@ -4,6 +4,7 @@ import boto3
 import sys
 import argparse
 from shutil import copyfile
+from time import sleep
 
 uploadcounter = 0
 parser = argparse.ArgumentParser()
@@ -52,6 +53,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
             if os.path.isfile(os.path.join(basepath, entry)):
                 if (('.pdf' in entry) or ('.tif' in entry)) and (startswith in entry):
                     eprint(basepath+'/'+entry, 0)
+                    sleep(.3)
                     uploadtos3(basepath, entry, bucket, keyprefix)
                     uploadcounter =uploadcounter+ 1
                     if(args.limit is not None and args.limit <= uploadcounter):
@@ -65,6 +67,7 @@ def uploadtoocr(path, recurse, bucket, keyprefix, startswith):
             for file in f:
                 if (('.pdf' in file) or ('.tif' in file)) and (startswith in file):
                     eprint(f'asking to upload {r}/{file}',0)
+                    sleep(.3)
                     uploadtos3(r, file, bucket, keyprefix)
                     uploadcounter = uploadcounter+ 1
                     if(args.limit is not None and args.limit <= uploadcounter):

@@ -96,7 +96,7 @@
 								"page_no": 4
 							}
 						]
-			},
+				},
 				"blood_test":
                 {
                     "doc_name_contains": "BLOOD",

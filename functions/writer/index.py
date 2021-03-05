@@ -199,6 +199,25 @@ def get_ocr_map_and_cleanse_rules(docname,configDict, prefixName):
     logic for getting the correct map based on file name place in the s3 folder which coorosponds to a docket
     supports multiple different forms by name with different maps per docket to be stored in same s3 folder
     '''
+    ocrmap, cleanse_rule, docketName, formName = {},{}, '', ''
+    for docket_name, docket_def in configDict["docket_info"].items():
+        if(docket_def['s3prefix'] == prefixName):
+            docketName = docket_name
+
+    for form_name, form_def in configDict["doc_definition"].get(docketName,{}).get('forms',{}).items():
+        if(form_def['doc_name_contains'] in docname):
+            formName = form_name
+
+    doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
+    ocrmapName = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("ocr_map")
+    ocrmap = configDict["ocr_maps"].get(ocrmapName,{})
+    
+    cleanse_rules_Name = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
+    cleanse_rule = configDict["cleanse_rules"].get(cleanse_rules_Name,{})
+
+    return ocrmap, cleanse_rule
+
+
     ocrmap, cleanse_rule = {}, {}
     for snippet in configDict["docket_info"][prefixName]["form_info"]:
         if(str(docname).find(snippet) > -1):
