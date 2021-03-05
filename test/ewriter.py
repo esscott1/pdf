@@ -45,6 +45,8 @@ class TestOCR:
 
         with open(filename, 'rb') as f:
             result = json.load(f)
+        _blankpdfName = 'blankpage.pdf'
+        self._blankpdfPage = PdfReader(_blankpdfName)
         self._ocrResults = result
         #self._prefixName = 'llnl'
         #self._docname = 'llnl/SINUCA10087-CMDF--202002171204.pdf'
@@ -75,11 +77,11 @@ class TestOCR:
 
         #print('---------------  forms ---------------')
         #print(configDict["doc_definition"].get(docketName,{}).get('forms',{}).items())
-        for form_name, form_def in configDict["doc_definition"].get(docketName,{}).get('forms',{}).items():
-            print(f'{form_def["doc_name_contains"]}')
-            if(form_def['doc_name_contains'] in docname):
-                print(f'form name is: {form_name}')
-                print(f'form def is: {form_def}')
+        #for form_name, form_def in configDict["doc_definition"].get(docketName,{}).get('forms',{}).items():
+            #print(f'{form_def["doc_name_contains"]}')
+            #if(form_def['doc_name_contains'] in docname):
+            #    print(f'form name is: {form_name}')
+            #    print(f'form def is: {form_def}')
 
         doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
         doc_definition = configDict["doc_definition"].get(doc_def_Name,{}) 
@@ -145,7 +147,7 @@ class TestOCR:
             for line in page_lines:
                 if search_text.lower() in str(line[1].lower()):
                     page_found_in.append(pageno)
-                    print(f'-- found {search_text} in {line[1]} on page: {pageno}--')
+                    #print(f'-- found {search_text} in {line[1]} on page: {pageno}--')
         return page_found_in
 
     def addRemainingPages(self, sourcePageCount, page_rewrite_map):
@@ -162,7 +164,7 @@ class TestOCR:
                         found_pages.append(source_page_no)
         #print(f'found source pages: {found_pages}')
         not_found_pages = np.setdiff1d(source_list,found_pages)
-        print(f'source page numbers not assigned: {not_found_pages}')
+        #print(f'source page numbers not assigned: {not_found_pages}')
         i = 0
 
         for unassigned_page in not_found_pages:
@@ -203,6 +205,7 @@ class TestOCR:
             for form_page_definition in pages_map:
                 search_text = form_page_definition['text']
                 target_page = form_page_definition['page_no']
+                #print(f'looking for {search_text} to be placed on target page: {target_page}')
                 found_in_page = self.findPage(search_text, doc)
 
                 #if(len(found_in_page)>1): #  2 or more of same form in PDF.
@@ -239,11 +242,18 @@ class TestOCR:
             output_file = targetPath+'/'+output_file_name
             #output_file = "C:/src/egit/pdf/test/split/Flint_big_"+str(targetform)+".pdf"
             #print(f'sorted map for form:  {targetform}')
-            sorted_source_2_target_map = sorted(page_rewrite_map[targetform], key=lambda x: x[0])
+            sorted_source_2_target_map = sorted(page_rewrite_map[targetform], key=lambda x: x[1])
             #print(sorted_source_2_target_map)
 
+            targetPageCount = 1
             for map in sorted_source_2_target_map:
-                writer_output.addPage(reader_input.pages[map[0]-1])
+                while map[1] != targetPageCount:
+                    print(f'map[1] is {map[0]} and tragetPageCount is: {targetPageCount}')
+                    writer_output.addPage(self._blankpdfPage.pages[0])
+                    targetPageCount += 1
+                else:
+                    writer_output.addPage(reader_input.pages[map[0]-1])
+                    targetPageCount += 1
             #print(f'writing to file: {output_file} with {sorted_source_2_target_map}')
             writer_output.write(output_file)
         #for current_page in range(len(reader_input.pages)):

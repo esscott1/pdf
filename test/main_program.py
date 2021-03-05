@@ -56,6 +56,7 @@ print('')
 
 #map = testOcr.getPageMap()
 basepath = 'C:/src/egit/pdf/test/bug'
+#basepath = 'C:/SampleData/FLINT+/clean'
 for entry in os.listdir(basepath):
         if os.path.isfile(os.path.join(basepath, entry)):
                 print()
