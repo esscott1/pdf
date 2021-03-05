@@ -119,57 +119,62 @@
                     "doc_name_contains": "DRIVER",
                     "ocr_map":"db_csv_2_ocr_map_flint1",
                     "cleanse_rules":"flint1",
-                    "pages": [
+                    "pages": 
+					[
                         {
                             "text":"DRIVER LICENSE",
                             "page_no":1
 
                         }
-				    ]   
-
+				    ]
 			    }
             }
 		},
 		"flint1":{
-			"documents":
+			"forms":
 			{
-				"registration":[
+				"registration":
 					{
-						"text":"Flint Water Settlement Registration Form",
-						"page_no": 1
+						"doc_name_contains": "REG",
+						"ocr_map":"db_csv_2_ocr_map_flint1_reg",
+						"cleanse_rules": "flint1",
+						"pages":
+						[
+							{
+								"text":"Flint Water Settlement Registration Form",
+								"page_no": 1
+							},
+							{
+								"text":"REGISTRANT INFORMATION",
+								"page_no": 2
+							},
+							{
+								"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
+								"page_no": 3
+							},
+							{
+								"text":"ATTORNEY INFORMATION",
+								"page_no": 4
+							}
+						]
 					},
+				
+				"blood_test":
 					{
-						"text":"REGISTRANT INFORMATION",
-						"page_no": 2
-					},
-					{
-						"text":"NEXT FRIEND, PERSONAL REPRESENTATIVE",
-						"page_no": 3
-					},
-					{
-						"text":"ATTORNEY INFORMATION",
-						"page_no": 4
+						"doc_name_contains": "BLOOD",
+						"ocr_map":"db_csv_2_ocr_map_flint1_blood",
+						"cleanse_rules": "flint1",
+						"pages":[
+							{
+							"text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
+							"page_no": 1
+							},
+							{
+							"text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
+							"page_no": 2
+							}
+						]
 					}
-				],
-				"blood_test":[
-					{
-						"text":"AUTHORIZATION TO DISCLOSE BLOOD LEAD TEST RESULT DATA:",
-						"page_no": 1
-					},
-					{
-						"text":"BY SIGNING THIS FORM, I UNDERSTAND THAT:",
-						"page_no": 2
-						
-					}
-				],
-				"driver_license":[
-					{
-						"text":"DRIVER LICENSE",
-						"page_no":1
-
-					}
-				]
-
 			}
 		}
 	},
@@ -197,6 +202,49 @@
 
     "ocr_maps":
     {
+		"db_csv_2_ocr_map_flint1_reg": {
+			"owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or lived in a residence served","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"business_owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or operated a business","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"exposed": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant was exposed to water","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"diagnosed": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "During the period April 25","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
+			"last_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Last","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"middle_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Middle","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"first_name": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "First","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"ssn": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Social Security Number","PageNo": [ 2 ],"TopPos": 1,"Type": "ssn"}]},
+			"dob": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Date of Birth of Registrant","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"apt_suite_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"city_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"state_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"zip_1": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_1_to": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"address_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O.","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"apt_suite_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"city_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{	"ocr_key": "City","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"state_2": {"Type": "Form",	"JsonDataOnly": "true","ocr": [{"ocr_key": "State",	"PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"zip_2": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],	"TopPos": 2,"Type": "String"}]},
+			"address_2_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"address_2_to": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 2,"Type": "String"}]},
+			"address_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Street/P.O. ","PageNo": [ 2 ],	"TopPos": 3,"Type": "String"}]},
+			"apt_suite_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Apt./Suite","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"city_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "City","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"state_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "State","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"zip_3": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Zip","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"address_3_from": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "From","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"address_3_to": {"Type": "Form","JsonDataOnly": "true", "ocr": [{"ocr_key": "To","PageNo": [ 2 ],"TopPos": 3,"Type": "String"}]},
+			"phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"alt_phone": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Alt. Phone","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"email": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Email","PageNo": [ 2 ],"TopPos": 1,"Type": "String"}]},
+			"phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [	{"ocr_key": "Mobile","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"}]},
+			"phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"	}]},
+			"phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 1,"Type": "Selection"	}]},
+			"alt_phone_mobile": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Mobile","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"alt_phone_work": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Work","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]},
+			"alt_phone_home": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Home","PageNo": [ 2 ],"TopPos": 2,"Type": "Selection"}]}
+
+		},
+		"db_csv_2_ocr_map_flint1_blood": {},
 		"db_csv_2_ocr_map_flint1": {
 			"owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or lived in a residence served","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},
 			"business_owner": {"Type": "Form","JsonDataOnly": "true","ocr": [{"ocr_key": "Registrant owned or operated a business","PageNo": [ 1 ],"TopPos": 1,"Type": "String"}]},

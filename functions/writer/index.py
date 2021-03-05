@@ -164,8 +164,8 @@ def write_dict_to_db(mydict, connection, tablename):
     for fieldvalue in fieldvaluelist:
         fieldtextlist.append(str(fieldvalue))
 
-    eprint(f'{sql} and {fieldvaluelist}')
-    eprint(fieldtextlist)
+    eprint(f'{sql} and {fieldvaluelist}',0)
+    eprint(fieldtextlist,0)
     try:
         cursor = connection.cursor()
         cursor.execute(sql, fieldtextlist)
@@ -208,11 +208,11 @@ def get_ocr_map_and_cleanse_rules(docname,configDict, prefixName):
         if(form_def['doc_name_contains'] in docname):
             formName = form_name
 
-    doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
-    ocrmapName = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("ocr_map")
+    #doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
+    ocrmapName = configDict["doc_definition"].get(docketName,{}).get('forms',{}).get(formName,{}).get("ocr_map")
     ocrmap = configDict["ocr_maps"].get(ocrmapName,{})
     
-    cleanse_rules_Name = configDict["doc_definition"].get(doc_def_Name,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
+    cleanse_rules_Name = configDict["doc_definition"].get(docketName,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
     cleanse_rule = configDict["cleanse_rules"].get(cleanse_rules_Name,{})
     eprint(f'-----  ocrmap ----',10)
     eprint(ocrmap,10)

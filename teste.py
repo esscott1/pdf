@@ -408,24 +408,46 @@ s3 = boto3.client('s3')
 response = s3.get_object(Bucket = 'archer-ocr-doc-bucket', Key='ocr_config.json')
 content = response['Body']
 ocr_config_json = json.loads(content.read())
-print(ocr_config_json)
+#print(ocr_config_json)
 print('')
 print('')
+configDict = ocr_config_json
+prefixName = 'flint1'
+docname = 'flint1/Flint_-REG_0-202102081633'
 
-testme = ocr_config_json
-if(testme == ocr_config_json):
-    print('match')
-else:
-    print('not equal')
+ocrmap, cleanse_rule, docketName, formName = {},{}, '', ''
+print(f'length of docket_info is: {len(configDict["docket_info"])}')
+for docket_name, docket_def in configDict["docket_info"].items():
+    #print(f'docket_def is: {docket_def}')
+    if(docket_def['s3prefix'] == prefixName):
+        docketName = docket_name
+        print(f'docketName is: {docketName}')
 
+for form_name, form_def in configDict["doc_definition"].get(docketName,{}).get('forms',{}).items():
+    print(f'form_name is: {form_name}')
+    print(f'form_def is: {form_def}')
+    if(form_def['doc_name_contains'] in docname):
+        formName = form_name
+        print(f'formName is: {formName}')
+print(f'resulting form name for this document is {formName}')
 
+#doc_def_Name = configDict["docket_info"].get(docketName,{}).get("doc_definition",{})
+ocrmapName = configDict["doc_definition"].get(docketName,{}).get('forms',{}).get(formName,{}).get("ocr_map")
+print(f'ocrmapName should be {ocrmapName}')
+ocrmap = configDict["ocr_maps"].get(ocrmapName,{})
+print()
+print(f'--------- ocrmap is: -------')
+print(ocrmap)
+cleanse_rules_Name = configDict["doc_definition"].get(docketName,{}).get('forms',{}).get(formName,{}).get("cleanse_rules")
+cleanse_rule = configDict["cleanse_rules"].get(cleanse_rules_Name,{})
+print()
+print(f'-----  ocrmap ----')
+print(ocrmap)
+print()
+print(f'-----  ckeanse rules ----')
+print(cleanse_rule)
+print()
 
-config = 'REGISTRANT inFORMATION'
-ocr_text = [0,'2. REGISTRANT INFORMATION']
-if config.lower() in ocr_text[1].lower():
-    print('found it')
-else:
-    print('not found')
 #print('---- testing date of birth ----')
 #dob = '01 12611952'
 #print(type(dob))
