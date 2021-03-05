@@ -274,7 +274,7 @@ def lambda_handler(event, context):
         #doc = Document(response)
         ocrProcessor = OCRProcessor()
         docdata, ocr_metadata = ocrProcessor.getDocValues(response, csv_2_ocr_map, cleanse_rule)
-        eprint(f'---  length of docjson is {len(docdata)}',0)
+        eprint(f'---  length of docjson is {len(docdata)}',10)
 
         dictrow['jsondata'] = json.dumps(docdata, indent = 2)
         dictrow['ocr_metadata'] = json.dumps(ocr_metadata, indent = 2)
@@ -297,8 +297,8 @@ def lambda_handler(event, context):
     #    save_ocr_to_bucket(all_values, 'testeric')
         connection = get_connection()
         for dictionary in all_values:
-            eprint('writing this to DB', 20)
-            eprint(dictionary, 20)
+            eprint('writing this to DB', 0)
+            eprint(dictionary, 0)
             code = write_dict_to_db(dictionary, connection, tablename)
             if(code >=0):
                 eprint("successfully wrote OCR data for document: "+docname, 20)
