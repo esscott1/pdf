@@ -413,7 +413,8 @@ print('')
 print('')
 configDict = ocr_config_json
 prefixName = 'flint1'
-docname = 'flint1/Flint_-REG_0-202102081633'
+#docname = 'flint1/FLINT_-REG_0-202102081633.pdf'
+docname = 'flint1/Flint_-BLOOD_0-202102081632.pdf'
 
 ocrmap, cleanse_rule, docketName, formName = {},{}, '', ''
 print(f'length of docket_info is: {len(configDict["docket_info"])}')
